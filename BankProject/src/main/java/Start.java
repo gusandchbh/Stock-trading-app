@@ -2,6 +2,8 @@ public class Start {
 
 
     public static void main (String[] args){
-        System.out.println("LOL");
+        Example example = new Example();
+
+        System.out.println(example.exampleMethod());
     }
 }
