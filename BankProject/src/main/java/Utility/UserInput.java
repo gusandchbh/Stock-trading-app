@@ -38,6 +38,8 @@ public class UserInput {
         return readDouble(message);
     }
 
+
+
     public static void closeScanner() {
         input.close();
     }
