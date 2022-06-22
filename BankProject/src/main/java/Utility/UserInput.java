@@ -4,6 +4,9 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UserInput {
+
+    public static final String INPUT_ERROR_MESSAGE = "Please try again.";
+    public static final String CHOOSE_OPTION = "Please choose one of the following options: ";
     public static final String EOL = System.lineSeparator();
     public static Scanner input = new Scanner(System.in);
 
@@ -23,6 +26,11 @@ public class UserInput {
     public static String readString(String message) {
         System.out.print(message);
         return input.nextLine().trim();
+    }
+
+    public static char readChar(String message){
+        System.out.println(message);
+        return input.next().charAt(0);
     }
 
     public static double readDouble(String message) {

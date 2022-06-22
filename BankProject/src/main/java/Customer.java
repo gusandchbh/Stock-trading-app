@@ -1,11 +1,7 @@
 import Utility.LocalDateFormatter;
-
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
-import java.util.Random;
 
 
 class Customer extends User {
@@ -54,6 +50,7 @@ class Customer extends User {
 
     @Override
     public boolean equals(Object o) {
+        if (!super.equals(o)) return false;
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
@@ -66,13 +63,6 @@ class Customer extends User {
     }
 
     public static void main (String[] args){
-        LocalDate birthday = LocalDate.of(1993, Month.SEPTEMBER, 25);
 
-        Customer customer = new Customer("maz", "kalle123", "Christopher", "Andersson", birthday);
-            System.out.println(customer);
-
-        Customer customer1 = new Customer("maz", "kalle123", "Christopher", "Andersson", birthday);
-
-        System.out.println(customer.equals(customer1));
     }
 }
