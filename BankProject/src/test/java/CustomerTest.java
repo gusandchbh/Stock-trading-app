@@ -1,4 +1,3 @@
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -10,12 +9,16 @@ import static org.junit.Assert.assertNotEquals;
 public class CustomerTest {
     LocalDate birthday = LocalDate.of(1993, Month.SEPTEMBER, 1);
     LocalDate birthday2 = LocalDate.of(1990, Month.SEPTEMBER, 2);
-    Customer customer = new Customer("example", "example", "Johnny", "Depp", birthday);
-    Customer customer1 = new Customer("example", "example", "Johnny", "Depp", birthday);
-    Customer customer2 = new Customer("example", "example", "Johnny", "Depp", birthday2);
+    Customer customer = new Customer("example", "example", "Johnny", "Depp", birthday, Customer.Gender.MALE);
+    Customer customer1 = new Customer("example", "example", "Johnny", "Depp", birthday, Customer.Gender.MALE);
+    Customer customer2 = new Customer("example", "example", "Johnny", "Depp", birthday2, Customer.Gender.FEMALE);
     @Test
     public void shouldBeEqual(){
         assertEquals(customer, customer1);
+    }
+
+    @Test public void shouldNotBeEqual(){
+        assertNotEquals(customer, customer2);
     }
     @Test
     public void shouldBeTheSameAge(){
