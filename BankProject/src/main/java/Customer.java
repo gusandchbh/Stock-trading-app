@@ -2,13 +2,79 @@ import Utility.LocalDateFormatter;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
 
 class Customer extends User {
 
-    public enum Gender {
+
+    private final String fullName;
+    private final LocalDate birthDate;
+    private final LocalDate regDate;
+    private final Gender gender;
+    private final List<Account> accountList;
+
+
+    public Customer(String username, String password, String fullName, LocalDate birthDate, Gender gender) {
+        super(username, password);
+        this.fullName = fullName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.regDate = LocalDate.now();
+        this.accountList = new ArrayList<>();
+    }
+
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public LocalDate getRegDate() {
+        return regDate;
+    }
+
+    public long getAge(LocalDate today) {
+        return ChronoUnit.YEARS.between(this.getBirthDate(), today);
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public double getBalance() {
+        double balance = 0.0;
+        for (Account account : this.accountList) {
+            balance += account.getBalance();
+        }
+        return balance;
+    }
+
+    public void addAccount(Account account) {
+        if (!this.accountList.contains(account)) {
+            this.accountList.add(account);
+        }
+    }
+
+        public void removeAccount (Account account){
+            this.accountList.remove(account);
+        }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void printAccountList () {
+            for (Account account : this.accountList) {
+                System.out.println(account.getAccountNumber());
+            }
+        }
+
+
+
+    enum Gender {
         MALE(1), FEMALE(2);
 
         private final int code;
@@ -21,68 +87,22 @@ class Customer extends User {
             return code;
         }
     }
-    private final String firstname;
-    private final String lastname;
-    private final LocalDate birthDate;
-    private final LocalDate regDate;
-    private final Gender gender;
 
-    public Customer(String username, String password, String firstname, String lastname, LocalDate birthDate, Gender gender){
-        super(username, password);
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.birthDate = birthDate;
-        this.gender = gender;
-        this.regDate = LocalDate.now();
+
+        public static void main (String[]args){
+            LocalDate birthDate = LocalDate.of(1993, Month.SEPTEMBER, 1);
+            Customer customer = new Customer("example", "example", "Johnny Depp", birthDate, Customer.Gender.MALE);
+            System.out.println(customer.gender);
+
+            Account account = new Account("231930139");
+            customer.accountList.add(account);
+            customer.addAccount(account);
+            System.out.println(account.getBalance());
+            account.setBalance(200.0);
+            customer.printAccountList();
+            System.out.println(customer.getBalance());
+
+        }
     }
 
-    public String getFirstname() {
-        return firstname;
-    }
 
-        public String getLastname() {
-            return lastname;
-        }
-
-        public LocalDate getBirthDate() {
-            return birthDate;
-        }
-
-        public LocalDate getRegDate() {
-            return regDate;
-        }
-
-        public long getAge(LocalDate today){
-        return ChronoUnit.YEARS.between(this.getBirthDate(), today);
-        }
-
-        @Override
-        public String toString() {
-            return "Customer{" +
-                    "firstname='" + firstname + '\'' +
-                    ", lastname='" + lastname + '\'' +
-                    ", birthDate=" + LocalDateFormatter.formatDate(birthDate) +
-                    ", regDate=" + LocalDateFormatter.formatDate(regDate) +
-                    '}';
-        }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Customer customer = (Customer) o;
-        return firstname.equals(customer.firstname) && lastname.equals(customer.lastname) && birthDate.equals(customer.birthDate) && regDate.equals(customer.regDate) && gender == customer.gender;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), firstname, lastname, birthDate, regDate, gender);
-    }
-
-    public static void main (String[] args){
-        LocalDate birthDate = LocalDate.of(1993, Month.SEPTEMBER, 1);
-        Customer customer = new Customer("example", "example", "Johnny", "Depp", birthDate, Customer.Gender.MALE);
-        System.out.println(customer.gender);
-    }
-}
