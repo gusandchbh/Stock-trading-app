@@ -1,29 +1,30 @@
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Account {
     private final String accountNumber;
-    private Double balance = 0.0;
+    private BigDecimal balance = BigDecimal.valueOf(0.0);
 
     public Account(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
-    public void transfer(Account receivingAccount, double amount) {
-        if (this.balance >= amount) {
-            this.balance -= amount;
-            receivingAccount.balance += amount;
+    public void transfer(Account receivingAccount, BigDecimal amount) {
+        if (this.balance.compareTo(amount) > 0) {
+            this.balance = this.balance.subtract(amount);
+            receivingAccount.balance = receivingAccount.balance.add(amount);
         }
     }
 
-    public void deposit(double amount) {
-        if (amount > 0) {
-            this.balance += amount;
+    public void deposit(BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.valueOf(0.0)) > 0) {
+            this.balance = this.balance.add(amount);
         }
     }
 
-    public void withdraw(double amount) {
-        if (this.balance >= amount) {
-            this.balance -= amount;
+    public void withdraw(BigDecimal amount) {
+        if (this.balance.compareTo(amount) >= 0) {
+            this.balance = this.balance.subtract(amount);
         }
     }
 
@@ -44,18 +45,18 @@ public class Account {
         return accountNumber;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
     public static void main(String[] args) {
         Account account1 = new Account("12345");
         Account account2 = new Account("12345");
-        account1.deposit(-1000.0);
+        account1.deposit(BigDecimal.valueOf(-100.0));
         System.out.println(account1.getBalance());
     }
 }

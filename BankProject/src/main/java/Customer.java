@@ -1,15 +1,11 @@
-import Utility.LocalDateFormatter;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-
 
 class Customer extends User {
-
 
     private final String fullName;
     private final LocalDate birthDate;
@@ -44,10 +40,10 @@ class Customer extends User {
         return fullName;
     }
 
-    public double getBalance() {
-        double balance = 0.0;
+    public BigDecimal getBalance() {
+        BigDecimal balance = BigDecimal.valueOf(0.0);
         for (Account account : this.accountList) {
-            balance += account.getBalance();
+            balance = balance.add(account.getBalance());
         }
         return balance;
     }
@@ -98,7 +94,7 @@ class Customer extends User {
             customer.accountList.add(account);
             customer.addAccount(account);
             System.out.println(account.getBalance());
-            account.setBalance(200.0);
+            account.setBalance(BigDecimal.valueOf(1000.0));
             customer.printAccountList();
             System.out.println(customer.getBalance());
 
