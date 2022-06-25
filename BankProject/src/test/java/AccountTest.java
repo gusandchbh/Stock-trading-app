@@ -33,7 +33,7 @@ public class AccountTest {
     @Test public void shouldTransfer() {
         account1.deposit(BigDecimal.valueOf(100.00));
         account1.transfer(account2, BigDecimal.valueOf(50.00));
-        assertEquals(BigDecimal.valueOf(50.00), account1.getBalance());
+        assertEquals(BigDecimal.valueOf(51.00), account1.getBalance());
         assertEquals(BigDecimal.valueOf(50.00), account2.getBalance());
     }
 
