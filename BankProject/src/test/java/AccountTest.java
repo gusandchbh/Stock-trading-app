@@ -21,19 +21,19 @@ public class AccountTest {
     @Test
     public void shouldDeposit() {
         account1.deposit(BigDecimal.valueOf(100.00));
-        assertEquals(account1.getBalance(), BigDecimal.valueOf(100.00));
+        assertEquals(BigDecimal.valueOf(100.00), account1.getBalance());
     }
 
     @Test public void shouldWithdraw() {
         account1.deposit(BigDecimal.valueOf(100.00));
         account1.withdraw(BigDecimal.valueOf(50.00));
-        assertEquals(account1.getBalance(), BigDecimal.valueOf(50.00));
+        assertEquals(BigDecimal.valueOf(50.00), account1.getBalance());
     }
 
     @Test public void shouldTransfer() {
         account1.deposit(BigDecimal.valueOf(100.00));
         account1.transfer(account2, BigDecimal.valueOf(50.00));
-        assertEquals(BigDecimal.valueOf(51.00), account1.getBalance());
+        assertEquals(BigDecimal.valueOf(50.00), account1.getBalance());
         assertEquals(BigDecimal.valueOf(50.00), account2.getBalance());
     }
 
@@ -41,16 +41,16 @@ public class AccountTest {
         account1.deposit(BigDecimal.valueOf(100.00));
         account2.deposit(BigDecimal.valueOf(100.00));
         account1.transfer(account2, BigDecimal.valueOf(100.00));
-        assertEquals(account1.getBalance(), BigDecimal.valueOf(100.00));
+        assertEquals(BigDecimal.valueOf(100.00), account1.getBalance());
     }
 
     @Test public void shouldNotAllowNegativeBalance() {
         account1.deposit(BigDecimal.valueOf(100.00));
         account1.withdraw(BigDecimal.valueOf(200.00));
-        assertEquals(account1.getBalance(), BigDecimal.valueOf(100.00));
+        assertEquals(BigDecimal.valueOf(100.00), account1.getBalance());
     }
     @Test public void shouldNotAllowNegativeDeposit() {
         account1.deposit(BigDecimal.valueOf(-100.00));
-        assertEquals(account1.getBalance(), BigDecimal.valueOf(0.00));
+        assertEquals(BigDecimal.valueOf(0.00), account1.getBalance());
     }
 }

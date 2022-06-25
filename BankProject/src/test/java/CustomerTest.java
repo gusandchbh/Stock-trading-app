@@ -1,5 +1,6 @@
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -36,5 +37,24 @@ public class CustomerTest {
     public void shouldBeDifferentGender(){
         assertNotEquals(customer.getGender(), customer2.getGender());
     }
+    @Test public void shouldAddAccount(){
+        customer.addAccount(new Account("123456789"));
+        assertEquals(1, customer.getAccountList().size());
+    }
 
+    @Test public void shouldRemoveAccount(){
+        customer.addAccount(new Account("123456789"));
+        customer.removeAccount(new Account("123456789"));
+        assertEquals(0, customer.getAccountList().size());
+    }
+
+    @Test public void shouldSumBalance(){
+        customer.addAccount(new Account("123"));
+        customer.addAccount(new Account("345"));
+        var account1 = customer.getAccount("123");
+        var account2 = customer.getAccount("345");
+        account1.deposit(BigDecimal.valueOf(100.00));
+        account2.deposit(BigDecimal.valueOf(200.00));
+        assertEquals(BigDecimal.valueOf(300.00), customer.getBalance());
+    }
 }

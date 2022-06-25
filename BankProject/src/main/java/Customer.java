@@ -54,8 +54,21 @@ class Customer extends User {
         }
     }
 
+    public Account getAccount(String accountNumber) {
+        for (Account account : this.accountList) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                return account;
+            }
+        }
+        return null;
+    }
+
         public void removeAccount (Account account){
             this.accountList.remove(account);
+        }
+
+        public List<Account> getAccountList() {
+            return accountList;
         }
 
     public Gender getGender() {
