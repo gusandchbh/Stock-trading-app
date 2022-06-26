@@ -12,7 +12,6 @@ class Customer extends User {
     private final LocalDate regDate;
     private final Gender gender;
     private final List<Account> accountList;
-    private final List<Transaction> transactionList;
 
 
     public Customer(String username, String password, String fullName, LocalDate birthDate, Gender gender) {
@@ -22,7 +21,6 @@ class Customer extends User {
         this.gender = gender;
         this.regDate = LocalDate.now();
         this.accountList = new ArrayList<>();
-        this.transactionList = new ArrayList<>();
     }
 
 
@@ -77,12 +75,18 @@ class Customer extends User {
         return gender;
     }
 
-    public void printAccountList () {
-            for (Account account : this.accountList) {
-                System.out.println(account.getAccountNumber());
+        public List<Transaction> filterTransactions (Transaction.Type type) {
+            List<Transaction> filteredTransactions = new ArrayList<>();
+            for (int i = 0; i < this.accountList.size(); i++) {
+                for (Transaction transaction : this.accountList.get(i).getTransactionList()) {
+                    if (transaction.getType() == type) {
+                        filteredTransactions.add(transaction);
+                    }
+                }
+            } return filteredTransactions;
             }
-        }
 
+        // Forwarding för transfer, deposit, withdraw?
 
 
     enum Gender {
@@ -103,16 +107,15 @@ class Customer extends User {
         public static void main (String[]args){
             LocalDate birthDate = LocalDate.of(1993, Month.SEPTEMBER, 1);
             Customer customer = new Customer("example", "example", "Johnny Depp", birthDate, Customer.Gender.MALE);
-            System.out.println(customer.gender);
 
-            Account account = new Account("231930139");
-            customer.accountList.add(account);
-            customer.addAccount(account);
-            System.out.println(account.getBalance());
-            account.setBalance(BigDecimal.valueOf(1000.0));
-            customer.printAccountList();
-            System.out.println(customer.getBalance());
-
+            customer.addAccount(new Account("123"));
+            customer.addAccount(new Account("345"));
+            var account1 = customer.getAccount("123");
+            var account2 = customer.getAccount("345");
+            account1.deposit(BigDecimal.valueOf(100.00));
+            account2.deposit(BigDecimal.valueOf(200.00));
+            var x = customer.filterTransactions(Transaction.Type.DEPOSIT);
+            System.out.println(x);
         }
     }
 

@@ -70,5 +70,7 @@ class Transaction {
         Transaction transaction1 = new Transaction(BigDecimal.valueOf(100.00), Transaction.Type.DEPOSIT);
         System.out.println(transaction1);
         System.out.println(transaction1.getAmount());
+        Transaction transaction2 = new Transaction(BigDecimal.valueOf(100.00), Type.TRANSFER);
+        System.out.println(transaction2);
     }
 }

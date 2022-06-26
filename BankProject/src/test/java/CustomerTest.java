@@ -57,4 +57,15 @@ public class CustomerTest {
         account2.deposit(BigDecimal.valueOf(200.00));
         assertEquals(BigDecimal.valueOf(300.00), customer.getBalance());
     }
+
+    @Test public void shouldFilterFromAllTransactions(){
+        customer.addAccount(new Account("123"));
+        customer.addAccount(new Account("345"));
+        var account1 = customer.getAccount("123");
+        var account2 = customer.getAccount("345");
+        account1.deposit(BigDecimal.valueOf(100.00));
+        account2.deposit(BigDecimal.valueOf(200.00));
+        var x = customer.filterTransactions(Transaction.Type.DEPOSIT);
+        assertEquals(2, x.size());
+    }
 }

@@ -38,6 +38,19 @@ public class Account {
         }
     }
 
+    public List<Transaction> getTransactionList() {
+        return transactionList;
+    }
+
+    public List<Transaction> filterTransactions(Transaction.Type type) {
+        List<Transaction> filteredTransactions = new ArrayList<>();
+        for (Transaction transaction : transactionList) {
+            if (transaction.getType() == type) {
+                filteredTransactions.add(transaction);
+            }
+        }  return filteredTransactions;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,5 +81,6 @@ public class Account {
         Account account2 = new Account("12345");
         account1.deposit(BigDecimal.valueOf(-100.0));
         System.out.println(account1.getBalance());
+
     }
 }
