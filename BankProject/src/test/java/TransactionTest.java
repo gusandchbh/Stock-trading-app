@@ -1,5 +1,6 @@
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -7,15 +8,15 @@ import static org.junit.Assert.assertEquals;
 
 public class TransactionTest {
 
-    Transaction transaction = new Transaction("123", 100, "test");
-    Transaction transaction1 = new Transaction("123", 100, "test");
+    LocalDate today = LocalDate.now();
+    LocalDate yesterday = LocalDate.now().minusDays(1);
+
+    Transaction transaction1 = new Transaction(BigDecimal.valueOf(100.00), Transaction.Type.DEPOSIT);
+
 
     @Test
-    public void shouldBeEqual1() {
-        assertEquals(transaction, transaction1);
+    public void shouldBeEqual() {
+
     }
-    @Test
-public void shouldBeEqual2() {
-        assertEquals(transaction.getTransactionID(), transaction1.getTransactionID());
-    }
+
 }

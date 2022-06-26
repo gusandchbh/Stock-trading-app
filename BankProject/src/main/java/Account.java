@@ -1,30 +1,40 @@
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Account {
     private final String accountNumber;
     private BigDecimal balance = BigDecimal.valueOf(0.0);
+    private final List<Transaction> transactionList;
 
     public Account(String accountNumber) {
         this.accountNumber = accountNumber;
+        this.transactionList = new ArrayList<>();
     }
 
     public void transfer(Account receivingAccount, BigDecimal amount) {
         if (this.balance.compareTo(amount) > 0) {
             this.balance = this.balance.subtract(amount);
             receivingAccount.balance = receivingAccount.balance.add(amount);
+            Transaction transaction = new Transaction(amount, Transaction.Type.TRANSFER);
+            transactionList.add(transaction);
         }
     }
 
     public void deposit(BigDecimal amount) {
         if (amount.compareTo(BigDecimal.valueOf(0.0)) > 0) {
             this.balance = this.balance.add(amount);
+            Transaction transaction = new Transaction(amount, Transaction.Type.DEPOSIT);
+            transactionList.add(transaction);
         }
     }
 
     public void withdraw(BigDecimal amount) {
         if (this.balance.compareTo(amount) >= 0) {
             this.balance = this.balance.subtract(amount);
+            Transaction transaction = new Transaction(amount, Transaction.Type.WITHDRAWAL);
+            transactionList.add(transaction);
         }
     }
 

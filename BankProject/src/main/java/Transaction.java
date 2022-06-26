@@ -1,17 +1,19 @@
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
-class Transaction { // Researcha data class
+class Transaction {
     private final String transactionID;
     private final LocalDate date;
-    private final double amount;
-    private final String description;
+    private final BigDecimal amount;
+    private final Type type;
 
-    public Transaction(String transactionID, double amount, String description) {
-        this.transactionID = transactionID;
+    public Transaction(BigDecimal amount, Type type) {
+        this.transactionID = UUID.randomUUID().toString();
         this.date = LocalDate.now();
         this.amount = amount;
-        this.description = description;
+        this.type = type;
     }
 
         public String getTransactionID() {
@@ -22,35 +24,51 @@ class Transaction { // Researcha data class
             return date;
         }
 
-        public double getAmount() {
-            return amount;
-        }
+        public BigDecimal getAmount() {
+        return amount;
+    }
 
-        public String getDescription() {
-            return description;
+        public Type getType() {
+        return type;
         }
-
-        @Override
-        public String toString() {
-            return "Transaction{" +
-                    "transactionID='" + transactionID + '\'' +
-                    ", date=" + date +
-                    ", amount=" + amount +
-                    ", description='" + description + '\'' +
-                    '}';
-        }
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return Double.compare(that.amount, amount) == 0 && transactionID.equals(that.transactionID) && date.equals(that.date) && description.equals(that.description);
+        return transactionID.equals(that.transactionID) && date.equals(that.date) && amount.equals(that.amount) && type == that.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(transactionID, date, amount, description);
+        return Objects.hash(transactionID, date, amount, type);
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "transactionID='" + transactionID + '\'' +
+                ", date=" + date +
+                ", amount=" + amount.setScale(2) +
+                ", type=" + type +
+                '}';
+    }
+
+    enum Type {
+        DEPOSIT(1), WITHDRAWAL(2), TRANSFER(3);
+        private final int code;
+        Type(int code) {
+            this.code = code;
+        }
+        public int getCode() {
+            return code;
+        }
+    }
+
+    public static void main(String[] args){
+        Transaction transaction1 = new Transaction(BigDecimal.valueOf(100.00), Transaction.Type.DEPOSIT);
+        System.out.println(transaction1);
+        System.out.println(transaction1.getAmount());
     }
 }

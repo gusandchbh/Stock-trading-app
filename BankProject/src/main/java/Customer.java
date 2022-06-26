@@ -12,6 +12,7 @@ class Customer extends User {
     private final LocalDate regDate;
     private final Gender gender;
     private final List<Account> accountList;
+    private final List<Transaction> transactionList;
 
 
     public Customer(String username, String password, String fullName, LocalDate birthDate, Gender gender) {
@@ -21,6 +22,7 @@ class Customer extends User {
         this.gender = gender;
         this.regDate = LocalDate.now();
         this.accountList = new ArrayList<>();
+        this.transactionList = new ArrayList<>();
     }
 
 
