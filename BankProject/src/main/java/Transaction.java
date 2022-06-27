@@ -1,9 +1,10 @@
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
-class Transaction {
+class Transaction implements Comparable<Transaction> {
     private final String transactionID;
     private final LocalDate date;
     private final BigDecimal amount;
@@ -55,6 +56,11 @@ class Transaction {
                 '}';
     }
 
+    @Override
+    public int compareTo(Transaction transaction) {
+        return this.amount.compareTo(transaction.amount);
+    }
+
     enum Type {
         DEPOSIT(1), WITHDRAWAL(2), TRANSFER(3);
         private final int code;
@@ -72,5 +78,11 @@ class Transaction {
         System.out.println(transaction1.getAmount());
         Transaction transaction2 = new Transaction(BigDecimal.valueOf(100.00), Type.TRANSFER);
         System.out.println(transaction2);
+        ArrayList<Transaction> list = new ArrayList<>();
+        list.add(transaction1);
+        list.add(transaction2);
+        list.sort();
+
+
     }
 }
