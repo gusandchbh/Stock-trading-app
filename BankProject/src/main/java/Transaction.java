@@ -81,7 +81,6 @@ class Transaction implements Comparable<Transaction> {
         ArrayList<Transaction> list = new ArrayList<>();
         list.add(transaction1);
         list.add(transaction2);
-        list.sort();
 
 
     }
