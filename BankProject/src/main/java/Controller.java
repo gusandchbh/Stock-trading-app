@@ -1,5 +1,7 @@
 import Utility.UserInput;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,15 +10,23 @@ import java.util.regex.Pattern;
 public class Controller {
 
     List<Customer> customerList = new ArrayList<>();
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
 
     Controller(){
     }
 
-
-    public String chooseUsername(){
-        String username = "";
-        return username;
+    public boolean userNameExists(String username) {
+        for (Customer customer : customerList) {
+            if (customer.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
     }
+
+
+
 
     public String choosePassword(){
         String password = "";
@@ -28,21 +38,34 @@ public class Controller {
         return fullName;
     }
 
-    public LocalDate enterBirthdate(){
-        int birthDate = 0;
-        while (String.valueOf(birthDate).length() != 6) {
-            birthDate = UserInput.readInt("Please enter your birthday in 6 digits using the following format: yymmdd");
+    boolean isValidDate(String input) {
+        try {
+            format.setLenient(false);
+            format.parse(input);
+            return true;
         }
-        String birthDate1 = String.valueOf(birthDate);
-        String year = birthDate1.substring(0,2);
-        String month = birthDate1.substring(2,4);
-        String day = birthDate1.substring(4,6);
-
-        return LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+        catch(ParseException e){
+            return false;
+        }
     }
 
-    public Customer createCustomer(String username, String password, String fullName, LocalDate birthDate, Customer.Gender gender) {
+    public LocalDate enterBirthdate(){
+        // REGEX istället för LocalDate.parse(UserInput.readString("Enter your birthdate (yyyy-mm-dd): "));
+        String birthdate = UserInput.readString("Enter your birthdate (yyyy-mm-dd): ");
+        while (!isValidDate(birthdate)) {
+            birthdate = UserInput.readString("Enter your birthdate (yyyy-mm-dd): ");
+        }
+        return LocalDate.parse(birthdate);
+    }
 
+    public String enterUsername(){
+        String username = "";
+        return username;
+    }
+
+    public Customer createCustomer(String username, String password, String fullName, Customer.Gender gender) {
+
+        var birthDate = enterBirthdate();
         Customer customer = new Customer(username, password, fullName, birthDate, gender);
         customerList.add(customer);
         return customer;
