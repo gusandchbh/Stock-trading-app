@@ -9,9 +9,9 @@ import java.util.regex.Pattern;
 
 public class Controller {
 
-    List<Customer> customerList = new ArrayList<>();
-    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
+    private final List<Customer> customerList = new ArrayList<>();
+    private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    private final UserInput input = UserInput.getInstance();
 
     Controller(){
     }
@@ -25,17 +25,34 @@ public class Controller {
         return false;
     }
 
+    public boolean validUserName(String username) {
+        return Pattern.matches("^[a-zA-Z0-9]{5,15}$", username);
+    }
+
+    public String chooseUsername(){
+        var username = input.readString("Please choose a username: "); // Mer informativ
+        while (userNameExists(username)){
+            username = input.readString("Username already exists, please choose a different username: ");
+        }
+        while (!validUserName(username)) {
+            username = input.readString("Username is invalid, please choose a different username: ");
+        }
+        return username;
+    }
+
+    public boolean validPassword(String password) {
+        return Pattern.matches("^[a-zA-Z0-9]{5,15}$", password);
+    }
+
 
 
 
     public String choosePassword(){
-        String password = "";
+        var password = input.readString("Please choose a password: "); // Mer informativ
+        while (!validPassword(password)) {
+            password = input.readString("Password is invalid, please choose a different password: ");
+        }
         return password;
-    }
-
-    public String enterFullName(){
-        String fullName = "";
-        return fullName;
     }
 
     boolean isValidDate(String input) {
@@ -50,22 +67,68 @@ public class Controller {
     }
 
     public LocalDate enterBirthdate(){
-        // REGEX istället för LocalDate.parse(UserInput.readString("Enter your birthdate (yyyy-mm-dd): "));
-        String birthdate = UserInput.readString("Enter your birthdate (yyyy-mm-dd): ");
+        String birthdate = input.readString("Enter your birthdate (yyyy-mm-dd): ");
         while (!isValidDate(birthdate)) {
-            birthdate = UserInput.readString("Enter your birthdate (yyyy-mm-dd): ");
+            birthdate = input.readString("Enter your birthdate (yyyy-mm-dd): ");
         }
         return LocalDate.parse(birthdate);
     }
 
-    public String enterUsername(){
-        String username = "";
-        return username;
+    public boolean isValidUsername(String username) {
+        return Pattern.matches("[a-z]{5,10}", username);
     }
 
-    public Customer createCustomer(String username, String password, String fullName, Customer.Gender gender) {
+    public boolean validFullName(String fullName){
+        return Pattern.matches("^[a-zA-Z]{1,20} [a-zA-Z]{1,20}$", fullName);
+    }
 
-        var birthDate = enterBirthdate();
+    public String enterFullName(){
+        String fullName = input.readString("Enter your full name: ");
+        while (!validFullName(fullName)) {
+            fullName = input.readString("Enter your full name: ");
+        }
+        return fullName;
+    }
+
+
+    public Customer login(){
+        String username = input.readString("Please enter your username: ");
+        while (!userNameExists(username) || !validUserName(username) || findCustomer(username) == null) {
+            username = input.readString("Invalid username, please enter your username: ");
+        }
+        String password = input.readString("Please enter your password: ");
+        for (Customer customer : customerList) {
+            if (customer.getUsername().equals(username) && customer.getPassword().equals(password)) {
+                System.out.println("Welcome " + customer.getFullName());
+                return customer;
+            }
+        }
+        return null;
+    }
+
+    public boolean validGender(int x){
+        return x == 1 || x == 2;
+    }
+
+    // Enter if you are a male or female
+    public Customer.Gender chooseGender() {
+        int x = input.readInt("Enter 1 if you are male and 2 if you are female.");
+        while (!validGender(x)){
+            x = input.readInt("Enter 1 if you are male and 2 if you are female.");
+        }
+        if (x == 1){
+            return Customer.Gender.MALE;
+        } else {
+            return Customer.Gender.FEMALE;
+        }
+    }
+
+    public Customer createCustomer() {
+        LocalDate birthDate = enterBirthdate();
+        String username = chooseUsername();
+        String password = choosePassword();
+        String fullName = enterFullName();
+        Customer.Gender gender = chooseGender();
         Customer customer = new Customer(username, password, fullName, birthDate, gender);
         customerList.add(customer);
         return customer;

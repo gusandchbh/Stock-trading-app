@@ -3,14 +3,26 @@ package Utility;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class UserInput {
+public final class UserInput {
 
     public static final String INPUT_ERROR_MESSAGE = "Please try again.";
     public static final String CHOOSE_OPTION = "Please choose one of the following options: ";
     public static final String EOL = System.lineSeparator();
-    public static Scanner input = new Scanner(System.in);
+    private final Scanner input;
 
-    public static int readInt(String message) {
+    private static UserInput instance = null;
+    private UserInput() {
+       input = new Scanner(System.in);
+    }
+
+    public static UserInput getInstance() {
+        if (instance == null){
+            instance = new UserInput();
+        }
+        return instance;
+    }
+
+    public int readInt(String message) {
         try {
             System.out.print(message);
             int value = input.nextInt();
@@ -23,17 +35,20 @@ public class UserInput {
         return readInt(message);
     }
 
-    public static String readString(String message) {
+
+    public String readString(String message) {
         System.out.print(message);
         return input.nextLine().trim();
     }
 
-    public static char readChar(String message){
+    public char readChar(String message){
         System.out.println(message);
-        return input.next().charAt(0);
+        char value = input.next().charAt(0);
+        input.nextLine();
+        return value;
     }
 
-    public static double readDouble(String message) {
+    public double readDouble(String message) {
         try {
             System.out.print(message);
             double value = input.nextDouble();
@@ -48,7 +63,7 @@ public class UserInput {
 
 
 
-    public static void closeScanner() {
+    public void closeScanner() {
         input.close();
     }
 }

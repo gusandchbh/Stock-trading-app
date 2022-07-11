@@ -3,7 +3,9 @@ import Utility.UserInput;
 import java.time.LocalDate;
 
 public class Menu {
-    Controller controller = new Controller();
+    private final Controller controller = new Controller();
+
+    private final UserInput input = UserInput.getInstance();
 
     public void startPage() {
         System.out.println("± Welcome to The Bank! ±");
@@ -13,18 +15,14 @@ public class Menu {
             System.out.println("1. Register as a customer.");
             System.out.println("2. Login.");
             System.out.println("Enter q to exit the application.");
-            option = UserInput.readChar("Please type an option number: ");
+            option = input.readChar("Please type an option number: ");
             switch (option) {
                 case '1':
-                    Customer x = controller.createCustomer("maz", "kalle123", "Christopher Andersson", LocalDate.now(), Customer.Gender.MALE);
+                    Customer x = controller.createCustomer();
+                    System.out.println(x);
                     break;
                 case '2':
-                    Customer y = controller.findCustomer("maz");
-                    if (controller.loginSuccess(y, "maz", "kalle123")) {
-                        System.out.println("Login success!");
-                    } else {
-                        System.out.println("Could not log in.");
-                    }
+                    var currentUser = controller.login();
                     break;
                 default:
                     break;
@@ -43,7 +41,7 @@ public class Menu {
             System.out.println("3. Make a transfer.");
             System.out.println("4. Go to accounts page.");
             System.out.println("Enter q to return back to the start page.");
-            option = UserInput.readChar("Please type an option number: ");
+            option = input.readChar("Please type an option number: ");
             switch (option) {
                 case '1':
 

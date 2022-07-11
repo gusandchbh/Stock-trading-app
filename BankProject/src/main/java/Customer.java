@@ -16,7 +16,7 @@ class Customer extends User {
 
     public Customer(String username, String password, String fullName, LocalDate birthDate, Gender gender) {
         super(username, password);
-        this.fullName = fullName;
+        this.fullName = fullName.toUpperCase();
         this.birthDate = birthDate;
         this.gender = gender;
         this.regDate = LocalDate.now();
@@ -103,8 +103,18 @@ class Customer extends User {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "fullName='" + fullName + '\'' +
+                ", birthDate=" + birthDate +
+                ", regDate=" + regDate +
+                ", gender=" + gender +
+                ", accountList=" + accountList +
+                '}';
+    }
 
-        public static void main (String[]args){
+    public static void main (String[]args){
             LocalDate birthDate = LocalDate.of(1993, Month.SEPTEMBER, 1);
             Customer customer = new Customer("example", "example", "Johnny Depp", birthDate, Customer.Gender.MALE);
 
