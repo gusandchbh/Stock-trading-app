@@ -4,7 +4,6 @@ import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 class Customer extends User {
 
@@ -13,7 +12,6 @@ class Customer extends User {
     private final LocalDate regDate;
     private final Gender gender;
     private final List<Account> accountList;
-
 
     public Customer(String username, String password, String fullName, LocalDate birthDate, Gender gender) {
         super(username, password);
@@ -26,10 +24,6 @@ class Customer extends User {
 
     public LocalDate getBirthDate() {
         return birthDate;
-    }
-
-    public LocalDate getRegDate() {
-        return regDate;
     }
 
     public long getAge(LocalDate today) {
@@ -75,12 +69,6 @@ class Customer extends User {
 
     public Gender getGender() {
         return gender;
-    }
-
-    public void printAccounts(){
-        for (Account a : accountList){
-            System.out.println("Account number: " + a.getAccountNumber() + " Balance: " + a.getBalance() + "EUR.");
-        }
     }
 
         public List<Transaction> filterTransactions (Transaction.Type type) {

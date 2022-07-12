@@ -1,10 +1,8 @@
 import Utility.UserInput;
 
-import java.time.LocalDate;
 
 public class Menu {
     private final Controller controller = new Controller();
-
     private final UserInput input = UserInput.getInstance();
 
     public void startPage() {
@@ -45,7 +43,7 @@ public class Menu {
             System.out.println("Choose one of the following options: ");
             System.out.println("1. Make a deposit.");
             System.out.println("2. Make a withdrawal.");
-            System.out.println("3. Make a transfer.");
+            System.out.println("3. Make a transfer between own accounts.");
             System.out.println("4. Go to accounts page.");
             System.out.println("Enter q to return back to the start page.");
             option = input.readChar("Please type an option number: ");
@@ -54,12 +52,15 @@ public class Menu {
                     controller.deposit(currentUser);
                     break;
                 case '2':
-             //       controller.withdrawal(currentUser);
+                    controller.withdraw(currentUser);
                     break;
                 case '3':
-                   // controller.transfer(currentUser);
+                    controller.transferOwnAccounts(currentUser); // transfer between own accounts
                     break;
                 case '4':
+                    //controller.accountBalances(currentUser);
+                    break;
+                case '5':
                     accountsPage(currentUser);
                     break;
                 default:

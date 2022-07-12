@@ -5,12 +5,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public class Controller {
 
     private final List<Customer> customerList = new ArrayList<>();
+    private final HashSet<String> accountNumbers = new HashSet<>();
     private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private final UserInput input = UserInput.getInstance();
 
@@ -124,22 +126,64 @@ public class Controller {
         for (Account a : accountList){
             System.out.println("Account " + counter + ": " + System.lineSeparator() + "Account number: " + a.getAccountNumber()
                     + System.lineSeparator() + "Balance: " + a.getBalance());
+            counter++;
         }
     }
 
+    public void withdraw(Customer customer){ // Funkar om man skriver fel först och sedan rätt, men inte från början
+        printCustomerAccounts(customer);
+        int account = input.readInt("Enter the number associated to the account you want to withdraw from: ");
+        while (!validChoiceOfAccount(customer, account)){
+            account = input.readInt("Enter the number associated to the account you want to withdraw from: ");
+        }
+            double amount = input.readDouble("Enter the amount you want to withdraw: ");
+            while (amount < 0 || customer.getAccountList().get(account - 1).getBalance().compareTo(BigDecimal.valueOf(amount)) < 0){
+                amount = input.readDouble("Invalid amount, please enter the amount you want to withdraw: ");
+            }
+            customer.getAccountList().get(account - 1).withdraw(BigDecimal.valueOf(amount));
+        }
+
+        public void transferOwnAccounts(Customer customer){
+            printCustomerAccounts(customer);
+            int fromAccount = input.readInt("Enter the number associated with the account you want to transfer from: ");
+            while (!validChoiceOfAccount(customer, fromAccount)){
+                fromAccount = input.readInt("Enter the number associated with the account you want to transfer from: ");
+            }
+            var account1 = customer.getAccountList().get(fromAccount - 1);
+            int toAccount = input.readInt("Enter the number associated to the account you want to transfer to: ");
+            while (!validChoiceOfAccount(customer, toAccount)){
+                toAccount = input.readInt("Enter the number associated to the account you want to transfer to: ");
+            }
+            var account2 = customer.getAccountList().get(toAccount - 1);
+            double amount = input.readDouble("Enter the amount you want to transfer: ");
+            while (amount < 0 || customer.getAccountList().get(fromAccount - 1).getBalance().compareTo(BigDecimal.valueOf(amount)) < 0){
+                amount = input.readDouble("Invalid amount, please enter the amount you want to transfer: ");
+            }
+            if (fromAccount == toAccount){
+                System.out.println("You can't transfer to the same account you are transferring from.");
+            } else {
+                account1.transfer(account2, BigDecimal.valueOf(amount));
+            }
+            System.out.println("You have transferred " + amount + " from " + account1.getAccountNumber() + " to " + account2.getAccountNumber() + ".");
+        }
+
+
+        public boolean validChoiceOfAccount(Customer customer, int account){
+          if (account < 1 || account > customer.getAccountList().size()) {
+              System.out.println("Enter the number associated with the account. Choose from 1 to " + customer.getAccountList().size() +".");
+              return false;
+          } else if (customer.getAccountList().size() == 1) {
+              System.out.println("You have one account, please choose 1: ");
+              return false;
+          }
+            return true;
+        }
 
     public void deposit(Customer customer){
-
         printCustomerAccounts(customer);
         int account = input.readInt("Enter the number associated to the account you want to deposit to: ");
-        while (account < 1 || account > customer.getAccountList().size() + 1){
-            if (customer.getAccountList().size() == 0){
-                account = input.readInt("You have no accounts, please create one first. ");
-            } else if (customer.getAccountList().size() == 1){
-                account = input.readInt("You have one account, please enter 1: ");
-            } else {
-                account = input.readInt("Invalid account, please enter the number associated to the account you want to deposit to: ");
-            }
+        while (!validChoiceOfAccount(customer, account)){
+            account = input.readInt("Enter the number associated to the account you want to deposit to: ");
         }
         double amount = input.readDouble("Enter the amount you want to deposit: ");
         while (amount < 0){
@@ -147,6 +191,17 @@ public class Controller {
         }
         customer.getAccountList().get(account -1).deposit(BigDecimal.valueOf(amount));
     }
+    // Generate unique random account number
+    public String generateAccountNumber(){
+        StringBuilder accountNumber = new StringBuilder();
+        for (int i = 0; i < 10; i++){
+            int x = (int) (Math.random() * 10);
+            accountNumber.append(x);
+        }
+        return accountNumber.toString();
+    }
+
+
 
     public Customer createCustomer() {
         LocalDate birthDate = enterBirthdate();
@@ -155,8 +210,16 @@ public class Controller {
         String fullName = enterFullName();
         Customer.Gender gender = chooseGender();
         Customer customer = new Customer(username, password, fullName, birthDate, gender);
+        String accountNumber = generateAccountNumber();
+        String accountNumber2 = generateAccountNumber();
+        while (accountNumbers.contains(accountNumber) || accountNumbers.contains(accountNumber2)){
+            accountNumber = generateAccountNumber();
+        }
+        accountNumbers.add(accountNumber);
+        accountNumbers.add(accountNumber2);
         customerList.add(customer);
-        customer.addAccount(new Account("1234"));
+        customer.addAccount(new Account(accountNumber));
+        customer.addAccount(new Account(accountNumber2));
         return customer;
     }
 
@@ -169,15 +232,8 @@ public class Controller {
         return null;
     }
 
-    public boolean loginSuccess(Customer customer, String username, String password){
-        return customer.getUsername().equals(username) && customer.getPassword().equals(password);
-    }
-
     public static void main (String[]args){
 
-        Controller controller = new Controller();
-        LocalDate d = controller.enterBirthdate();
-        System.out.println(d);
     }
 
 }
