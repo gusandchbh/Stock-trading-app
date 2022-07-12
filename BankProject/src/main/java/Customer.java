@@ -4,6 +4,7 @@ import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 class Customer extends User {
 
@@ -16,13 +17,12 @@ class Customer extends User {
 
     public Customer(String username, String password, String fullName, LocalDate birthDate, Gender gender) {
         super(username, password);
-        this.fullName = fullName.toUpperCase();
+        this.fullName = fullName.toLowerCase();
         this.birthDate = birthDate;
         this.gender = gender;
         this.regDate = LocalDate.now();
         this.accountList = new ArrayList<>();
     }
-
 
     public LocalDate getBirthDate() {
         return birthDate;
@@ -37,7 +37,9 @@ class Customer extends User {
     }
 
     public String getFullName() {
-        return fullName;
+        String firstName = this.fullName.split(" ")[0];
+        String lastName = this.fullName.split(" ")[1];
+        return firstName.substring(0,1).toUpperCase() + firstName.substring(1) + " " + lastName.substring(0,1).toUpperCase() + lastName.substring(1);
     }
 
     public BigDecimal getBalance() {
@@ -63,7 +65,7 @@ class Customer extends User {
         return null;
     }
 
-        public void removeAccount (Account account){
+    public void removeAccount (Account account){
             this.accountList.remove(account);
         }
 
@@ -73,6 +75,12 @@ class Customer extends User {
 
     public Gender getGender() {
         return gender;
+    }
+
+    public void printAccounts(){
+        for (Account a : accountList){
+            System.out.println("Account number: " + a.getAccountNumber() + " Balance: " + a.getBalance() + "EUR.");
+        }
     }
 
         public List<Transaction> filterTransactions (Transaction.Type type) {
@@ -85,9 +93,6 @@ class Customer extends User {
                 }
             } return filteredTransactions;
             }
-
-        // Forwarding för transfer, deposit, withdraw?
-
 
     enum Gender {
         MALE(1), FEMALE(2);

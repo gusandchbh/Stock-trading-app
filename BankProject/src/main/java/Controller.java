@@ -1,5 +1,6 @@
 import Utility.UserInput;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -74,9 +75,6 @@ public class Controller {
         return LocalDate.parse(birthdate);
     }
 
-    public boolean isValidUsername(String username) {
-        return Pattern.matches("[a-z]{5,10}", username);
-    }
 
     public boolean validFullName(String fullName){
         return Pattern.matches("^[a-zA-Z]{1,20} [a-zA-Z]{1,20}$", fullName);
@@ -90,7 +88,6 @@ public class Controller {
         return fullName;
     }
 
-
     public Customer login(){
         String username = input.readString("Please enter your username: ");
         while (!userNameExists(username) || !validUserName(username) || findCustomer(username) == null) {
@@ -99,7 +96,6 @@ public class Controller {
         String password = input.readString("Please enter your password: ");
         for (Customer customer : customerList) {
             if (customer.getUsername().equals(username) && customer.getPassword().equals(password)) {
-                System.out.println("Welcome " + customer.getFullName());
                 return customer;
             }
         }
@@ -110,7 +106,6 @@ public class Controller {
         return x == 1 || x == 2;
     }
 
-    // Enter if you are a male or female
     public Customer.Gender chooseGender() {
         int x = input.readInt("Enter 1 if you are male and 2 if you are female.");
         while (!validGender(x)){
@@ -123,6 +118,36 @@ public class Controller {
         }
     }
 
+    public void printCustomerAccounts(Customer customer){
+        var accountList = customer.getAccountList();
+        int counter = 1;
+        for (Account a : accountList){
+            System.out.println("Account " + counter + ": " + System.lineSeparator() + "Account number: " + a.getAccountNumber()
+                    + System.lineSeparator() + "Balance: " + a.getBalance());
+        }
+    }
+
+
+    public void deposit(Customer customer){
+
+        printCustomerAccounts(customer);
+        int account = input.readInt("Enter the number associated to the account you want to deposit to: ");
+        while (account < 1 || account > customer.getAccountList().size() + 1){
+            if (customer.getAccountList().size() == 0){
+                account = input.readInt("You have no accounts, please create one first. ");
+            } else if (customer.getAccountList().size() == 1){
+                account = input.readInt("You have one account, please enter 1: ");
+            } else {
+                account = input.readInt("Invalid account, please enter the number associated to the account you want to deposit to: ");
+            }
+        }
+        double amount = input.readDouble("Enter the amount you want to deposit: ");
+        while (amount < 0){
+            amount = input.readDouble("Please enter a positive amount: ");
+        }
+        customer.getAccountList().get(account -1).deposit(BigDecimal.valueOf(amount));
+    }
+
     public Customer createCustomer() {
         LocalDate birthDate = enterBirthdate();
         String username = chooseUsername();
@@ -131,6 +156,7 @@ public class Controller {
         Customer.Gender gender = chooseGender();
         Customer customer = new Customer(username, password, fullName, birthDate, gender);
         customerList.add(customer);
+        customer.addAccount(new Account("1234"));
         return customer;
     }
 

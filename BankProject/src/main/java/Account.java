@@ -76,6 +76,16 @@ public class Account {
         this.balance = balance;
     }
 
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accountNumber='" + accountNumber + '\'' +
+                ", balance=" + balance +
+                ", transactionList=" + transactionList +
+                '}';
+    }
+
     public static void main(String[] args) {
         Account account1 = new Account("12345");
         Account account2 = new Account("12345");

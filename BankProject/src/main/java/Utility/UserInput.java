@@ -36,6 +36,7 @@ public final class UserInput {
     }
 
 
+
     public String readString(String message) {
         System.out.print(message);
         return input.nextLine().trim();
