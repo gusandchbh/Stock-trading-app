@@ -50,6 +50,17 @@ class Transaction implements Comparable<Transaction> {
 
     public static final Comparator<Transaction> orderByDate = Transaction::compareTo;
 
+    public String getTransactionID() {
+        return transactionID;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
 
     enum Type {
         DEPOSIT(1), WITHDRAWAL(2), TRANSFER(3);

@@ -1,10 +1,10 @@
 1. Interface
 
-2.
+2. Runda av big decimal, 2 decimaler, även i prints, EUR överallt, max 2 decimaler vid input
 
-3.
+3. Inte kunna stänga konton som har positivt saldo
 
-4.
+4. Formatera utskrift av bankkontoutdrag, bara visa x antal kontohändelser, beräkna balance rätt, inkludera typ av transaktion
 
 5.
 

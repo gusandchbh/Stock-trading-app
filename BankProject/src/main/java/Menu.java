@@ -73,13 +73,43 @@ public class Menu {
             System.out.println("Choose one of the following options: ");
             System.out.println("1. Create a new account.");
             System.out.println("2. Close an account.");
-            System.out.println("3. see your accounts.");
+            System.out.println("3. See your accounts.");
             System.out.println("4. Go to bank page.");
             System.out.println("Enter q to return back to the start page.");
             option = input.readChar("Please type an option number: ");
             switch (option) {
                 case '1':
+                    controller.createAccount(currentUser);
+                    break;
+                case '2':
+                    controller.closeAccount(currentUser);
+                    break;
+                case '3':
+                    controller.printCustomerAccounts(currentUser);
+                    break;
+                case '4':
+                    accountStatementPage(currentUser);
+                    break;
+                default:
+                    break;
+            }
+        } while (option != 'q');
+    }
 
+    public void accountStatementPage(Customer currentUser){
+        System.out.println("± You are now logged in! ±");
+        char option;
+        do {
+            System.out.println("Choose one of the following options: ");
+            System.out.println("1. View account statement");
+            System.out.println("2. Search for transactions");
+            System.out.println("3. Summarize transactions");
+            System.out.println("4. Go to bank page.");
+            System.out.println("Enter q to return back to the start page.");
+            option = input.readChar("Please type an option number: ");
+            switch (option) {
+                case '1':
+                    controller.accountStatement(currentUser);
                     break;
                 case '2':
 
