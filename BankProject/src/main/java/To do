@@ -2,9 +2,9 @@
 
 2. Runda av big decimal, 2 decimaler, även i prints, EUR överallt, max 2 decimaler vid input
 
-3. Inte kunna stänga konton som har positivt saldo
+3. Inkludera transaktions description
 
-4. Formatera utskrift av bankkontoutdrag, bara visa x antal kontohändelser, beräkna balance rätt, inkludera typ av transaktion
+4. bara visa x antal kontohändelser, beräkna balance rätt,
 
 5.
 

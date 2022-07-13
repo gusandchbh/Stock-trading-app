@@ -7,6 +7,7 @@ class Transaction implements Comparable<Transaction> {
     private final LocalDate date; // Date of the transaction
     private final BigDecimal amount; // Amount of the transaction
     private final Type type; // Type of the transaction
+    //private final String description; // Description of the transaction
 
     public Transaction(BigDecimal amount, Type type) {
         this.transactionID = UUID.randomUUID().toString(); // Generate a unique ID for each transaction
@@ -19,6 +20,9 @@ class Transaction implements Comparable<Transaction> {
         return type;
         }
 
+        public String getTypeString() {
+        return type.toString();
+        }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

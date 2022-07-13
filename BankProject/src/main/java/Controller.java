@@ -261,7 +261,13 @@ public class Controller {
             while (!validChoiceOfAccount(customer, account)) {
                 account = input.readInt("Enter the number associated to the account you want to close: ");
             }
-            customer.getAccountList().remove(account - 1);
+            var accountToClose = customer.getAccountList().get(account - 1);
+            if (accountToClose.getBalance().compareTo(BigDecimal.valueOf(0)) > 0) {
+                System.out.println("You have a balance on this account. Please withdraw all money before closing it.");
+            } else {
+                customer.getAccountList().remove(account - 1);
+                System.out.println("You have closed account number: " + accountToClose.getAccountNumber() + ".");
+            }
         }
     }
 
@@ -305,9 +311,9 @@ public class Controller {
         }
         var account1 = accountsList.get(account - 1);
         System.out.println("Account statement for account number: " + account1.getAccountNumber());
-        System.out.println("Date | Amount | Balance");
+        System.out.printf("%-20s %-20s %-20s %-20s %-20s \n", "Date", "Description", "Amount", "Balance", "Type");
         for (Transaction transaction : account1.getTransactionList()) {
-            System.out.println(transaction.getDate() + " | " + transaction.getAmount() + " | " + account1.getBalance());
+            System.out.printf("%-20s %-20s %-20s %-20s %-20s\n", transaction.getDate(), "lol", transaction.getAmount(), account1.getBalance(), transaction.getType().toString());
         }
 
     }
