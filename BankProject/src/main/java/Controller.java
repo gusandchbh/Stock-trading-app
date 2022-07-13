@@ -58,7 +58,11 @@ public class Controller {
         return password;
     }
 
+    // REGEX for 1993-09-25
     boolean isValidDate(String input) {
+        if  (!Pattern.matches("^(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", input)) {
+            return false;
+        }
         try {
             format.setLenient(false);
             format.parse(input);
@@ -68,6 +72,8 @@ public class Controller {
             return false;
         }
     }
+
+
 
     public LocalDate enterBirthdate(){
         String birthdate = input.readString("Enter your birthdate (yyyy-mm-dd): ");
@@ -220,6 +226,7 @@ public class Controller {
         customerList.add(customer);
         customer.addAccount(new Account(accountNumber));
         customer.addAccount(new Account(accountNumber2));
+        System.out.println("Thank you for registering " + customer.getFullName().split(" ")[1] + "!");
         return customer;
     }
 

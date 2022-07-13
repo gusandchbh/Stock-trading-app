@@ -58,9 +58,6 @@ public class Menu {
                     controller.transferOwnAccounts(currentUser); // transfer between own accounts
                     break;
                 case '4':
-                    //controller.accountBalances(currentUser);
-                    break;
-                case '5':
                     accountsPage(currentUser);
                     break;
                 default:
