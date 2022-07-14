@@ -1,3 +1,8 @@
+package Controller;
+
+import Logic.Account;
+import Logic.Customer;
+import Logic.Transaction;
 import Utility.UserInput;
 
 import java.math.BigDecimal;
@@ -9,14 +14,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static Utility.PatternMatching.*;
+
 public class Controller {
 
     private final List<Customer> customerList = new ArrayList<>();
     private final HashSet<String> accountNumbers = new HashSet<>();
-    private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private final UserInput input = UserInput.getInstance();
 
-    Controller(){
+    public Controller(){
+        this.customerList.add(new Customer("admin", "admin", "admin admin", LocalDate.now(), Customer.Gender.MALE));
     }
 
     public boolean userNameExists(String username) {
@@ -28,9 +35,6 @@ public class Controller {
         return false;
     }
 
-    public boolean validUserName(String username) {
-        return Pattern.matches("^[a-zA-Z0-9]{5,15}$", username);
-    }
 
     public String chooseUsername(){
         var username = input.readString("Please choose a username: "); // Mer informativ
@@ -43,13 +47,6 @@ public class Controller {
         return username;
     }
 
-    public boolean validPassword(String password) {
-        return Pattern.matches("^[a-zA-Z0-9]{5,15}$", password);
-    }
-
-
-
-
     public String choosePassword(){
         var password = input.readString("Please choose a password: "); // Mer informativ
         while (!validPassword(password)) {
@@ -58,34 +55,12 @@ public class Controller {
         return password;
     }
 
-    // REGEX for 1993-09-25
-    boolean isValidDate(String input) {
-        if  (!Pattern.matches("^(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", input)) {
-            return false;
-        }
-        try {
-            format.setLenient(false);
-            format.parse(input);
-            return true;
-        }
-        catch(ParseException e){
-            return false;
-        }
-    }
-
-
-
     public LocalDate enterBirthdate(){
         String birthdate = input.readString("Enter your birthdate (yyyy-mm-dd): ");
         while (!isValidDate(birthdate)) {
             birthdate = input.readString("Enter your birthdate (yyyy-mm-dd): ");
         }
         return LocalDate.parse(birthdate);
-    }
-
-
-    public boolean validFullName(String fullName){
-        return Pattern.matches("^[a-zA-Z]{1,20} [a-zA-Z]{1,20}$", fullName);
     }
 
     public String enterFullName(){
@@ -138,7 +113,7 @@ public class Controller {
         } else {
             int counter = 1;
             for (Account a : accountList) {
-                System.out.println("Account " + counter + ": " + System.lineSeparator() + "Account number: " + a.getAccountNumber()
+                System.out.println("Logic.Account " + counter + ": " + System.lineSeparator() + "Logic.Account number: " + a.getAccountNumber()
                         + System.lineSeparator() + "Balance: " + a.getBalance());
                 counter++;
             }
@@ -310,10 +285,10 @@ public class Controller {
             account = input.readInt("Enter the number associated to the account you want to see the statement for: ");
         }
         var account1 = accountsList.get(account - 1);
-        System.out.println("Account statement for account number: " + account1.getAccountNumber());
+        System.out.println("Logic.Account statement for account number: " + account1.getAccountNumber());
         System.out.printf("%-20s %-20s %-20s %-20s %-20s \n", "Date", "Description", "Amount", "Balance", "Type");
         for (Transaction transaction : account1.getTransactionList()) {
-            System.out.printf("%-20s %-20s %-20s %-20s %-20s\n", transaction.getDate(), "lol", transaction.getAmount(), account1.getBalance(), transaction.getType().toString());
+            System.out.printf("%-20s %-20s %-20s %-20s %-20s\n", transaction.getDate(), "lol", transaction.getAmount(), account1.getBalance(), transaction.getType());
         }
 
     }

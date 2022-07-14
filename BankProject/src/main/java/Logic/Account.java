@@ -1,3 +1,5 @@
+package Logic;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -5,12 +7,13 @@ import java.util.Objects;
 
 public class Account {
     private final String accountNumber;
-    private BigDecimal balance = BigDecimal.valueOf(0.0);
+    private BigDecimal balance;
     private final List<Transaction> transactionList;
 
     public Account(String accountNumber) {
         this.accountNumber = accountNumber;
         this.transactionList = new ArrayList<>();
+        this.balance = BigDecimal.valueOf(0.0);
     }
 
     public void transfer(Account receivingAccount, BigDecimal amount) {
@@ -73,14 +76,10 @@ public class Account {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
 
     @Override
     public String toString() {
-        return "Account{" +
+        return "Logic.Account{" +
                 "accountNumber='" + accountNumber + '\'' +
                 ", balance=" + balance +
                 ", transactionList=" + transactionList +

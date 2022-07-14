@@ -1,3 +1,6 @@
+import Logic.Account;
+import Logic.Customer;
+import Logic.Transaction;
 import org.junit.Test;
 
 import java.math.BigDecimal;

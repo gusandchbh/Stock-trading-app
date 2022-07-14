@@ -1,8 +1,10 @@
+import Logic.Account;
+import Logic.Customer;
+import Logic.Transaction;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Month;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;

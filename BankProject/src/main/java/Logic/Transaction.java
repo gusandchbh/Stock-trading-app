@@ -1,8 +1,10 @@
+package Logic;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
-class Transaction implements Comparable<Transaction> {
+public class Transaction implements Comparable<Transaction> {
     private final String transactionID; // To make each transaction unique
     private final LocalDate date; // Date of the transaction
     private final BigDecimal amount; // Amount of the transaction
@@ -38,7 +40,7 @@ class Transaction implements Comparable<Transaction> {
 
     @Override
     public String toString() {
-        return "Transaction{" +
+        return "Logic.Transaction{" +
                 "transactionID='" + transactionID + '\'' +
                 ", date=" + date +
                 ", amount=" + amount.setScale(2) +
@@ -52,11 +54,7 @@ class Transaction implements Comparable<Transaction> {
     }
 
 
-    public static final Comparator<Transaction> orderByDate = Transaction::compareTo;
 
-    public String getTransactionID() {
-        return transactionID;
-    }
 
     public LocalDate getDate() {
         return date;
@@ -66,7 +64,7 @@ class Transaction implements Comparable<Transaction> {
         return amount;
     }
 
-    enum Type {
+    public enum Type {
         DEPOSIT(1), WITHDRAWAL(2), TRANSFER(3);
         private final int code;
         Type(int code) {

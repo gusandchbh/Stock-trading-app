@@ -1,3 +1,5 @@
+package Logic;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
@@ -5,7 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-class Customer extends User {
+public class Customer extends User {
 
     private final String fullName;
     private final LocalDate birthDate;
@@ -73,16 +75,17 @@ class Customer extends User {
 
         public List<Transaction> filterTransactions (Transaction.Type type) {
             List<Transaction> filteredTransactions = new ArrayList<>();
-            for (int i = 0; i < this.accountList.size(); i++) {
-                for (Transaction transaction : this.accountList.get(i).getTransactionList()) {
+            for (Account account : this.accountList) {
+                for (Transaction transaction : account.getTransactionList()) {
                     if (transaction.getType() == type) {
                         filteredTransactions.add(transaction);
                     }
                 }
-            } return filteredTransactions;
+            }
+            return filteredTransactions;
             }
 
-    enum Gender {
+    public enum Gender {
         MALE(1), FEMALE(2);
 
         private final int code;
@@ -98,7 +101,7 @@ class Customer extends User {
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "Logic.Customer{" +
                 "fullName='" + fullName + '\'' +
                 ", birthDate=" + birthDate +
                 ", regDate=" + regDate +
