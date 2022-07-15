@@ -3,31 +3,28 @@ package View;
 import Logic.Customer;
 import Utility.UserInput;
 
+import static Utility.Printing.*;
+
 
 public class Menu {
     private final Controller.Controller controller = new Controller.Controller();
     private final UserInput input = UserInput.getInstance();
 
-    public void startPage() {
+    public void loginPage() {
         System.out.println("± Welcome to The Bank! ±");
         char option;
         do {
-            System.out.println("Choose one of the following options: ");
-            System.out.println("1. Register as a customer.");
-            System.out.println("2. Login.");
-            System.out.println("Enter q to exit the application.");
+        loginPagePrint();
             option = input.readChar("Please type an option number: ");
             switch (option) {
                 case '1':
-                    Customer x = controller.createCustomer();
-                    System.out.println(x);
+                    controller.createCustomer();
                     break;
                 case '2':
                     var currentUser = controller.login();
                     if (currentUser != null) {
-                        System.out.println("Welcome " + currentUser.getFullName() + "!");
                         System.out.println("± You are now logged in! ±");
-                        bankPage(currentUser);
+                        menuPage(currentUser);
                     } else {
                         System.out.println("Login failed.");
                     }
@@ -39,32 +36,32 @@ public class Menu {
         System.exit(1);
     }
 
+    public void menuPage(Customer currentUser){
+        System.out.println("± Welcome " + currentUser.getFullName() + "! ±");
+        char option;
+        do {
+        menuPagePrint();
+            option = input.readChar("Please type an option number: ");
+            switch (option) {
+                case '1' -> bankPage(currentUser);
+                case '2' -> accountsPage(currentUser);
+                case '3' -> transactionsPage(currentUser);
+                default -> loginPage();
+            }
+        } while (option != 'q');
+    }
+
     public void bankPage(Customer currentUser) {
         System.out.println();
         char option;
         do {
-            System.out.println("Choose one of the following options: ");
-            System.out.println("1. Make a deposit.");
-            System.out.println("2. Make a withdrawal.");
-            System.out.println("3. Make a transfer between own accounts.");
-            System.out.println("4. Go to accounts page.");
-            System.out.println("Enter q to return back to the start page.");
+        bankPagePrint();
             option = input.readChar("Please type an option number: ");
             switch (option) {
-                case '1':
-                    controller.deposit(currentUser);
-                    break;
-                case '2':
-                    controller.withdraw(currentUser);
-                    break;
-                case '3':
-                    controller.transferOwnAccounts(currentUser); // transfer between own accounts
-                    break;
-                case '4':
-                    accountsPage(currentUser);
-                    break;
-                default:
-                    break;
+                case '1' -> controller.deposit(currentUser);
+                case '2' -> controller.withdraw(currentUser);
+                case '3' -> controller.transferOwnAccounts(currentUser); // transfer between own accounts
+                default -> menuPage(currentUser);
             }
         } while (option != 'q');
     }
@@ -73,58 +70,29 @@ public class Menu {
         System.out.println("± You are now logged in! ±");
         char option;
         do {
-            System.out.println("Choose one of the following options: ");
-            System.out.println("1. Create a new account.");
-            System.out.println("2. Close an account.");
-            System.out.println("3. See your accounts.");
-            System.out.println("4. Go to bank page.");
-            System.out.println("Enter q to return back to the start page.");
+            accountsPagePrint();
             option = input.readChar("Please type an option number: ");
             switch (option) {
-                case '1':
-                    controller.createAccount(currentUser);
-                    break;
-                case '2':
-                    controller.closeAccount(currentUser);
-                    break;
-                case '3':
-                    controller.printCustomerAccounts(currentUser);
-                    break;
-                case '4':
-                    accountStatementPage(currentUser);
-                    break;
-                default:
-                    break;
+                case '1' -> controller.createAccount(currentUser);
+                case '2' -> controller.closeAccount(currentUser);
+                case '3' -> controller.printCustomerAccounts(currentUser);
+                case '4' -> transactionsPage(currentUser);
+                default -> menuPage(currentUser);
             }
         } while (option != 'q');
     }
 
-    public void accountStatementPage(Customer currentUser){
+    public void transactionsPage(Customer currentUser){
         System.out.println("± You are now logged in! ±");
         char option;
         do {
-            System.out.println("Choose one of the following options: ");
-            System.out.println("1. View account statement");
-            System.out.println("2. Search for transactions");
-            System.out.println("3. Summarize transactions");
-            System.out.println("4. Go to bank page.");
-            System.out.println("Enter q to return back to the start page.");
+            transactionsPagePrint();
             option = input.readChar("Please type an option number: ");
             switch (option) {
-                case '1':
-                    controller.accountStatement(currentUser);
-                    break;
-                case '2':
-
-                    break;
-                case '3':
-
-                    break;
-                case '4':
-                    bankPage(currentUser);
-                    break;
-                default:
-                    break;
+                case '1' -> controller.accountStatement(currentUser);
+                //case '2' -> controller.searchTransactions(currentUser);
+                //case '3' -> controller.summarizeTransactions(currentUser);
+                default -> menuPage(currentUser);
             }
         } while (option != 'q');
     }
