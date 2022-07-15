@@ -6,14 +6,12 @@ import Logic.Transaction;
 import Utility.UserInput;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Pattern;
 
+import static Utility.HandleUserInput.*;
 import static Utility.PatternMatching.*;
 
 public class Controller {
@@ -35,42 +33,6 @@ public class Controller {
         return false;
     }
 
-
-    public String chooseUsername(){
-        var username = input.readString("Please choose a username: "); // Mer informativ
-        while (userNameExists(username)){
-            username = input.readString("Username already exists, please choose a different username: ");
-        }
-        while (!validUserName(username)) {
-            username = input.readString("Username is invalid, please choose a different username: ");
-        }
-        return username;
-    }
-
-    public String choosePassword(){
-        var password = input.readString("Please choose a password: "); // Mer informativ
-        while (!validPassword(password)) {
-            password = input.readString("Password is invalid, please choose a different password: ");
-        }
-        return password;
-    }
-
-    public LocalDate enterBirthdate(){
-        String birthdate = input.readString("Enter your birthdate (yyyy-mm-dd): ");
-        while (!isValidDate(birthdate)) {
-            birthdate = input.readString("Enter your birthdate (yyyy-mm-dd): ");
-        }
-        return LocalDate.parse(birthdate);
-    }
-
-    public String enterFullName(){
-        String fullName = input.readString("Enter your full name: ");
-        while (!validFullName(fullName)) {
-            fullName = input.readString("Enter your full name: ");
-        }
-        return fullName;
-    }
-
     public Customer login(){
         String username = input.readString("Please enter your username: ");
         while (!userNameExists(username) || !validUserName(username) || findCustomer(username) == null) {
@@ -83,22 +45,6 @@ public class Controller {
             }
         }
         return null;
-    }
-
-    public boolean validGender(int x){
-        return x == 1 || x == 2;
-    }
-
-    public Customer.Gender chooseGender() {
-        int x = input.readInt("Enter 1 if you are male and 2 if you are female.");
-        while (!validGender(x)){
-            x = input.readInt("Enter 1 if you are male and 2 if you are female.");
-        }
-        if (x == 1){
-            return Customer.Gender.MALE;
-        } else {
-            return Customer.Gender.FEMALE;
-        }
     }
 
     public boolean hasNoAccount(Customer customer){
@@ -212,6 +158,7 @@ public class Controller {
         return accountNumber.toString();
     }
 
+
     public boolean accountNumberExists(String accountNumber){
         for (String s : accountNumbers){
             if (s.contains(accountNumber)){
@@ -246,23 +193,27 @@ public class Controller {
         }
     }
 
-
-
-
-    public Customer createCustomer() {
-        LocalDate birthDate = enterBirthdate();
-        String username = chooseUsername();
-        String password = choosePassword();
-        String fullName = enterFullName();
-        Customer.Gender gender = chooseGender();
-        Customer customer = new Customer(username, password, fullName, birthDate, gender);
+    private void addAccounts(Customer customer){
         String accountNumber = generateAccountNumber();
         String accountNumber2 = generateAccountNumber();
         accountNumbers.add(accountNumber);
         accountNumbers.add(accountNumber2);
-        customerList.add(customer);
         customer.addAccount(new Account(accountNumber));
         customer.addAccount(new Account(accountNumber2));
+    }
+
+    public Customer createCustomer() {
+        LocalDate birthDate = enterBirthdate();
+        String username = chooseUsername();
+        while (userNameExists(username)){
+            username = chooseUsername();
+        }
+        String password = choosePassword();
+        String fullName = enterFullName();
+        Customer.Gender gender = chooseGender();
+        Customer customer = new Customer(username, password, fullName, birthDate, gender);
+        addAccounts(customer);
+        customerList.add(customer);
         System.out.println("Thank you for registering " + customer.getFullName().split(" ")[1] + "!");
         return customer;
     }
@@ -290,16 +241,6 @@ public class Controller {
         for (Transaction transaction : account1.getTransactionList()) {
             System.out.printf("%-20s %-20s %-20s %-20s %-20s\n", transaction.getDate(), "lol", transaction.getAmount(), account1.getBalance(), transaction.getType());
         }
-
-    }
-
-    public static void main (String[]args){
-        Customer customer = new Customer("kalle", "kalle", "kalle kalle", LocalDate.now(), Customer.Gender.MALE);
-        customer.addAccount(new Account("1234"));
-        customer.addAccount(new Account("9999"));
-        Controller controller = new Controller();
-        controller.closeAccount(customer);
-        controller.closeAccount(customer);
 
     }
 

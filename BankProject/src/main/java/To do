@@ -6,5 +6,7 @@
 
 4. bara visa x antal kontohändelser, beräkna balance rätt,
 
-5.
+5. Ta input i menyerna och printa i menyerna? ELLER ta input i metoderna och printa i metoderna?
+5.1. Alternativ 1 känns rimligast för att separera det.
 
+Dynamisk controller i menu????? Strategy pattern
