@@ -6,9 +6,6 @@ import java.util.regex.Pattern;
 
 
 public class PatternMatching {
-
-    private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
     public static boolean validPassword(String password) {
         return Pattern.matches("^[a-zA-Z0-9]{5,15}$", password);
     }
@@ -35,4 +32,5 @@ public class PatternMatching {
         return Pattern.matches("^[a-zA-Z]{1,20} [a-zA-Z]{1,20}$", fullName);
     }
 
+    private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 }

@@ -1,7 +1,6 @@
 package Utility;
 
 public class Printing {
-
     public static void transactionsPagePrint(){
         System.out.println("Choose one of the following options: ");
         System.out.println("1. View account statement");

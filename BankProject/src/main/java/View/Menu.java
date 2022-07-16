@@ -5,7 +5,6 @@ import Utility.UserInput;
 
 import static Utility.Printing.*;
 
-
 public class Menu {
     private final Controller.Controller controller = new Controller.Controller();
     private final UserInput input = UserInput.getInstance();
