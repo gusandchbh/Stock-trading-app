@@ -18,20 +18,24 @@ public class Transaction implements Comparable<Transaction> {
         this.type = type; // Set the type of the transaction
     }
 
-    public Type getType() {
+        public Type getType() {
         return type;
-    }
+        }
 
-    public String getTypeString() {
+        public String getTypeString() {
         return type.toString();
+        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return transactionID.equals(that.transactionID) && date.equals(that.date) && amount.equals(that.amount) && type == that.type;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
+    @Override
+    public int hashCode() {
+        return Objects.hash(transactionID, date, amount, type);
     }
 
     @Override
@@ -47,6 +51,17 @@ public class Transaction implements Comparable<Transaction> {
     @Override
     public int compareTo(Transaction transaction) {
         return transaction.amount.compareTo(this.amount);
+    }
+
+
+
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
     }
 
     public enum Type {
@@ -71,4 +86,5 @@ public class Transaction implements Comparable<Transaction> {
         transactionList.sort((Transaction a, Transaction b) -> b.amount.compareTo(a.amount));
         System.out.println(transactionList);
     }
+
 }

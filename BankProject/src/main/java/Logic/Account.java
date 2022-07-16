@@ -16,18 +16,6 @@ public class Account {
         this.balance = BigDecimal.valueOf(0.0);
     }
 
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public List<Transaction> getTransactionList() {
-        return transactionList;
-    }
-
     public void transfer(Account receivingAccount, BigDecimal amount) {
         if (this.balance.compareTo(amount) > 0) {
             this.balance = this.balance.subtract(amount);
@@ -54,6 +42,10 @@ public class Account {
         }
     }
 
+    public List<Transaction> getTransactionList() {
+        return transactionList;
+    }
+
     public List<Transaction> filterTransactions(Transaction.Type type) {
         List<Transaction> filteredTransactions = new ArrayList<>();
         for (Transaction transaction : transactionList) {
@@ -62,6 +54,28 @@ public class Account {
             }
         }  return filteredTransactions;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return accountNumber.equals(account.accountNumber) && balance.equals(account.balance);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accountNumber, balance);
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
 
     @Override
     public String toString() {
