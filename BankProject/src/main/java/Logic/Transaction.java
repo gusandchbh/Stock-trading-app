@@ -9,13 +9,17 @@ public class Transaction implements Comparable<Transaction> {
     private final LocalDate date; // Date of the transaction
     private final BigDecimal amount; // Amount of the transaction
     private final Type type; // Type of the transaction
-    //private final String description; // Description of the transaction
+    private final String description; // Description of the transaction
+    private final BigDecimal balance; // Balance of the account after the transaction
 
-    public Transaction(BigDecimal amount, Type type) {
+
+    public Transaction(BigDecimal amount, Type type, String description, BigDecimal balance) {
         this.transactionID = UUID.randomUUID().toString(); // Generate a unique ID for each transaction
         this.date = LocalDate.now(); // Set the date of the transaction to the current date
         this.amount = amount; // Set the amount of the transaction
         this.type = type; // Set the type of the transaction
+        this.description = description; // Set the description of the transaction to an empty string
+        this.balance = balance; // Set the balance of the account to 0.0
     }
 
         public Type getType() {
@@ -54,7 +58,13 @@ public class Transaction implements Comparable<Transaction> {
     }
 
 
+    public String getDescription() {
+        return description;
+    }
 
+    public BigDecimal getBalance() {
+        return balance;
+    }
 
     public LocalDate getDate() {
         return date;
@@ -76,15 +86,7 @@ public class Transaction implements Comparable<Transaction> {
     }
 
     public static void main(String[] args){
-        ArrayList<Transaction> transactionList = new ArrayList<>();
-        transactionList.add(new Transaction(new BigDecimal(100), Type.DEPOSIT));
-        transactionList.add(new Transaction(new BigDecimal(200), Type.WITHDRAWAL));
-        transactionList.add(new Transaction(new BigDecimal(300), Type.TRANSFER));
-        transactionList.add(new Transaction(new BigDecimal(400), Type.DEPOSIT));
-        transactionList.add(new Transaction(new BigDecimal(500), Type.WITHDRAWAL));
-        transactionList.add(new Transaction(new BigDecimal(600), Type.TRANSFER));
-        transactionList.sort((Transaction a, Transaction b) -> b.amount.compareTo(a.amount));
-        System.out.println(transactionList);
+
     }
 
 }

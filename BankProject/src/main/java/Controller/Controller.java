@@ -239,7 +239,7 @@ public class Controller {
         System.out.println("Logic.Account statement for account number: " + account1.getAccountNumber());
         System.out.printf("%-20s %-20s %-20s %-20s %-20s \n", "Date", "Description", "Amount", "Balance", "Type");
         for (Transaction transaction : account1.getTransactionList()) {
-            System.out.printf("%-20s %-20s %-20s %-20s %-20s\n", transaction.getDate(), "lol", transaction.getAmount(), account1.getBalance(), transaction.getType());
+            System.out.printf("%-20s %-20s %-20s %-20s %-20s\n", transaction.getDate(), transaction.getDescription(), transaction.getAmount(), transaction.getBalance(), transaction.getType());
         }
 
     }

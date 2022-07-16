@@ -20,8 +20,8 @@ public class Account {
         if (this.balance.compareTo(amount) > 0) {
             this.balance = this.balance.subtract(amount);
             receivingAccount.balance = receivingAccount.balance.add(amount);
-            Transaction transaction = new Transaction(amount.negate(), Transaction.Type.TRANSFER);
-            receivingAccount.transactionList.add(new Transaction(amount, Transaction.Type.TRANSFER));
+            Transaction transaction = new Transaction(amount.negate(), Transaction.Type.TRANSFER, receivingAccount.accountNumber, this.balance);
+            receivingAccount.transactionList.add(new Transaction(amount, Transaction.Type.TRANSFER, this.accountNumber, receivingAccount.balance));
             transactionList.add(transaction);
         }
     }
@@ -29,7 +29,7 @@ public class Account {
     public void deposit(BigDecimal amount) {
         if (amount.compareTo(BigDecimal.valueOf(0.0)) > 0) {
             this.balance = this.balance.add(amount);
-            Transaction transaction = new Transaction(amount, Transaction.Type.DEPOSIT);
+            Transaction transaction = new Transaction(amount, Transaction.Type.DEPOSIT, this.accountNumber, this.balance);
             transactionList.add(transaction);
         }
     }
@@ -37,7 +37,7 @@ public class Account {
     public void withdraw(BigDecimal amount) {
         if (this.balance.compareTo(amount) >= 0) {
             this.balance = this.balance.subtract(amount);
-            Transaction transaction = new Transaction(amount.negate(), Transaction.Type.WITHDRAWAL);
+            Transaction transaction = new Transaction(amount.negate(), Transaction.Type.WITHDRAWAL, this.accountNumber, this.balance);
             transactionList.add(transaction);
         }
     }
