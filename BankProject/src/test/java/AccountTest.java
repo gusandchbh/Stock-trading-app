@@ -11,10 +11,6 @@ public class AccountTest {
     Account account1 = new Account("12345");
     Account account2 = new Account("54321");
 
-    @Test public void shouldBeEqual() {
-        assertEquals(account1, account1);
-    }
-
     @Test public void shouldNotBeEqual() {
         assertNotEquals(account1, account2);
     }
@@ -38,7 +34,7 @@ public class AccountTest {
         assertEquals(BigDecimal.valueOf(50.00), account2.getBalance());
     }
 
-    @Test public void shouldNotTransfer(){
+    @Test public void shouldNotTransfer() {
         account1.deposit(BigDecimal.valueOf(100.00));
         account2.deposit(BigDecimal.valueOf(100.00));
         account1.transfer(account2, BigDecimal.valueOf(100.00));
