@@ -1,12 +1,14 @@
 package Models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public abstract class User {
-    private final String username;
-    private final String password;
-
+    private String username;
+    private String password;
 }
 
 

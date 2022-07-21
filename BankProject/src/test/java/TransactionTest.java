@@ -5,15 +5,19 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 public class TransactionTest {
-    LocalDate today = LocalDate.now();
-
-    Customer customer1 = new Customer("test", "test", "Christopher Andersson", today, Customer.Gender.MALE);
-    Customer customer2 = new Customer("test2", "test2", "Miranda Nilhag", today, Customer.Gender.FEMALE);
+    LocalDate birthday = LocalDate.of(1993, Month.SEPTEMBER, 1);
+    LocalDate birthday2 = LocalDate.of(1990, Month.SEPTEMBER, 2);
+    LocalDate dateToday = LocalDate.now();
+    ArrayList<Account> accounts = new ArrayList<Account>();
+    Customer customer1 = new Customer("Christopher", birthday, dateToday, Customer.Gender.MALE, accounts);
+    Customer customer2 = new Customer("Miranda", birthday2, dateToday, Customer.Gender.FEMALE, accounts);
     Account account1 = new Account("1234");
     Account account2 = new Account("4321");
 

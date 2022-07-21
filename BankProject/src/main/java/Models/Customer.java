@@ -1,6 +1,8 @@
 package Models;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.math.BigDecimal;
@@ -13,21 +15,13 @@ import java.util.List;
 
 @ToString
 @EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
 public class Customer extends User {
     private final String fullName;
     private final LocalDate birthDate;
     private final LocalDate regDate;
     private final Gender gender;
     private final List<Account> accountList;
-
-    public Customer(String username, String password, String fullName, LocalDate birthDate, Gender gender) {
-        super(username, password);
-        this.fullName = fullName.toLowerCase();
-        this.birthDate = birthDate;
-        this.gender = gender;
-        this.regDate = LocalDate.now();
-        this.accountList = new ArrayList<>();
-    }
 
     public LocalDate getBirthDate() {
         return birthDate;
@@ -107,7 +101,10 @@ public class Customer extends User {
 
     public static void main (String[]args){
             LocalDate birthDate = LocalDate.of(1993, Month.SEPTEMBER, 1);
-            Customer customer = new Customer("example", "example", "Johnny Depp", birthDate, Customer.Gender.MALE);
+            var dateToday = LocalDate.now();
+            var accounts = new ArrayList<Account>();
+
+            Customer customer = new Customer("Christopher", birthDate, dateToday, Gender.MALE, accounts);
             customer.addAccount(new Account("123"));
             customer.addAccount(new Account("345"));
             var account1 = customer.getAccount("123");

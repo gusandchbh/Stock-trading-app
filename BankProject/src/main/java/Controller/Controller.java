@@ -208,7 +208,9 @@ public class Controller {
         String password = choosePassword();
         String fullName = enterFullName();
         Customer.Gender gender = chooseGender();
-        Customer customer = new Customer(username, password, fullName, birthDate, gender);
+        var regDate = LocalDate.now();
+        var accounts = new ArrayList<Account>();
+        Customer customer = new Customer(fullName, birthDate, regDate, gender, accounts);
         addAccounts(customer);
         customerList.add(customer);
         System.out.println("Thank you for registering " + customer.getFullName().split(" ")[1] + "!");
