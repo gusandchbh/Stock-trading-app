@@ -17,41 +17,33 @@ public class CustomerTest {
     Customer customer1 = new Customer("example", "example", "Johnny Depp", birthday, Customer.Gender.MALE);
     Customer customer2 = new Customer("Example", "example", "Johnny Depp", birthday2, Customer.Gender.FEMALE);
     @Test
-    public void shouldBeEqual(){
-        assertEquals(customer, customer1);
-    }
-
-    @Test public void shouldNotBeEqual(){
-        assertNotEquals(customer, customer2);
-    }
-    @Test
-    public void shouldBeTheSameAge(){
+    public void shouldBeTheSameAge() {
         assertEquals(customer.getAge(birthday), customer1.getAge(birthday));
     }
     @Test
-    public void shouldBeDifferentAge(){
+    public void shouldBeDifferentAge() {
         assertNotEquals(customer.getAge(birthday), customer2.getAge(birthday));
     }
     @Test
-    public void shouldBeTheSameGender(){
+    public void shouldBeTheSameGender() {
         assertEquals(customer.getGender(), customer1.getGender());
     }
     @Test
-    public void shouldBeDifferentGender(){
+    public void shouldBeDifferentGender() {
         assertNotEquals(customer.getGender(), customer2.getGender());
     }
-    @Test public void shouldAddAccount(){
+    @Test public void shouldAddAccount() {
         customer.addAccount(new Account("123456789"));
         assertEquals(1, customer.getAccountList().size());
     }
 
-    @Test public void shouldRemoveAccount(){
+    @Test public void shouldRemoveAccount() {
         customer.addAccount(new Account("123456789"));
         customer.removeAccount(new Account("123456789"));
         assertEquals(0, customer.getAccountList().size());
     }
 
-    @Test public void shouldSumBalance(){
+    @Test public void shouldSumBalance() {
         customer.addAccount(new Account("123"));
         customer.addAccount(new Account("345"));
         var account1 = customer.getAccount("123");
@@ -61,7 +53,7 @@ public class CustomerTest {
         assertEquals(BigDecimal.valueOf(300.00), customer.getBalance());
     }
 
-    @Test public void shouldFilterFromAllTransactions(){
+    @Test public void shouldFilterFromAllTransactions() {
         customer.addAccount(new Account("123"));
         customer.addAccount(new Account("345"));
         var account1 = customer.getAccount("123");

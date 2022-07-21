@@ -17,7 +17,6 @@ public class TransactionTest {
     Account account1 = new Account("1234");
     Account account2 = new Account("4321");
 
-
     @Test
     public void shouldOnlyAddDeposits(){
         customer1.addAccount(account1);
@@ -26,6 +25,7 @@ public class TransactionTest {
         var transactionList = customer1.getAccount("1234").filterTransactions(Transaction.Type.DEPOSIT);
         assertEquals(1, transactionList.size());
     }
+
     @Test
     public void shouldOnlyAddWithdrawals(){
         customer1.addAccount(account1);
@@ -34,5 +34,4 @@ public class TransactionTest {
         var transactionList = customer1.getAccount("1234").filterTransactions(Transaction.Type.WITHDRAWAL);
         assertNotEquals(1, transactionList.size());
     }
-
 }

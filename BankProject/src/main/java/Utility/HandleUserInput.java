@@ -8,7 +8,6 @@ import static Utility.PatternMatching.*;
 
 
 public class HandleUserInput {
-
     private static final UserInput input = UserInput.getInstance();
 
     public static LocalDate enterBirthdate(){
@@ -42,9 +41,6 @@ public class HandleUserInput {
         }
         return password;
     }
-    private static boolean validGender(int x){
-        return x == 1 || x == 2;
-    }
 
     public static Customer.Gender chooseGender() {
         int x = input.readInt("Enter 1 if you are male and 2 if you are female.");
@@ -57,4 +53,9 @@ public class HandleUserInput {
             return Customer.Gender.FEMALE;
         }
     }
+
+    private static boolean validGender(int x){
+        return x == 1 || x == 2;
+    }
+
 }
