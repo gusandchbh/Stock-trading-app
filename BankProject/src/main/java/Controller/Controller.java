@@ -1,9 +1,10 @@
 package Controller;
 
-import Logic.Account;
-import Logic.Customer;
-import Logic.Transaction;
+import Models.Account;
+import Models.Customer;
+import Models.Transaction;
 import Utility.UserInput;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,15 +15,11 @@ import java.util.List;
 import static Utility.HandleUserInput.*;
 import static Utility.PatternMatching.*;
 
+@NoArgsConstructor
 public class Controller {
-
     private final List<Customer> customerList = new ArrayList<>();
     private final HashSet<String> accountNumbers = new HashSet<>();
     private final UserInput input = UserInput.getInstance();
-
-    public Controller() {
-        this.customerList.add(new Customer("admin", "admin", "admin admin", LocalDate.now(), Customer.Gender.MALE));
-    }
 
     public boolean userNameExists(String username) {
         for (Customer customer : customerList) {

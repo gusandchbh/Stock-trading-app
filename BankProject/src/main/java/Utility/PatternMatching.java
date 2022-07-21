@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
-
 public class PatternMatching {
     public static boolean validPassword(String password) {
         return Pattern.matches("^[a-zA-Z0-9]{5,15}$", password);

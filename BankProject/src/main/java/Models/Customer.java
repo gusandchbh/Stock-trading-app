@@ -1,4 +1,7 @@
-package Logic;
+package Models;
+
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -7,8 +10,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customer extends User {
 
+@ToString
+@EqualsAndHashCode(callSuper = true)
+public class Customer extends User {
     private final String fullName;
     private final LocalDate birthDate;
     private final LocalDate regDate;
@@ -99,21 +104,10 @@ public class Customer extends User {
         }
     }
 
-    @Override
-    public String toString() {
-        return "Logic.Customer{" +
-                "fullName='" + fullName + '\'' +
-                ", birthDate=" + birthDate +
-                ", regDate=" + regDate +
-                ", gender=" + gender +
-                ", accountList=" + accountList +
-                '}';
-    }
 
     public static void main (String[]args){
             LocalDate birthDate = LocalDate.of(1993, Month.SEPTEMBER, 1);
             Customer customer = new Customer("example", "example", "Johnny Depp", birthDate, Customer.Gender.MALE);
-
             customer.addAccount(new Account("123"));
             customer.addAccount(new Account("345"));
             var account1 = customer.getAccount("123");

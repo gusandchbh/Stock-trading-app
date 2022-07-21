@@ -1,6 +1,6 @@
 package View;
 
-import Logic.Customer;
+import Models.Customer;
 import Utility.UserInput;
 
 import static Utility.Printing.*;

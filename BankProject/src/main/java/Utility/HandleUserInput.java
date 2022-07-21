@@ -1,16 +1,15 @@
 package Utility;
 
-import Logic.Customer;
+import Models.Customer;
 
 import java.time.LocalDate;
 
 import static Utility.PatternMatching.*;
 
-
 public class HandleUserInput {
     private static final UserInput input = UserInput.getInstance();
 
-    public static LocalDate enterBirthdate(){
+    public static LocalDate enterBirthdate() {
         String birthdate = input.readString("Enter your birthdate (yyyy-mm-dd): ");
         while (!isValidDate(birthdate)) {
             birthdate = input.readString("Enter your birthdate (yyyy-mm-dd): ");
@@ -18,7 +17,7 @@ public class HandleUserInput {
         return LocalDate.parse(birthdate);
     }
 
-    public static String enterFullName(){
+    public static String enterFullName() {
         String fullName = input.readString("Enter your full name: ");
         while (!validFullName(fullName)) {
             fullName = input.readString("Enter your full name: ");
@@ -26,7 +25,7 @@ public class HandleUserInput {
         return fullName;
     }
 
-    public static String chooseUsername(){
+    public static String chooseUsername() {
         var username = input.readString("Please choose a username: "); // Mer informativ
         while (!validUserName(username)) {
             username = input.readString("Username is invalid, please choose a different username: ");
@@ -34,7 +33,7 @@ public class HandleUserInput {
         return username;
     }
 
-    public static String choosePassword(){
+    public static String choosePassword() {
         var password = input.readString("Please choose a password: "); // Mer informativ
         while (!validPassword(password)) {
             password = input.readString("Password is invalid, please choose a different password: ");
@@ -54,7 +53,7 @@ public class HandleUserInput {
         }
     }
 
-    private static boolean validGender(int x){
+    private static boolean validGender(int x) {
         return x == 1 || x == 2;
     }
 
