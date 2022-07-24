@@ -1,0 +1,29 @@
+Index: BankProject/src/main/java/Models/Customer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Models;\r\n\r\nimport lombok.AllArgsConstructor;\r\nimport lombok.EqualsAndHashCode;\r\nimport lombok.NoArgsConstructor;\r\nimport lombok.ToString;\r\n\r\nimport java.math.BigDecimal;\r\nimport java.time.LocalDate;\r\nimport java.time.Month;\r\nimport java.time.temporal.ChronoUnit;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n\r\n@ToString\r\n@EqualsAndHashCode(callSuper = true)\r\n@AllArgsConstructor\r\npublic class Customer extends User {\r\n    private final String fullName;\r\n    private final LocalDate birthDate;\r\n    private final LocalDate regDate;\r\n    private final Gender gender;\r\n    private final List<Account> accountList;\r\n\r\n    public LocalDate getBirthDate() {\r\n        return birthDate;\r\n    }\r\n\r\n    public long getAge(LocalDate today) {\r\n        return ChronoUnit.YEARS.between(this.getBirthDate(), today);\r\n    }\r\n\r\n    public String getFullName() {\r\n        String firstName = this.fullName.split(\" \")[0];\r\n        String lastName = this.fullName.split(\" \")[1];\r\n        return firstName.substring(0,1).toUpperCase() + firstName.substring(1) + \" \" + lastName.substring(0,1).toUpperCase() + lastName.substring(1);\r\n    }\r\n\r\n    public BigDecimal getBalance() {\r\n        BigDecimal balance = BigDecimal.valueOf(0.0);\r\n        for (Account account : this.accountList) {\r\n            balance = balance.add(account.getBalance());\r\n        }\r\n        return balance;\r\n    }\r\n\r\n    public void addAccount(Account account) {\r\n        if (!this.accountList.contains(account)) {\r\n            this.accountList.add(account);\r\n        }\r\n    }\r\n\r\n    public Account getAccount(String accountNumber) {\r\n        for (Account account : this.accountList) {\r\n            if (account.getAccountNumber().equals(accountNumber)) {\r\n                return account;\r\n            }\r\n        }\r\n        return null;\r\n    }\r\n\r\n    public void removeAccount (Account account){\r\n            this.accountList.remove(account);\r\n        }\r\n\r\n        public List<Account> getAccountList() {\r\n            return accountList;\r\n        }\r\n\r\n    public Gender getGender() {\r\n        return gender;\r\n    }\r\n\r\n        public List<Transaction> filterTransactions (Transaction.Type type) {\r\n            List<Transaction> filteredTransactions = new ArrayList<>();\r\n            for (Account account : this.accountList) {\r\n                for (Transaction transaction : account.getTransactionList()) {\r\n                    if (transaction.getType() == type) {\r\n                        filteredTransactions.add(transaction);\r\n                    }\r\n                }\r\n            }\r\n            return filteredTransactions;\r\n            }\r\n\r\n    public enum Gender {\r\n        MALE(1), FEMALE(2);\r\n\r\n        private final int code;\r\n\r\n        Gender(int code) {\r\n            this.code = code;\r\n        }\r\n\r\n        public int getCode() {\r\n            return code;\r\n        }\r\n    }\r\n\r\n\r\n    public static void main (String[]args){\r\n            LocalDate birthDate = LocalDate.of(1993, Month.SEPTEMBER, 1);\r\n            var dateToday = LocalDate.now();\r\n            var accounts = new ArrayList<Account>();\r\n\r\n            Customer customer = new Customer(\"Christopher\", birthDate, dateToday, Gender.MALE, accounts);\r\n            customer.addAccount(new Account(\"123\"));\r\n            customer.addAccount(new Account(\"345\"));\r\n            var account1 = customer.getAccount(\"123\");\r\n            var account2 = customer.getAccount(\"345\");\r\n            account1.deposit(BigDecimal.valueOf(100.00));\r\n            account2.deposit(BigDecimal.valueOf(200.00));\r\n            var x = customer.filterTransactions(Transaction.Type.DEPOSIT);\r\n            System.out.println(x);\r\n        }\r\n    }\r\n\r\n\r\n
+===================================================================
+diff --git a/BankProject/src/main/java/Models/Customer.java b/BankProject/src/main/java/Models/Customer.java
+--- a/BankProject/src/main/java/Models/Customer.java	
++++ b/BankProject/src/main/java/Models/Customer.java	
+@@ -1,9 +1,7 @@
+ package Models;
+ 
+-import lombok.AllArgsConstructor;
+-import lombok.EqualsAndHashCode;
+-import lombok.NoArgsConstructor;
+-import lombok.ToString;
++import lombok.*;
++import lombok.experimental.SuperBuilder;
+ 
+ import java.math.BigDecimal;
+ import java.time.LocalDate;
+@@ -103,7 +101,7 @@
+             LocalDate birthDate = LocalDate.of(1993, Month.SEPTEMBER, 1);
+             var dateToday = LocalDate.now();
+             var accounts = new ArrayList<Account>();
+-
++            Customer jaha = new Customer()
+             Customer customer = new Customer("Christopher", birthDate, dateToday, Gender.MALE, accounts);
+             customer.addAccount(new Account("123"));
+             customer.addAccount(new Account("345"));
