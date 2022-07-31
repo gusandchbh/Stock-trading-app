@@ -1,4 +1,4 @@
-package Models;
+package Model;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

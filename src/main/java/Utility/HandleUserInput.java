@@ -1,6 +1,6 @@
 package Utility;
 
-import Models.Customer;
+import Model.Customer;
 
 import java.time.LocalDate;
 

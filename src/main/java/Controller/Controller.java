@@ -1,8 +1,8 @@
 package Controller;
 
-import Models.Account;
-import Models.Customer;
-import Models.Transaction;
+import Model.Account;
+import Model.Customer;
+import Model.Transaction;
 import Utility.UserInput;
 import lombok.NoArgsConstructor;
 
