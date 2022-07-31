@@ -1,4 +1,6 @@
-package Logic;
+package Model;
+
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -7,31 +9,21 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString
+@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
 public class Customer extends User {
-
     private final String fullName;
-    private final LocalDate birthDate;
+    @Getter private final LocalDate birthDate;
     private final LocalDate regDate;
-    private final Gender gender;
-    private final List<Account> accountList;
-
-    public Customer(String username, String password, String fullName, LocalDate birthDate, Gender gender) {
-        super(username, password);
-        this.fullName = fullName.toLowerCase();
-        this.birthDate = birthDate;
-        this.gender = gender;
-        this.regDate = LocalDate.now();
-        this.accountList = new ArrayList<>();
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
+    @Getter private final Gender gender;
+    @Getter private final List<Account> accountList;
 
     public long getAge(LocalDate today) {
         return ChronoUnit.YEARS.between(this.getBirthDate(), today);
     }
 
+    //@TODO: improve logic to handle all names
     public String getFullName() {
         String firstName = this.fullName.split(" ")[0];
         String lastName = this.fullName.split(" ")[1];
@@ -65,25 +57,17 @@ public class Customer extends User {
             this.accountList.remove(account);
         }
 
-        public List<Account> getAccountList() {
-            return accountList;
-        }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-        public List<Transaction> filterTransactions (Transaction.Type type) {
-            List<Transaction> filteredTransactions = new ArrayList<>();
-            for (Account account : this.accountList) {
-                for (Transaction transaction : account.getTransactionList()) {
-                    if (transaction.getType() == type) {
-                        filteredTransactions.add(transaction);
-                    }
+    public List<Transaction> filterTransactions (Transaction.Type type) {
+        List<Transaction> filteredTransactions = new ArrayList<>();
+        for (Account account : this.accountList) {
+            for (Transaction transaction : account.getTransactionList()) {
+                if (transaction.getType() == type) {
+                    filteredTransactions.add(transaction);
                 }
             }
-            return filteredTransactions;
-            }
+        }
+        return filteredTransactions;
+    }
 
     public enum Gender {
         MALE(1), FEMALE(2);
@@ -99,21 +83,12 @@ public class Customer extends User {
         }
     }
 
-    @Override
-    public String toString() {
-        return "Logic.Customer{" +
-                "fullName='" + fullName + '\'' +
-                ", birthDate=" + birthDate +
-                ", regDate=" + regDate +
-                ", gender=" + gender +
-                ", accountList=" + accountList +
-                '}';
-    }
-
     public static void main (String[]args){
             LocalDate birthDate = LocalDate.of(1993, Month.SEPTEMBER, 1);
-            Customer customer = new Customer("example", "example", "Johnny Depp", birthDate, Customer.Gender.MALE);
+            var dateToday = LocalDate.now();
+            var accounts = new ArrayList<Account>();
 
+            Customer customer = new Customer("Christopher", birthDate, dateToday, Gender.MALE, accounts);
             customer.addAccount(new Account("123"));
             customer.addAccount(new Account("345"));
             var account1 = customer.getAccount("123");

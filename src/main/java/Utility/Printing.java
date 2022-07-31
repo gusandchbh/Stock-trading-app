@@ -1,7 +1,7 @@
 package Utility;
 
 public class Printing {
-    public static void transactionsPagePrint(){
+    public static void transactionsPagePrint() {
         System.out.println("Choose one of the following options: ");
         System.out.println("1. View account statement");
         System.out.println("2. Search for transactions");
@@ -10,7 +10,7 @@ public class Printing {
         System.out.println("Enter q to return back to the start page.");
     }
 
-    public static void accountsPagePrint(){
+    public static void accountsPagePrint() {
         System.out.println("Choose one of the following options: ");
         System.out.println("1. Create a new account.");
         System.out.println("2. Close an account.");
@@ -19,7 +19,7 @@ public class Printing {
         System.out.println("Enter q to return back to the start page.");
     }
 
-    public static void bankPagePrint(){
+    public static void bankPagePrint() {
         System.out.println("Choose one of the following options: ");
         System.out.println("1. Make a deposit.");
         System.out.println("2. Make a withdrawal.");
@@ -28,7 +28,7 @@ public class Printing {
         System.out.println("Enter q to return back to the start page.");
     }
 
-    public static void menuPagePrint(){
+    public static void menuPagePrint() {
         System.out.println("Choose one of the following options: ");
         System.out.println("1. Go to bank page.");
         System.out.println("2. Go to account page.");
@@ -36,7 +36,7 @@ public class Printing {
         System.out.println("Enter q to log out.");
     }
 
-    public static void loginPagePrint(){
+    public static void loginPagePrint() {
         System.out.println("Choose one of the following options: ");
         System.out.println("1. Register as a customer.");
         System.out.println("2. Login.");

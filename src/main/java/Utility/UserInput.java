@@ -8,8 +8,8 @@ public final class UserInput {
     public static final String CHOOSE_OPTION = "Please choose one of the following options: ";
     public static final String EOL = System.lineSeparator();
     private final Scanner input;
-
     private static UserInput instance = null;
+
     private UserInput() {
        input = new Scanner(System.in);
     }
