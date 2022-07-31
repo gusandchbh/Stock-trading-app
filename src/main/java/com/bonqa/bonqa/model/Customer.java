@@ -11,13 +11,12 @@ import java.util.List;
 import java.util.UUID;
 
 @ToString
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @Entity
-@Table(schema = "user")
+@Table(schema = "customer")
 @NoArgsConstructor
 @Getter
-public class Customer extends User {
+public class Customer {
     @Id
     private UUID id;
 
@@ -35,6 +34,10 @@ public class Customer extends User {
 
     @Column(nullable = false)
     private Gender gender;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @OneToMany(mappedBy="customer")
     private List<Account> accountList;
