@@ -1,7 +1,6 @@
-import Model.Account;
-import Model.Customer;
-import Model.Transaction;
-import Model.User;
+import model.Account;
+import model.Customer;
+import model.Transaction;
 import org.junit.Test;
 
 import java.math.BigDecimal;

@@ -1,4 +1,4 @@
-package Utility;
+package utility;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -8,17 +8,17 @@ public final class UserInput {
     public static final String CHOOSE_OPTION = "Please choose one of the following options: ";
     public static final String EOL = System.lineSeparator();
     private final Scanner input;
-    private static UserInput instance = null;
+    private static UserInput INSTANCE = null;
 
     private UserInput() {
        input = new Scanner(System.in);
     }
 
     public static UserInput getInstance() {
-        if (instance == null){
-            instance = new UserInput();
+        if (INSTANCE == null) {
+            INSTANCE = new UserInput();
         }
-        return instance;
+        return INSTANCE;
     }
 
     public int readInt(String message) {
@@ -39,7 +39,7 @@ public final class UserInput {
         return input.nextLine().trim();
     }
 
-    public char readChar(String message){
+    public char readChar(String message) {
         System.out.println(message);
         char value = input.next().charAt(0);
         input.nextLine();

@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -31,7 +31,6 @@ public class Transaction implements Comparable<Transaction> {
         return type.toString();
         }
 
-
     @Override
     public int compareTo(Transaction transaction) {
         return transaction.amount.compareTo(this.amount);
@@ -51,21 +50,9 @@ public class Transaction implements Comparable<Transaction> {
         Type(int code) {
             this.code = code;
         }
+
         public int getCode() {
             return code;
         }
     }
-
-    public static void main(String[] args){
-        ArrayList<Transaction> transactionList = new ArrayList<>();
-        transactionList.add(new Transaction(new BigDecimal(100), Type.DEPOSIT));
-        transactionList.add(new Transaction(new BigDecimal(200), Type.WITHDRAWAL));
-        transactionList.add(new Transaction(new BigDecimal(300), Type.TRANSFER));
-        transactionList.add(new Transaction(new BigDecimal(400), Type.DEPOSIT));
-        transactionList.add(new Transaction(new BigDecimal(500), Type.WITHDRAWAL));
-        transactionList.add(new Transaction(new BigDecimal(600), Type.TRANSFER));
-        transactionList.sort((Transaction a, Transaction b) -> b.amount.compareTo(a.amount));
-        System.out.println(transactionList);
-    }
-
 }
