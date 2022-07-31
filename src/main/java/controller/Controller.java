@@ -1,9 +1,9 @@
-package Controller;
+package controller;
 
-import Model.Account;
-import Model.Customer;
-import Model.Transaction;
-import Utility.UserInput;
+import model.Account;
+import model.Customer;
+import model.Transaction;
+import utility.UserInput;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import static Utility.HandleUserInput.*;
-import static Utility.PatternMatching.*;
+import static utility.HandleUserInput.*;
+import static utility.PatternMatching.*;
 
 @NoArgsConstructor
 public class Controller {
@@ -77,7 +77,13 @@ public class Controller {
                 amount = input.readDouble("Invalid amount, please enter the amount you want to withdraw: ");
             }
             customer.getAccountList().get(account - 1).withdraw(BigDecimal.valueOf(amount));
-            System.out.println("You have withdrawn " + amount + " EUR from account number: " + customer.getAccountList().get(account - 1).getAccountNumber() + ".");
+
+            System.out.println("You have withdrawn "
+                    + amount
+                    + " EUR from account number: "
+                    + customer.getAccountList().get(account - 1).getAccountNumber()
+                    + "."
+            );
         }
     }
 
@@ -112,7 +118,7 @@ public class Controller {
 
     public boolean validChoiceOfAccount(Customer customer, int account) {
       if (account < 1 || account > customer.getAccountList().size()) {
-          System.out.println("Enter the number associated with the account. Choose from 1 to " + customer.getAccountList().size() +".");
+          System.out.println("Enter the number associated with the account. Choose from 1 to " + customer.getAccountList().size() + ".");
           return false;
       } else if (customer.getAccountList().size() == 1 && account != 1) {
           System.out.println("You have one account, please choose 1: ");
@@ -135,7 +141,13 @@ public class Controller {
                 amount = input.readDouble("Please enter a positive amount: ");
             }
             customer.getAccountList().get(account - 1).deposit(BigDecimal.valueOf(amount));
-            System.out.println("You have deposited " + amount + " EUR to account number: " + customer.getAccountList().get(account - 1).getAccountNumber() + ".");
+
+            System.out.println("You have deposited "
+                    + amount
+                    + " EUR to account number: "
+                    + customer.getAccountList().get(account - 1).getAccountNumber()
+                    + "."
+            );
         }
     }
 
@@ -228,18 +240,25 @@ public class Controller {
 
     // Print all transactions for a specific account
     public void accountStatement(Customer customer) {
-        var accountsList = customer.getAccountList();
         System.out.println("Please select the account you want to see the statement for: ");
         printCustomerAccounts(customer);
         int account = input.readInt("Enter the number associated to the account you want to see the statement for: ");
         while (!validChoiceOfAccount(customer, account)) {
             account = input.readInt("Enter the number associated to the account you want to see the statement for: ");
         }
+
+        var accountsList = customer.getAccountList();
         var account1 = accountsList.get(account - 1);
         System.out.println("Logic.Account statement for account number: " + account1.getAccountNumber());
         System.out.printf("%-20s %-20s %-20s %-20s %-20s \n", "Date", "Description", "Amount", "Balance", "Type");
         for (Transaction transaction : account1.getTransactionList()) {
-            System.out.printf("%-20s %-20s %-20s %-20s %-20s\n", transaction.getDate(), "lol", transaction.getAmount(), account1.getBalance(), transaction.getType());
+            System.out.printf("%-20s %-20s %-20s %-20s %-20s\n",
+                    transaction.getDate(),
+                    "lol",
+                    transaction.getAmount(),
+                    account1.getBalance(),
+                    transaction.getType()
+            );
         }
     }
 }

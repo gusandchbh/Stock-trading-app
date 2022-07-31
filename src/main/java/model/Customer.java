@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import lombok.*;
 
@@ -27,7 +27,7 @@ public class Customer extends User {
     public String getFullName() {
         String firstName = this.fullName.split(" ")[0];
         String lastName = this.fullName.split(" ")[1];
-        return firstName.substring(0,1).toUpperCase() + firstName.substring(1) + " " + lastName.substring(0,1).toUpperCase() + lastName.substring(1);
+        return firstName.substring(0, 1).toUpperCase() + firstName.substring(1) + " " + lastName.substring(0, 1).toUpperCase() + lastName.substring(1);
     }
 
     public BigDecimal getBalance() {
@@ -53,11 +53,11 @@ public class Customer extends User {
         return null;
     }
 
-    public void removeAccount (Account account){
+    public void removeAccount(Account account) {
             this.accountList.remove(account);
         }
 
-    public List<Transaction> filterTransactions (Transaction.Type type) {
+    public List<Transaction> filterTransactions(Transaction.Type type) {
         List<Transaction> filteredTransactions = new ArrayList<>();
         for (Account account : this.accountList) {
             for (Transaction transaction : account.getTransactionList()) {
@@ -83,7 +83,7 @@ public class Customer extends User {
         }
     }
 
-    public static void main (String[]args){
+    public static void main(String[]args) {
             LocalDate birthDate = LocalDate.of(1993, Month.SEPTEMBER, 1);
             var dateToday = LocalDate.now();
             var accounts = new ArrayList<Account>();

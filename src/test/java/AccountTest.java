@@ -1,4 +1,4 @@
-import Model.Account;
+import model.Account;
 import org.junit.Test;
 
 import java.math.BigDecimal;

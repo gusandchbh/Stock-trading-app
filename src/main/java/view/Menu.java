@@ -1,12 +1,12 @@
-package View;
+package view;
 
-import Model.Customer;
-import Utility.UserInput;
+import model.Customer;
+import utility.UserInput;
 
-import static Utility.Printing.*;
+import static utility.Printing.*;
 
 public class Menu {
-    private final Controller.Controller controller = new Controller.Controller();
+    private final controller.Controller controller = new controller.Controller();
     private final UserInput input = UserInput.getInstance();
 
     public void loginPage() {
@@ -35,7 +35,7 @@ public class Menu {
         System.exit(1);
     }
 
-    public void menuPage(Customer currentUser){
+    public void menuPage(Customer currentUser) {
         System.out.println("± Welcome " + currentUser.getFullName() + "! ±");
         char option;
         do {
@@ -65,7 +65,7 @@ public class Menu {
         } while (option != 'q');
     }
 
-    public void accountsPage(Customer currentUser){
+    public void accountsPage(Customer currentUser) {
         System.out.println("± You are now logged in! ±");
         char option;
         do {
@@ -81,7 +81,7 @@ public class Menu {
         } while (option != 'q');
     }
 
-    public void transactionsPage(Customer currentUser){
+    public void transactionsPage(Customer currentUser) {
         System.out.println("± You are now logged in! ±");
         char option;
         do {
