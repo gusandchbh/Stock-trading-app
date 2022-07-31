@@ -10,7 +10,7 @@
     <build>
         <resources>
             <resource>
-                <directory>src/resources</directory>
+                <directory>src/main/java</directory>
             </resource>
         </resources>
         <plugins>
