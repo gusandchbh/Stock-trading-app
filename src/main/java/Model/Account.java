@@ -1,6 +1,8 @@
 package Model;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
@@ -9,6 +11,7 @@ import java.util.List;
 
 @ToString
 @EqualsAndHashCode
+@Getter
 public class Account {
     private final String accountNumber;
     private BigDecimal balance;
@@ -46,10 +49,6 @@ public class Account {
         }
     }
 
-    public List<Transaction> getTransactionList() {
-        return transactionList;
-    }
-
     public List<Transaction> filterTransactions(Transaction.Type type) {
         List<Transaction> filteredTransactions = new ArrayList<>();
         for (Transaction transaction : transactionList) {
@@ -57,14 +56,6 @@ public class Account {
                 filteredTransactions.add(transaction);
             }
         }  return filteredTransactions;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
     }
 
     public static void main(String[] args) {

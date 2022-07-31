@@ -1,9 +1,6 @@
 package Model;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,25 +9,21 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 public class Customer extends User {
     private final String fullName;
-    private final LocalDate birthDate;
+    @Getter private final LocalDate birthDate;
     private final LocalDate regDate;
-    private final Gender gender;
-    private final List<Account> accountList;
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
+    @Getter private final Gender gender;
+    @Getter private final List<Account> accountList;
 
     public long getAge(LocalDate today) {
         return ChronoUnit.YEARS.between(this.getBirthDate(), today);
     }
 
+    //@TODO: improve logic to handle all names
     public String getFullName() {
         String firstName = this.fullName.split(" ")[0];
         String lastName = this.fullName.split(" ")[1];
@@ -64,25 +57,17 @@ public class Customer extends User {
             this.accountList.remove(account);
         }
 
-        public List<Account> getAccountList() {
-            return accountList;
-        }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-        public List<Transaction> filterTransactions (Transaction.Type type) {
-            List<Transaction> filteredTransactions = new ArrayList<>();
-            for (Account account : this.accountList) {
-                for (Transaction transaction : account.getTransactionList()) {
-                    if (transaction.getType() == type) {
-                        filteredTransactions.add(transaction);
-                    }
+    public List<Transaction> filterTransactions (Transaction.Type type) {
+        List<Transaction> filteredTransactions = new ArrayList<>();
+        for (Account account : this.accountList) {
+            for (Transaction transaction : account.getTransactionList()) {
+                if (transaction.getType() == type) {
+                    filteredTransactions.add(transaction);
                 }
             }
-            return filteredTransactions;
-            }
+        }
+        return filteredTransactions;
+    }
 
     public enum Gender {
         MALE(1), FEMALE(2);
@@ -97,7 +82,6 @@ public class Customer extends User {
             return code;
         }
     }
-
 
     public static void main (String[]args){
             LocalDate birthDate = LocalDate.of(1993, Month.SEPTEMBER, 1);
