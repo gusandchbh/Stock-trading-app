@@ -1,6 +1,5 @@
 package com.bonqa.bonqa.model;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -10,10 +9,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
-@EqualsAndHashCode
 @ToString
 @Entity
-@Table(schema = "transaction")
+@Table(name = "transaction")
 @NoArgsConstructor
 @Getter
 public class Transaction {
