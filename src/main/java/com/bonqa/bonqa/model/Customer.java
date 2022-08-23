@@ -10,10 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@ToString
 @AllArgsConstructor
 @Entity
-@Table(schema = "customer")
+@Table(name = "customer")
 @NoArgsConstructor
 @Getter
 public class Customer {
@@ -101,6 +100,14 @@ public class Customer {
         public int getCode() {
             return code;
         }
+    }
+
+    public String getUsername() {
+        return getUser().getUsername();
+    }
+
+    public String getPassword() {
+        return getUser().getPassword();
     }
 }
 

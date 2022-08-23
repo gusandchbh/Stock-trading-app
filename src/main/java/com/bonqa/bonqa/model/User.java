@@ -1,9 +1,6 @@
 package com.bonqa.bonqa.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,17 +8,18 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.UUID;
 
-@Data
 @NoArgsConstructor
 @Entity
-@Table(schema = "user")
+@Table(name = "user")
 @Builder
 @AllArgsConstructor
+@Getter
+@Setter
 public class User {
     @Id
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
