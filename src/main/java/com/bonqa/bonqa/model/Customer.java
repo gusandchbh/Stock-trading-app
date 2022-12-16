@@ -41,53 +41,6 @@ public class Customer {
     @OneToMany(mappedBy="customer")
     private List<Account> accountList;
 
-    public long getAge(LocalDate today) {
-        return ChronoUnit.YEARS.between(this.getBirthDate(), today);
-    }
-
-    public String getFullName() {
-       return getFirstName() + ' ' + getLastName();
-    }
-
-    public BigDecimal getBalance() {
-        BigDecimal balance = BigDecimal.valueOf(0.0);
-        for (Account account : this.accountList) {
-            balance = balance.add(account.getBalance());
-        }
-        return balance;
-    }
-
-    public void addAccount(Account account) {
-        if (!this.accountList.contains(account)) {
-            this.accountList.add(account);
-        }
-    }
-
-    public Account getAccount(String accountNumber) {
-        for (Account account : this.accountList) {
-            if (account.getAccountNumber().equals(accountNumber)) {
-                return account;
-            }
-        }
-        return null;
-    }
-
-    public void removeAccount(Account account) {
-            this.accountList.remove(account);
-        }
-
-//    public List<Transaction> filterTransactions(Transaction.Type type) {
-//        List<Transaction> filteredTransactions = new ArrayList<>();
-//        for (Account account : this.accountList) {
-//            for (Transaction transaction : account.getTransactionList()) {
-//                if (transaction.getType() == type) {
-//                    filteredTransactions.add(transaction);
-//                }
-//            }
-//        }
-//        return filteredTransactions;
-//    }
-
     public enum Gender {
         MALE(1), FEMALE(2);
 
