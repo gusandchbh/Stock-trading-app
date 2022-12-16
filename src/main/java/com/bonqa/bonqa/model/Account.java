@@ -65,20 +65,4 @@ public class Account {
             transactionList.add(transaction);
         }
     }
-//
-//    public List<Transaction> filterTransactions(Transaction.Type type) {
-//        List<Transaction> filteredTransactions = new ArrayList<>();
-//        for (Transaction transaction : transactionList) {
-//            if (transaction.getType() == type) {
-//                filteredTransactions.add(transaction);
-//            }
-//        }  return filteredTransactions;
-//    }
-
-    public static void main(String[] args) {
-        Account account1 = new Account("12345");
-        Account account2 = new Account("12345");
-        account1.deposit(BigDecimal.valueOf(-100.0));
-        System.out.println(account1.getBalance());
-    }
 }
