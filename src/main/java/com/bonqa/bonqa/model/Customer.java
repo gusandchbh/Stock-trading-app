@@ -3,10 +3,7 @@ package com.bonqa.bonqa.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,7 +14,8 @@ import java.util.UUID;
 @Getter
 public class Customer {
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -31,7 +29,7 @@ public class Customer {
     @Column(name ="create_date", nullable = false)
     private LocalDate createDate;
 
-    @Column(nullable = false)
+    @Column(name = "gender", nullable = false)
     private Gender gender;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -41,27 +39,6 @@ public class Customer {
     @OneToMany(mappedBy="customer")
     private List<Account> accountList;
 
-    public enum Gender {
-        MALE(1), FEMALE(2);
-
-        private final int code;
-
-        Gender(int code) {
-            this.code = code;
-        }
-
-        public int getCode() {
-            return code;
-        }
-    }
-
-    public String getUsername() {
-        return getUser().getUsername();
-    }
-
-    public String getPassword() {
-        return getUser().getPassword();
-    }
 }
 
 

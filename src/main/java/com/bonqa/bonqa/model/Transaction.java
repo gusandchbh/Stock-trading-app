@@ -16,13 +16,14 @@ import java.util.*;
 @Getter
 public class Transaction {
     @Id
-    private UUID id; // To make each transaction unique
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
-    private BigDecimal amount; // Amount of the transaction
+    private BigDecimal amount;
 
     @Column(name ="create_date", nullable = false)
-    private LocalDate createDate; // Date of the transaction
+    private LocalDate createDate;
 
     @ManyToOne
     @JoinColumn(name="account_id", nullable=false)
@@ -32,9 +33,4 @@ public class Transaction {
     @JoinColumn(name = "transaction_type_id", referencedColumnName = "id")
     private TransactionType transactionType;
 
-    public Transaction(BigDecimal amount) {
-        this.id = UUID.randomUUID(); // Generate a unique ID for each transaction
-        this.createDate = LocalDate.now(); // Set the date of the transaction to the current date
-        this.amount = amount; // Set the amount of the transaction
-    }
 }
