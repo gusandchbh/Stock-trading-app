@@ -8,11 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.junit.jupiter.api.Assertions;
-import org.springframework.test.web.servlet.MockMvc;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import java.util.Optional;
@@ -28,7 +27,26 @@ class UserControllerTests {
         userController = new UserController(userRepository);
     }
 
+    @Test
+    public void testFetchByID_whenUserFound_shouldReturn200() {
+        User user = new User();
 
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+
+        ResponseEntity<User> response = userController.fetchByID(1L);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(user, response.getBody());
+    }
+
+    @Test
+    void testFetchByID_whenUserNotFound_shouldReturn404() {
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        ResponseEntity<User> response = userController.fetchByID(1L);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
 
 
     @Test
@@ -40,8 +58,8 @@ class UserControllerTests {
 
         ResponseEntity<User> response = userController.fetchByUsername(username);
 
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(user, response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(user, response.getBody());
     }
     @Test
     void testFetchByUsername_whenUserNotFound_returnsNotFound() {
@@ -50,7 +68,7 @@ class UserControllerTests {
 
         ResponseEntity<User> response = userController.fetchByUsername(username);
 
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
@@ -60,8 +78,21 @@ class UserControllerTests {
 
         ResponseEntity<User> response = userController.fetchByUsername(username);
 
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
+
+    @Test
+    public void testFetchByID_whenExceptionThrown_shouldReturn500() {
+        // Set up mock repository to throw an exception when findById() is called
+        when(userRepository.findById(1L)).thenThrow(new RuntimeException());
+
+        // Invoke the method under test
+        ResponseEntity<User> response = userController.fetchByID(1L);
+
+        // Verify that the method returns a 500 INTERNAL SERVER ERROR response
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
 
 
 }
