@@ -1,15 +1,15 @@
 package com.bonqa.bonqa.service;
 
-import com.bonqa.bonqa.model.User;
+import com.bonqa.bonqa.model.BankUser;
 import com.bonqa.bonqa.requests.CreateUserRequest;
 import com.bonqa.bonqa.requests.UpdateUserRequest;
 
 public interface UserService {
-    User createUser(CreateUserRequest request);
-    User updateUser(UpdateUserRequest request, Long id);
-    Iterable<User> getUsers();
-    User getUserById(Long id);
-    User getUserByUsername(String username);
+    BankUser createUser(CreateUserRequest request);
+    BankUser updateUser(UpdateUserRequest request, Long id);
+    Iterable<BankUser> getUsers();
+    BankUser getUserById(Long id);
+    BankUser getUserByUsername(String username);
     void deleteUserById(Long id);
     void deleteAllUsers();
 }

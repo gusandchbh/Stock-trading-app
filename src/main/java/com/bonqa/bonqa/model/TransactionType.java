@@ -4,7 +4,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(schema = "transaction_type")
+@Table(name = "transaction_type")
 @NoArgsConstructor
 public class TransactionType {
     @Id

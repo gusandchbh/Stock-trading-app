@@ -1,8 +1,6 @@
 package com.bonqa.bonqa.integration_tests;
 
 import com.bonqa.bonqa.model.Role;
-import com.bonqa.bonqa.model.User;
-import com.bonqa.bonqa.repository.UserRepository;
 import com.bonqa.bonqa.requests.CreateUserRequest;
 import com.bonqa.bonqa.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -14,8 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import java.time.LocalDateTime;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class UserControllerIntegrationTest {
+class BankUserControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -32,12 +28,12 @@ class UserControllerIntegrationTest {
     @Test
     void testFetchByUsername() throws Exception {
         // Given
-        String username = "test_user1";
+        String username = "test_user";
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setUsername(username);
         userRequest.setPassword("password");
         userRequest.setRole(Role.USER);
-        User user = userService.createUser(userRequest);
+        userService.createUser(userRequest);
 
         // When
         MockHttpServletRequestBuilder request = get("/users/search?username={username}", username);
