@@ -1,1 +1,6 @@
 Döda port: npx kill-port 8080
+Starta: mvn spring-boot:run
+
+1. Implementera Service överallt
+2. Fixa unit tests
+3. Integration tests via test-databas

@@ -8,13 +8,13 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "bank_user")
 @Builder
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class User {
+public class BankUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
