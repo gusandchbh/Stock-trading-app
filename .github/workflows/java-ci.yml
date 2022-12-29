@@ -19,5 +19,3 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-      - name: Run integration tests
-        run: mvn -B verify -Ptest -Dtest=**/integration_tests/*IT.java --file pom.xml
