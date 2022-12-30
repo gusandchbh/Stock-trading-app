@@ -1,0 +1,35 @@
+<template>
+  <nav>
+      <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/login">Login</RouterLink>
+  </nav>
+</template>
+
+<script>
+export default {
+  name: "Navbar"
+}
+</script>
+
+<style scoped>
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: lightgray;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+}
+nav li {
+  display: inline-block;
+}
+nav a {
+  color: black;
+  text-decoration: none;
+  padding: 0.5em 1em;
+}
+</style>
