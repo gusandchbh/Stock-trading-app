@@ -1,14 +1,12 @@
 <template>
-  <div>
+  <div class="login-container">
   <div class="quote">
-    <h1> '{{this.quote}}' <br> - Ye</h1>
+    <h1> {{this.quote}} <br> - Ye</h1>
   </div>
   <form @submit.prevent="login">
-    <label for="username">Username:</label>
-    <input id="username" v-model="username" />
-    <br />
-    <label for="password">Password:</label>
-    <input id="password" v-model="password" type="password" />
+    <input id="username" v-model="username" placeholder="Username" />
+
+    <input id="password" v-model="password" type="password" placeholder="Password" />
     <br />
     <button type="submit">Log In</button>
   </form>
@@ -49,3 +47,48 @@ export default {
 }
 
 </script>
+<style>
+
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.quote {
+  width: 600px;
+  margin: 50px;
+  font-family: "Al Bayan";
+  font-size: 1.2rem;
+
+}
+form {
+  display: flex;
+  flex-direction: column;
+}
+input {
+  margin: .5rem;
+  padding: 1.5rem;
+  border: 1px solid #2c3e50;
+  border-radius: 6px;
+  width: 15rem;
+  height: 1.5rem;
+}
+button {
+  margin: .5rem;
+  border: 1px solid #2c3e50;
+  border-radius: 6px;
+  width: 15rem;
+  height: 3rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+button:hover {
+  background-color: #2c3e50;
+}
+</style>
