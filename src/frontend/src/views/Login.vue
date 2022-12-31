@@ -1,15 +1,42 @@
 <template>
-  <div class="login-container">
-  <div class="quote">
-    <h1> {{this.quote}} <br> - Ye</h1>
-  </div>
-  <form @submit.prevent="login">
-    <input id="username" v-model="username" placeholder="Username" />
+  <div class="login-container q-pa-md" style="max-width: 400px">
 
-    <input id="password" v-model="password" type="password" placeholder="Password" />
-    <br />
-    <button type="submit">Log In</button>
-  </form>
+    <q-form
+        @submit="onSubmit"
+        @reset="onReset"
+        class="q-gutter-md"
+    >
+      <q-input
+          :input-style="{ height: '50px' }"
+          filled
+          v-model="name"
+          label="Your name *"
+          hint="Name and surname"
+          lazy-rulesh
+          :rules="[ val => val && val.length > 0 || 'Please type something']"
+      />
+
+      <q-input
+          filled
+          :input-style="{ height: '50px' }"
+          type="number"
+          v-model="age"
+          label="Your age *"
+          lazy-rules
+          :rules="[
+          val => val !== null && val !== '' || 'Please type your age',
+          val => val > 0 && val < 100 || 'Please type a real age'
+        ]"
+      />
+
+      <q-toggle v-model="accept" label="I accept the license and terms" />
+
+      <div>
+        <q-btn label="Submit" type="submit" color="primary"/>
+        <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+      </div>
+    </q-form>
+
   </div>
 </template>
 <script>
@@ -61,34 +88,8 @@ export default {
 .quote {
   width: 600px;
   margin: 50px;
-  font-family: "Al Bayan";
+  font-family: "Al Bayan", fantasy;
   font-size: 1.2rem;
-
-}
-form {
-  display: flex;
-  flex-direction: column;
-}
-input {
-  margin: .5rem;
-  padding: 1.5rem;
-  border: 1px solid #2c3e50;
-  border-radius: 6px;
-  width: 15rem;
-  height: 1.5rem;
-}
-button {
-  margin: .5rem;
-  border: 1px solid #2c3e50;
-  border-radius: 6px;
-  width: 15rem;
-  height: 3rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  text-align: center;
 }
 
-button:hover {
-  background-color: #2c3e50;
-}
 </style>
