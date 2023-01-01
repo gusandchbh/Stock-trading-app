@@ -1,14 +1,15 @@
 <template>
   <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/login">Login</RouterLink>
+    <RouterLink to="/">Home</RouterLink>
+    <RouterLink to="/login">Login</RouterLink>
   </nav>
 </template>
 
 <script>
 export default {
-  name: "Navbar"
-}
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: "Navbar",
+};
 </script>
 
 <style scoped>
