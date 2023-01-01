@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <h1> {{today}}</h1>
     <div class="register-container q-pa-md" style="max-width: 400px">
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
         <q-input
@@ -7,8 +8,8 @@
           filled
           v-model="username"
           label="Your username *"
-          lazy-rules
-          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+          lazy-rules="ondemand"
+          :rules="[(val) => (val && val.length > 0 && val.length < 20) || 'Enter a firstname']"
         />
         <q-input
           :input-style="{ height: '50px' }"
@@ -16,7 +17,7 @@
           type="password"
           v-model="password"
           label="Your password *"
-          lazy-rules
+          lazy-rules="ondemand"
           :rules="[(val) => (val && val.length > 0) || 'Please type something']"
         />
         <q-input
@@ -24,7 +25,7 @@
           filled
           v-model="firstName"
           label="Your firstname *"
-          lazy-rules
+          lazy-rules="ondemand"
           :rules="[(val) => (val && val.length > 0) || 'Please type something']"
         />
         <q-input
@@ -32,10 +33,19 @@
           filled
           v-model="lastName"
           label="Your lastname *"
-          lazy-rules
+          lazy-rules="ondemand"
           :rules="[(val) => (val && val.length > 0) || 'Please type something']"
         />
-        <q-input filled v-model="birthDate" label="Your date of birth *" mask="date" :rules="['date']">
+        <q-input
+            :input-style="{ height: '50px' }"
+            filled
+            v-model="email"
+            label="Your email *"
+            lazy-rules="ondemand"
+            :rules="[ (val, rules) => rules.email(val) || 'Please enter a valid email address' ]"
+        />
+        <q-input filled v-model="birthDate" label="Your date of birth *" mask="date" lazy-rules="ondemand"
+                 :rules="[ (val) => val > Date.now()  || 'Please enter a valid date']">
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy>
@@ -64,6 +74,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
   name: "RegisterPage",
   data() {
@@ -72,6 +83,7 @@ export default {
       password: "",
       firstName: "",
       lastName: "",
+      email: "",
       birthDate: "",
       gender: "",
     };
@@ -86,8 +98,8 @@ export default {
       this.gender = null;
     },
     onSubmit() {
+      console.log(this.birthDate)
       if (this.gender !== "Male" && this.gender !== "Female") {
-        alert(this.gender)
         this.$q.notify({
           color: "red-5",
           textColor: "white",
