@@ -47,9 +47,16 @@
         <div>
           <q-radio v-model="gender" val="Male" label="Male" />
           <q-radio v-model="gender" val="Female" label="Female" />
-          <div class="q-px-sm">
-            Your selection is: <strong>{{ gender }}</strong>
-          </div>
+        </div>
+        <div>
+          <q-btn label="Submit" type="submit" color="primary" />
+          <q-btn
+              label="Reset"
+              type="reset"
+              color="primary"
+              flat
+              class="q-ml-sm"
+          />
         </div>
       </q-form>
     </div>
@@ -70,9 +77,31 @@ export default {
     };
   },
   methods: {
-    createAccount() {
-      // Your code to create the account goes here
-      // You can access the form data using `this.username`, `this.password`, etc.
+    onReset() {
+      this.username = null;
+      this.password = null;
+      this.firstName = null;
+      this.lastName = null;
+      this.birthDate = null;
+      this.gender = null;
+    },
+    onSubmit() {
+      if (this.gender !== "Male" && this.gender !== "Female") {
+        alert(this.gender)
+        this.$q.notify({
+          color: "red-5",
+          textColor: "white",
+          icon: "warning",
+          message: "You need to select your gender",
+        });
+      } else {
+        this.$q.notify({
+          color: "green-4",
+          textColor: "white",
+          icon: "cloud_done",
+          message: "Submitted",
+        });
+      }
     },
   },
 };
