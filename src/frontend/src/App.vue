@@ -7,6 +7,9 @@ import Navbar from "@/components/Navbar.vue";
 <template>
   <div>    <Navbar />
   </div>
+  <div class="min-h">
+    Hello, World!
+  </div>
 
   <RouterView />
 

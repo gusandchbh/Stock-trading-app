@@ -7,6 +7,7 @@ import router from "./router";
 import "@quasar/extras/material-icons/material-icons.css";
 import "quasar/src/css/index.sass";
 import "@quasar/extras/roboto-font/roboto-font.css";
+import "./assets/main.css";
 
 const app = createApp(App);
 

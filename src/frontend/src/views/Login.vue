@@ -1,18 +1,19 @@
 <template>
   <div class="app">
-  <div class="login-container q-pa-md" style="max-width: 400px">
-    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-      <q-input
-        :input-style="{ height: '50px' }"
-        filled
-        v-model="username"
-        label="Your name *"
-        hint="Name and surname"
-        lazy-rules
-        :rules="[(val) => (val && val.length > 0) || 'Please type something']"
-      />
+    <div class="m"></div>
+    <div class="login-container q-pa-md" style="max-width: 400px">
+      <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+        <q-input
+          :input-style="{ height: '50px' }"
+          filled
+          v-model="username"
+          label="Your name *"
+          hint="Name and surname"
+          lazy-rules
+          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+        />
 
-      <q-input
+        <q-input
           :input-style="{ height: '50px' }"
           filled
           type="password"
@@ -20,27 +21,29 @@
           label="Your password *"
           lazy-rules
           :rules="[(val) => (val && val.length > 0) || 'Please type something']"
-      />
-
-      <q-toggle v-model="accept" label="I accept the license and terms" />
-
-      <div>
-        <q-btn label="Submit" type="submit" color="primary" />
-        <q-btn
-          label="Reset"
-          type="reset"
-          color="primary"
-          flat
-          class="q-ml-sm"
         />
-      </div>
-    </q-form>
-  </div>
+
+        <q-toggle v-model="accept" label="I accept the license and terms" />
+
+        <div>
+          <q-btn label="Submit" type="submit" color="primary" />
+          <q-btn
+            label="Reset"
+            type="reset"
+            color="primary"
+            flat
+            class="q-ml-sm"
+          />
+        </div>
+      </q-form>
+    </div>
   </div>
 </template>
 
 <script>
+import { useAuthStore } from '@/stores/auth';
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",
 
   data() {
@@ -67,6 +70,8 @@ export default {
           icon: "cloud_done",
           message: "Submitted",
         });
+        useAuthStore().login(this.username, this.password);
+
       }
     },
 
