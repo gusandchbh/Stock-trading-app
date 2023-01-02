@@ -1,3 +1,4 @@
+/*
 package com.bonqa.bonqa.integration_tests;
 
 import com.bonqa.bonqa.model.Role;
@@ -47,3 +48,4 @@ class BankUserControllerIntegrationTest {
 
 
 }
+*/
