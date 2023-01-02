@@ -1,94 +1,98 @@
 <template>
-  <div class="login-container">
-  <div class="quote">
-    <h1> {{this.quote}} <br> - Ye</h1>
-  </div>
-  <form @submit.prevent="login">
-    <input id="username" v-model="username" placeholder="Username" />
+  <div class="app">
+  <div class="login-container q-pa-md" style="max-width: 400px">
+    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+      <q-input
+        :input-style="{ height: '50px' }"
+        filled
+        v-model="username"
+        label="Your name *"
+        hint="Name and surname"
+        lazy-rules
+        :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+      />
 
-    <input id="password" v-model="password" type="password" placeholder="Password" />
-    <br />
-    <button type="submit">Log In</button>
-  </form>
+      <q-input
+          :input-style="{ height: '50px' }"
+          filled
+          type="password"
+          v-model="password"
+          label="Your password *"
+          lazy-rules
+          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+      />
+
+      <q-toggle v-model="accept" label="I accept the license and terms" />
+
+      <div>
+        <q-btn label="Submit" type="submit" color="primary" />
+        <q-btn
+          label="Reset"
+          type="reset"
+          color="primary"
+          flat
+          class="q-ml-sm"
+        />
+      </div>
+    </q-form>
+  </div>
   </div>
 </template>
+
 <script>
-import axios from "axios";
 export default {
-  name: 'Login',
+  name: "Home",
+
   data() {
     return {
-      username: '',
-      password: '',
-      quote: '',
-    }
+      username: null,
+      password: null,
+      accept: false,
+    };
   },
-  created() {
-    this.getQuote()
-  },
-  methods: {
-    async login() {
-      try {
-        const response = await axios.get('https://api.kanye.rest/')
-        console.log(response)
-        // login successful, store user data or set cookie
-      } catch (error) {
-        console.log(error)
-      }
-    }, async getQuote() {
-      try {
-        const response = await axios.get('https://api.kanye.rest/')
-        this.quote = response.data.quote
-      } catch (error){
-        console.log(error)
-      }
-    }
-  }
-}
 
+  methods: {
+    onSubmit() {
+      if (this.accept !== true) {
+        this.$q.notify({
+          color: "red-5",
+          textColor: "white",
+          icon: "warning",
+          message: "You need to accept the license and terms first",
+        });
+      } else {
+        this.$q.notify({
+          color: "green-4",
+          textColor: "white",
+          icon: "cloud_done",
+          message: "Submitted",
+        });
+      }
+    },
+
+    onReset() {
+      this.name = null;
+      this.age = null;
+      this.accept = false;
+    },
+  },
+};
 </script>
 <style>
-
-
 .login-container {
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-content: center;
   align-items: center;
 }
-
-.quote {
-  width: 600px;
-  margin: 50px;
-  font-family: "Al Bayan";
-  font-size: 1.2rem;
-
-}
-form {
+.app {
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
-}
-input {
-  margin: .5rem;
-  padding: 1.5rem;
-  border: 1px solid #2c3e50;
-  border-radius: 6px;
-  width: 15rem;
-  height: 1.5rem;
-}
-button {
-  margin: .5rem;
-  border: 1px solid #2c3e50;
-  border-radius: 6px;
-  width: 15rem;
-  height: 3rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  text-align: center;
-}
-
-button:hover {
-  background-color: #2c3e50;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
 }
 </style>
