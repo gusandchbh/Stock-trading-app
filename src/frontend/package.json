@@ -20,6 +20,7 @@
     "quasar": "^2.11.3",
     "vue": "^3.2.45",
     "vue-axios": "^3.5.2",
+    "vue-moment": "^4.1.0",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {

@@ -1,10 +1,11 @@
 <template>
+  <div class="app">
   <div class="login-container q-pa-md" style="max-width: 400px">
     <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
       <q-input
         :input-style="{ height: '50px' }"
         filled
-        v-model="name"
+        v-model="username"
         label="Your name *"
         hint="Name and surname"
         lazy-rules
@@ -12,16 +13,13 @@
       />
 
       <q-input
-        filled
-        :input-style="{ height: '50px' }"
-        type="number"
-        v-model="age"
-        label="Your age *"
-        lazy-rules
-        :rules="[
-          (val) => (val !== null && val !== '') || 'Please type your age',
-          (val) => (val > 0 && val < 100) || 'Please type a real age',
-        ]"
+          :input-style="{ height: '50px' }"
+          filled
+          type="password"
+          v-model="password"
+          label="Your password *"
+          lazy-rules
+          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
       />
 
       <q-toggle v-model="accept" label="I accept the license and terms" />
@@ -38,6 +36,7 @@
       </div>
     </q-form>
   </div>
+  </div>
 </template>
 
 <script>
@@ -46,8 +45,8 @@ export default {
 
   data() {
     return {
-      name: null,
-      age: null,
+      username: null,
+      password: null,
       accept: false,
     };
   },
@@ -81,6 +80,14 @@ export default {
 </script>
 <style>
 .login-container {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+.app {
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
