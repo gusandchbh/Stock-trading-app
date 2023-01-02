@@ -1,6 +1,8 @@
 <template>
   <div class="app">
-    <h1> {{today}}</h1>
+
+    <h1> {{test}}</h1>
+
     <div class="register-container q-pa-md" style="max-width: 400px">
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
         <q-input
@@ -9,7 +11,10 @@
           v-model="username"
           label="Your username *"
           lazy-rules="ondemand"
-          :rules="[(val) => (val && val.length > 0 && val.length < 20) || 'Enter a firstname']"
+          :rules="[
+            (val) =>
+              (val && val.length > 0 && val.length < 20) || 'Enter a firstname',
+          ]"
         />
         <q-input
           :input-style="{ height: '50px' }"
@@ -37,19 +42,34 @@
           :rules="[(val) => (val && val.length > 0) || 'Please type something']"
         />
         <q-input
-            :input-style="{ height: '50px' }"
-            filled
-            v-model="email"
-            label="Your email *"
-            lazy-rules="ondemand"
-            :rules="[ (val, rules) => rules.email(val) || 'Please enter a valid email address' ]"
+          :input-style="{ height: '50px' }"
+          filled
+          v-model="email"
+          label="Your email *"
+          lazy-rules="ondemand"
+          :rules="[
+            (val, rules) =>
+              rules.email(val) || 'Please enter a valid email address',
+          ]"
         />
-        <q-input filled v-model="birthDate" label="Your date of birth *" mask="date" lazy-rules="ondemand"
-                 :rules="[ (val) => val > Date.now()  || 'Please enter a valid date']">
+        <q-input
+          filled
+          v-model="birthDate"
+          label="Your date of birth *"
+          mask="date"
+          lazy-rules="ondemand"
+          :rules="validateDate"
+        >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy>
-                <q-date v-model="birthDate"></q-date>
+                <q-date
+                    v-model="birthDate">
+                  <div class="row items-center justify-end q-gutter-sm">
+                    <q-btn label="Reset" color="primary" flat @click="resetDate" v-close-popup />
+                    <q-btn label="OK" color="primary" flat v-close-popup />
+                  </div>
+                </q-date>
               </q-popup-proxy>
             </q-icon>
           </template>
@@ -61,11 +81,11 @@
         <div>
           <q-btn label="Submit" type="submit" color="primary" />
           <q-btn
-              label="Reset"
-              type="reset"
-              color="primary"
-              flat
-              class="q-ml-sm"
+            label="Reset"
+            type="reset"
+            color="primary"
+            flat
+            class="q-ml-sm"
           />
         </div>
       </q-form>
@@ -74,7 +94,8 @@
 </template>
 
 <script>
-import moment from 'moment';
+import {date, Quasar} from 'quasar'
+const { addToDate } = date
 export default {
   name: "RegisterPage",
   data() {
@@ -86,7 +107,18 @@ export default {
       email: "",
       birthDate: "",
       gender: "",
+      today: date.formatDate(Date.now(), 'YYYY/MM/DD'),
+      test: ""
     };
+  },
+  computed: {
+    validateDate() {
+      return [
+        (v) => !!v || 'Choose a date',
+        (v, rules) => rules.date(v) || 'Please enter a valid date',
+        (v) => v.split("/")[0] < 1900 || 'Choose a date after 1900'
+      ]
+    }
   },
   methods: {
     onReset() {
@@ -97,8 +129,15 @@ export default {
       this.birthDate = null;
       this.gender = null;
     },
+    resetDate() {
+      this.birthDate = null;
+    },
+    testmethod() {
+      this.test = this.birthDate.split("/")[0]
+
+    },
     onSubmit() {
-      console.log(this.birthDate)
+      console.log(this.birthDate);
       if (this.gender !== "Male" && this.gender !== "Female") {
         this.$q.notify({
           color: "red-5",
@@ -135,4 +174,8 @@ export default {
   align-content: center;
   align-items: center;
 }
+.lol {
+  size: 100px;
+}
+
 </style>
