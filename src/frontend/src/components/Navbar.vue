@@ -2,6 +2,7 @@
   <nav>
     <RouterLink to="/">Register</RouterLink>
     <RouterLink to="/login">Login</RouterLink>
+    <RouterLink to="/userpage">Test</RouterLink>
   </nav>
 </template>
 

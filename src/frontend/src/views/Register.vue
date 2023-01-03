@@ -1,7 +1,6 @@
 <template>
   <div class="app">
-
-    <h1> {{test}}</h1>
+    <h1>{{ test }}</h1>
 
     <div class="register-container q-pa-md" style="max-width: 400px">
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
@@ -63,10 +62,15 @@
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy>
-                <q-date
-                    v-model="birthDate">
+                <q-date v-model="birthDate">
                   <div class="row items-center justify-end q-gutter-sm">
-                    <q-btn label="Reset" color="primary" flat @click="resetDate" v-close-popup />
+                    <q-btn
+                      label="Reset"
+                      color="primary"
+                      flat
+                      @click="resetDate"
+                      v-close-popup
+                    />
                     <q-btn label="OK" color="primary" flat v-close-popup />
                   </div>
                 </q-date>
@@ -94,8 +98,8 @@
 </template>
 
 <script>
-import {date, Quasar} from 'quasar'
-const { addToDate } = date
+import { date, Quasar } from "quasar";
+const { addToDate } = date;
 export default {
   name: "RegisterPage",
   data() {
@@ -107,18 +111,18 @@ export default {
       email: "",
       birthDate: "",
       gender: "",
-      today: date.formatDate(Date.now(), 'YYYY/MM/DD'),
-      test: ""
+      today: date.formatDate(Date.now(), "YYYY/MM/DD"),
+      test: "",
     };
   },
   computed: {
     validateDate() {
       return [
-        (v) => !!v || 'Choose a date',
-        (v, rules) => rules.date(v) || 'Please enter a valid date',
-        (v) => v.split("/")[0] < 1900 || 'Choose a date after 1900'
-      ]
-    }
+        (v) => !!v || "Choose a date",
+        (v, rules) => rules.date(v) || "Please enter a valid date",
+        (v) => v.split("/")[0] < 1900 || "Choose a date after 1900",
+      ];
+    },
   },
   methods: {
     onReset() {
@@ -133,8 +137,7 @@ export default {
       this.birthDate = null;
     },
     testmethod() {
-      this.test = this.birthDate.split("/")[0]
-
+      this.test = this.birthDate.split("/")[0];
     },
     onSubmit() {
       console.log(this.birthDate);
@@ -177,5 +180,4 @@ export default {
 .lol {
   size: 100px;
 }
-
 </style>
