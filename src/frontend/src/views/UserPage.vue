@@ -43,12 +43,11 @@ export default {
     },
     async loadData() {
       console.log(useAuthStore().token);
-      const response = await Api.get("/users/", {
-        headers: {
-          Authorization: `Bearer ${useAuthStore().token}`,
-        },
-      });
+      const response = await Api.get("/users/")
       this.testData = response.data
+    },
+    logout() {
+      useAuthStore().logout();
     },
   },
 };
