@@ -1,6 +1,6 @@
 package com.bonqa.bonqa.controller;
 
-import com.bonqa.bonqa.model.BankUser;
+import com.bonqa.bonqa.model.User;
 import com.bonqa.bonqa.requests.CreateUserRequest;
 import com.bonqa.bonqa.requests.UpdateUserRequest;
 import com.bonqa.bonqa.service.UserService;
@@ -23,15 +23,15 @@ public class UserController {
     }
 
     @GetMapping("/")
-    Iterable<BankUser> all() {
+    Iterable<User> all() {
         return userService.getUsers();
     }
 
     @PostMapping("/create")
-    public ResponseEntity<BankUser> create(@RequestBody @Valid CreateUserRequest request) {
+    public ResponseEntity<User> create(@RequestBody @Valid CreateUserRequest request) {
         try {
-            BankUser bankUser = userService.createUser(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body(bankUser);
+            User user = userService.createUser(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(user);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -40,8 +40,8 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
         try {
-            BankUser bankUser = userService.getUserById(id);
-            if (bankUser == null) {
+            User user = userService.getUserById(id);
+            if (user == null) {
                 return ResponseEntity.notFound().build();
             }
             userService.deleteUserById(id);
@@ -62,39 +62,39 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<BankUser> updateById(@RequestBody UpdateUserRequest updateUserRequest, @PathVariable Long id) {
+    public ResponseEntity<User> updateById(@RequestBody UpdateUserRequest updateUserRequest, @PathVariable Long id) {
         try {
-            BankUser bankUser = userService.updateUser(updateUserRequest, id);
-            if (bankUser == null) {
+            User user = userService.updateUser(updateUserRequest, id);
+            if (user == null) {
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok().body(bankUser);
+            return ResponseEntity.ok().body(user);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BankUser> fetchByID(@PathVariable Long id) {
+    public ResponseEntity<User> fetchByID(@PathVariable Long id) {
         try {
-            BankUser bankUser = userService.getUserById(id);
-            if (bankUser == null) {
+            User user = userService.getUserById(id);
+            if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
-            return ResponseEntity.ok().body(bankUser);
+            return ResponseEntity.ok().body(user);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GetMapping("/search")
-    public ResponseEntity<BankUser> fetchByUsername(@RequestParam(value = "username") String username) {
+    public ResponseEntity<User> fetchByUsername(@RequestParam(value = "username") String username) {
         try {
-            BankUser bankUser = userService.getUserByUsername(username);
-            if (bankUser == null) {
+            User user = userService.getUserByUsername(username);
+            if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
-            return ResponseEntity.ok().body(bankUser);
+            return ResponseEntity.ok().body(user);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

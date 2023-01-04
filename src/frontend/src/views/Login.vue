@@ -44,6 +44,7 @@
 import { useAuthStore } from "@/stores/auth";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
+
   name: "Home",
 
   data() {
@@ -70,7 +71,9 @@ export default {
           icon: "cloud_done",
           message: "Submitted",
         });
+
         useAuthStore().login(this.username, this.password);
+
       }
     },
 

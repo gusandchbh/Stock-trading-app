@@ -33,7 +33,7 @@ public class Customer {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private BankUser bankUser;
+    private User user;
 
     @OneToMany(mappedBy="customer")
     private List<Account> accountList;
