@@ -1,7 +1,7 @@
 package com.bonqa.bonqa.model;
 
+import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
 
 @Entity
 @Table(name = "transaction_type")
