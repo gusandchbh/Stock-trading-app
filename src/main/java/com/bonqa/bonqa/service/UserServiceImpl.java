@@ -1,6 +1,6 @@
 package com.bonqa.bonqa.service;
 
-import com.bonqa.bonqa.model.BankUser;
+import com.bonqa.bonqa.model.User;
 import com.bonqa.bonqa.repository.UserRepository;
 import com.bonqa.bonqa.requests.CreateUserRequest;
 import com.bonqa.bonqa.requests.UpdateUserRequest;
@@ -21,38 +21,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BankUser createUser(CreateUserRequest request) {
-        BankUser bankUser = new BankUser();
-        bankUser.setUsername(request.getUsername());
-        bankUser.setPassword(request.getPassword());
-        bankUser.setRole(request.getRole());
-        bankUser.setCreatedTime(LocalDateTime.now());
-        return userRepository.save(bankUser);
+    public User createUser(CreateUserRequest request) {
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(request.getPassword());
+        user.setRole(request.getRole());
+        user.setCreatedTime(LocalDateTime.now());
+        return userRepository.save(user);
     }
 
     @Override
-    public BankUser updateUser(UpdateUserRequest request, Long id) {
-        Optional<BankUser> optionalUser = userRepository.findById(id);
+    public User updateUser(UpdateUserRequest request, Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isEmpty()) {
             return null;
         }
-        BankUser bankUser = optionalUser.get();
-        bankUser.setPassword(request.getPassword());
-        return userRepository.save(bankUser);
+        User user = optionalUser.get();
+        user.setPassword(request.getPassword());
+        return userRepository.save(user);
     }
 
     @Override
-    public Iterable<BankUser> getUsers() {
+    public Iterable<User> getUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public BankUser getUserById(Long id) {
+    public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    public BankUser getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         return userRepository.findOneByUsername(username).orElse(null);
     }
 
