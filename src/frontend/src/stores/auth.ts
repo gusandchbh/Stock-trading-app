@@ -24,7 +24,7 @@ export const useAuthStore = defineStore({
         body: JSON.stringify({ username, password }),
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         const token = await response.text();
         localStorage.setItem("user", JSON.stringify(username));
         localStorage.setItem("token", JSON.stringify(token));
