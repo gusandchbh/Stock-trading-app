@@ -87,7 +87,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/search")
+    @GetMapping(value = "/", params = "username")
     public ResponseEntity<User> fetchByUsername(@RequestParam(value = "username") String username) {
         try {
             User user = userService.getUserByUsername(username);
