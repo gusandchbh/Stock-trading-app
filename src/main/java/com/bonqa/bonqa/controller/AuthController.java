@@ -40,9 +40,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest userLogin) throws AuthenticationException {
+    public String login(@RequestBody LoginRequest userLogin) throws AuthenticationException {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
-        return ResponseEntity.status(HttpStatus.OK).body(tokenService.generateToken(authentication));
+       /* return ResponseEntity.status(HttpStatus.OK).body(tokenService.generateToken(authentication));*/
+        return tokenService.generateToken(authentication);
     }
 
     @PostMapping("/register")
