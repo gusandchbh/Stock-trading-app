@@ -28,8 +28,4 @@ public class Transaction {
     @JoinColumn(name="account_id", nullable=false)
     private Account account;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "transaction_type_id", referencedColumnName = "id")
-    private TransactionType transactionType;
-
 }

@@ -1,9 +1,10 @@
-package com.bonqa.bonqa.service;
+package com.bonqa.bonqa.service.impl;
 
 import com.bonqa.bonqa.model.User;
 import com.bonqa.bonqa.repository.UserRepository;
 import com.bonqa.bonqa.requests.CreateUserRequest;
 import com.bonqa.bonqa.requests.UpdateUserRequest;
+import com.bonqa.bonqa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

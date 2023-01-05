@@ -25,7 +25,7 @@ public class Account {
     @OneToMany(mappedBy="account")
     private List<Transaction> transactionList;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="customer_id", nullable=false)
     private Customer customer;
 }

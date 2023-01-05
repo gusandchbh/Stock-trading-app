@@ -1,4 +1,4 @@
-package com.bonqa.bonqa.controller;
+package com.bonqa.bonqa.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

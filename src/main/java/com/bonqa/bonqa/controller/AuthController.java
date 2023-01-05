@@ -5,10 +5,9 @@ import com.bonqa.bonqa.model.User;
 import com.bonqa.bonqa.repository.UserRepository;
 import com.bonqa.bonqa.requests.LoginRequest;
 import com.bonqa.bonqa.requests.RegisterRequest;
-import com.bonqa.bonqa.service.TokenService;
+import com.bonqa.bonqa.utility.TokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,14 +40,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String token(@RequestBody LoginRequest userLogin) throws AuthenticationException {
+    public ResponseEntity<String> login(@RequestBody LoginRequest userLogin) throws AuthenticationException {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
-        return tokenService.generateToken(authentication);
+        return ResponseEntity.status(HttpStatus.OK).body(tokenService.generateToken(authentication));
     }
 
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody RegisterRequest registerRequest) throws AuthenticationException {
-        // Create a new user with the specified username and password
         User newUser = new User();
         newUser.setUsername(registerRequest.getUsername());
         newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
