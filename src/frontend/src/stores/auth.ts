@@ -30,6 +30,7 @@ export const useAuthStore = defineStore({
         localStorage.setItem("token", JSON.stringify(token));
         this.user = username;
         this.token = token;
+        console.log(token)
         await router.push(this.returnUrl || "/");
       } else {
         throw new Error("Invalid credentials");

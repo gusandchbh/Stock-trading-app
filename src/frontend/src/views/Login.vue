@@ -73,7 +73,6 @@ export default {
         });
 
         useAuthStore().login(this.username, this.password);
-
       }
     },
 

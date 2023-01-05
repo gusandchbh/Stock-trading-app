@@ -28,15 +28,15 @@ public class Customer {
     @Column(name ="create_date", nullable = false)
     private LocalDate createDate;
 
-    @Column(name = "gender", nullable = false)
-    private Gender gender;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy="customer")
-    private List<Account> accountList;
+    @OneToOne
+    @JoinColumn(name="account_id")
+    private Account account;
+
+
 
 }
 
