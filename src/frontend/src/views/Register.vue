@@ -74,7 +74,7 @@ export default {
       this.register(this.username, this.password, this.email);
     },
     async register(username, password, email) {
-      const response = await fetch("http://localhost:8080/register", {
+      const response = await fetch("http://localhost:8080/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

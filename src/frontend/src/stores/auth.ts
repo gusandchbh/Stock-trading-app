@@ -16,7 +16,7 @@ export const useAuthStore = defineStore({
   },
   actions: {
     async login(username: string, password: string) {
-      const response = await fetch("http://localhost:8080/login", {
+      const response = await fetch("http://localhost:8080/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
