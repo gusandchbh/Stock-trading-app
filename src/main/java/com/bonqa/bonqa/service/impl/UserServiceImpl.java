@@ -1,12 +1,25 @@
 package com.bonqa.bonqa.service.impl;
 
+import com.bonqa.bonqa.model.Role;
 import com.bonqa.bonqa.model.User;
 import com.bonqa.bonqa.repository.UserRepository;
 import com.bonqa.bonqa.requests.CreateUserRequest;
+import com.bonqa.bonqa.requests.LoginRequest;
+import com.bonqa.bonqa.requests.RegisterRequest;
 import com.bonqa.bonqa.requests.UpdateUserRequest;
 import com.bonqa.bonqa.service.UserService;
+import com.bonqa.bonqa.utility.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -15,20 +28,31 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final TokenService tokenService;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, TokenService tokenService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.tokenService = tokenService;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
-    public User createUser(CreateUserRequest request) {
+    public String loginUser(LoginRequest userLogin) throws AuthenticationException {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
+        return tokenService.generateToken(authentication);
+    }
+
+    public User registerUser(RegisterRequest registerRequest) throws AuthenticationException {
         User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(request.getPassword());
-        user.setRole(request.getRole());
-        user.setCreatedTime(LocalDateTime.now());
-        return userRepository.save(user);
+        user.setUsername(registerRequest.getUsername());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setEmail(registerRequest.getEmail());
+        user.setRole(Role.USER);
+        userRepository.save(user);
+        return user;
     }
 
     @Override

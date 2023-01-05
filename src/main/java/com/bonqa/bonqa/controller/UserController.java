@@ -1,13 +1,14 @@
 package com.bonqa.bonqa.controller;
 
 import com.bonqa.bonqa.model.User;
-import com.bonqa.bonqa.requests.CreateUserRequest;
+import com.bonqa.bonqa.requests.LoginRequest;
+import com.bonqa.bonqa.requests.RegisterRequest;
 import com.bonqa.bonqa.requests.UpdateUserRequest;
 import com.bonqa.bonqa.service.UserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -27,14 +28,16 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<User> create(@RequestBody @Valid CreateUserRequest request) {
-        try {
-            User user = userService.createUser(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body(user);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest userLogin) throws AuthenticationException {
+        String token = userService.loginUser(userLogin);
+        return ResponseEntity.status(HttpStatus.OK).body(token);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody RegisterRequest registerRequest) throws AuthenticationException {
+        User user = userService.registerUser(registerRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @DeleteMapping("/delete/{id}")
