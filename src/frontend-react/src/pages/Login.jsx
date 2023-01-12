@@ -23,7 +23,7 @@ const Login = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
+    console.log(username, password)
     try {
       setError("");
       setLoading(true);
