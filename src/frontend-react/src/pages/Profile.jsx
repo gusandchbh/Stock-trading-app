@@ -1,30 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
-import API from "../api";
+import { useAuth } from "../contexts/AuthContext";
 
 export const Profile = () => {
-    const [user, setUser] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
-    useEffect(() =>  {
-        fetchData()
-    }, [])
-
-    async function fetchData() {
-        setLoading(true);
-        setError(null);
-        try {
-            const response = await API.get('users/?username=' + localStorage.getItem('user'));
-            console.log(localStorage.getItem('user'))
-            setUser(response.data.username);
-            console.log(response.data)
-        } catch (error) {
-            setError(error);
-        }
-        setLoading(false);
-    }
-
+    const { currentUser } = useAuth();
 
     return (
         <div>
@@ -43,7 +24,7 @@ export const Profile = () => {
                         <p>Error: {error.message}</p>
                     ) : (
                         <>
-                            <h3>Welcome {user}</h3>
+                            <h3>Welcome {currentUser}</h3>
                         </>
                     )}
                 </Card.Body>
