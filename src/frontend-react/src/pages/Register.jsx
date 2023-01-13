@@ -19,7 +19,7 @@ export default function Signup() {
       setError("");
       setLoading(true);
       await signup(username, password, email);
-      navigate("/login");
+      navigate("/")
     } catch (error) {
       console.log(error);
       setError("Could not register.");

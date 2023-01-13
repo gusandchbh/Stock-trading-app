@@ -22,11 +22,14 @@ export function AuthProvider({ children }) {
   };
 
   const signup = async (username, password, email) => {
-    await API.post("users/register", {
+    const response = await API.post("users/register", {
       username: username,
       password: password,
       email: email,
     });
+    if (response.status === 201){
+      await signin(username, password)
+    }
   };
 
   const logout = () => {
