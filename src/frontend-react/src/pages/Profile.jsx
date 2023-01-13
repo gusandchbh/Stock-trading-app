@@ -16,6 +16,7 @@ export const Profile = () => {
         setError(null);
         try {
             const response = await API.get('users/?username=' + localStorage.getItem('user'));
+            console.log(localStorage.getItem('user'))
             setUser(response.data.username);
             console.log(response.data)
         } catch (error) {

@@ -2,27 +2,28 @@ import { useState} from "react";
 import { useAuthContext } from "./useAuthContext";
 import API from "../api";
 
-export const useLogin = () => {
+export const useRegister = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const { dispatch } = useAuthContext()
-    const login = async (username, password) => {
+    const register = async (username, password, email) => {
 
-        const response = await API.post('users/login', {
+        const response = await API.post('users/register', {
             username: username,
-            password: password
+            password: password,
+            email: email
         })
 
-        if (response.status !== 200){
+        if (response.status !== 201){
             setLoading(false)
             setError(response.data)
         }
-        if (response.status === 200){
+        if (response.status === 201){
             setLoading(false)
-            localStorage.setItem('user', username)
+            localStorage.setItem('user', JSON.stringify({username: username, token: response.data}))
             dispatch({type: 'LOGIN', payload: { username: username, token: response.data}})
             setLoading(false)
         }
     }
-    return { login, error, loading }
+    return { register, error, loading }
 }

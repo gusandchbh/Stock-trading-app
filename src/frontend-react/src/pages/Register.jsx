@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../api";
+import { useRegister } from "../hooks/useRegister"
+import {useLogin} from "../hooks/useLogin";
 
 export default function Signup() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
+    const {register, error, loading } = useRegister()
 
   const navigate = useNavigate();
 
@@ -22,16 +23,8 @@ export default function Signup() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-      try {
-          setError("");
-          setLoading(true);
-          await registerRequest(username, password, email)
-          navigate("/login");
-      } catch (error){
-          console.log(error)
-          setError("Could not register.");
-      }
-      setLoading(false);
+
+
   }
   return (
     <div
