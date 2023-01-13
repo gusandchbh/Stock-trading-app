@@ -1,39 +1,23 @@
 import React, { useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { useLogin } from "../hooks/useLogin"
 import API from '../api'
 
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
+  const {login, error, loading } = useLogin()
   const navigate = useNavigate();
-
-  async function loginRequest(username, password){
-      const response = await API.post('users/login', {
-        username: username,
-        password: password
-      })
-      localStorage.setItem('token', response.data)
-      localStorage.setItem('user', username)
-      API.defaults.headers.common['Authorization'] = `Bearer ${response.data}`
-  }
 
   async function handleSubmit(e) {
     e.preventDefault();
-
+    console.log(username, password)
     try {
-      setError("");
-      setLoading(true);
-      await loginRequest(username, password)
-      navigate("/");
-    } catch (error) {
-      setError("Failed to sign in");
-      navigate("/login");
+        await login(username, password)
+    } catch (e){
+        console.log(e)
     }
-    setLoading(false);
   }
   return (
     <div
