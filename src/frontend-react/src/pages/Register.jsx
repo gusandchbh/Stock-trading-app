@@ -1,37 +1,30 @@
 import React, { useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import API from "../api";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Signup() {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [email, setEmail] = useState('')
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { signup } = useAuth();
 
   const navigate = useNavigate();
 
-    async function registerRequest(username, password, email){
-        await API.post('users/register', {
-            username: username,
-            password: password,
-            email: email
-        })
-    }
-
   async function handleSubmit(e) {
     e.preventDefault();
-      try {
-          setError("");
-          setLoading(true);
-          await registerRequest(username, password, email)
-          navigate("/login");
-      } catch (error){
-          console.log(error)
-          setError("Could not register.");
-      }
-      setLoading(false);
+    try {
+      setError("");
+      setLoading(true);
+      await signup(username, password, email);
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+      setError("Could not register.");
+    }
+    setLoading(false);
   }
   return (
     <div
@@ -89,11 +82,7 @@ export default function Signup() {
                 }}
               />
             </Form.Group>
-            <Button
-              disabled={loading}
-              className="w-40 mt-4"
-              type="submit"
-            >
+            <Button disabled={loading} className="w-40 mt-4" type="submit">
               Sign Up
             </Button>
           </Form>

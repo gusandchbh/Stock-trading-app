@@ -1,25 +1,15 @@
 import React, { useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import API from '../api'
+import { useAuth } from "../contexts/AuthContext";
 
 const Login = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const { signin } = useAuth();
   const navigate = useNavigate();
-
-  async function loginRequest(username, password){
-      const response = await API.post('users/login', {
-        username: username,
-        password: password
-      })
-      localStorage.setItem('token', response.data)
-      localStorage.setItem('user', username)
-      API.defaults.headers.common['Authorization'] = `Bearer ${response.data}`
-  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -27,7 +17,7 @@ const Login = () => {
     try {
       setError("");
       setLoading(true);
-      await loginRequest(username, password)
+      await signin(username, password);
       navigate("/");
     } catch (error) {
       setError("Failed to sign in");
@@ -80,11 +70,7 @@ const Login = () => {
                 }}
               />
             </Form.Group>
-            <Button
-              disabled={loading}
-              className="w-40 mt-4"
-              type="submit"
-            >
+            <Button disabled={loading} className="w-40 mt-4" type="submit">
               Log In
             </Button>
           </Form>
