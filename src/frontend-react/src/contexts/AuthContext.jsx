@@ -15,8 +15,10 @@ export function AuthProvider({ children }) {
       username: username,
       password: password,
     });
-    setCurrentUser(response.data);
-    API.defaults.headers.common["Authorization"] = `Bearer ${response.data}`;
+    if (response.status === 200) {
+        setCurrentUser(username);
+        API.defaults.headers.common["Authorization"] = `Bearer ${response.data}`;
+    }
   };
 
   const signup = async (username, password, email) => {
@@ -27,8 +29,12 @@ export function AuthProvider({ children }) {
     });
   };
 
+  const logout = () => {
+    setCurrentUser(undefined)
+  }
+
   return (
-    <AuthContext.Provider value={{ currentUser, signin, signup }}>
+    <AuthContext.Provider value={{ currentUser, signin, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

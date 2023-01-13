@@ -1,4 +1,5 @@
 import React from "react";
+import {Button} from "react-bootstrap";
 
 const StartPage = () => {
   return (
@@ -9,7 +10,9 @@ const StartPage = () => {
         display: "flex",
         justifyContent: "center",
       }}
-    >
+    > <div>
+        <h1> Welcome to Stock Tradify! </h1>
+    </div>
     </div>
   );
 };
