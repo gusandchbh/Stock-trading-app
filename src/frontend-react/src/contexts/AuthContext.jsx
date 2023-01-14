@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import API from "../api";
+import parseJWT from "../utils/parseJWT";
+
 
 const AuthContext = createContext();
 
@@ -8,15 +10,16 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState(parseJWT(localStorage.getItem('token')));
 
-  const signin = async (username, password) => {
+  const login = async (username, password) => {
     const response = await API.post("users/login", {
       username: username,
       password: password,
     });
     if (response.status === 200) {
         setCurrentUser(username);
+        localStorage.token = response.data
         API.defaults.headers.common["Authorization"] = `Bearer ${response.data}`;
     }
   };
@@ -28,16 +31,17 @@ export function AuthProvider({ children }) {
       email: email,
     });
     if (response.status === 201){
-      await signin(username, password)
+      await login(username, password)
     }
   };
 
   const logout = () => {
     setCurrentUser(undefined)
+    localStorage.clear()
   }
 
   return (
-    <AuthContext.Provider value={{ currentUser, signin, signup, logout }}>
+    <AuthContext.Provider value={{ currentUser, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

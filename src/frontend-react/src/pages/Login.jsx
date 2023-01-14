@@ -8,7 +8,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const { signin } = useAuth();
+    const { login } = useAuth();
     const navigate = useNavigate();
 
     async function handleSubmit(e) {
@@ -17,10 +17,10 @@ const Login = () => {
         try {
             setError("");
             setLoading(true);
-            await signin(username, password);
+            await login(username, password);
             navigate("/");
         } catch (error) {
-            setError("Failed to sign in");
+            setError(error.toString());
             navigate("/login");
         }
         setLoading(false);
