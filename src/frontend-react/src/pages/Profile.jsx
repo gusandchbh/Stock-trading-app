@@ -6,6 +6,7 @@ export const Profile = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const { currentUser } = useAuth();
+    console.log(currentUser)
 
     return (
         <div>
@@ -24,7 +25,7 @@ export const Profile = () => {
                         <p>Error: {error.message}</p>
                     ) : (
                         <>
-                            <h3>Welcome {currentUser}</h3>
+                            <h2>Welcome {currentUser}!</h2>
                         </>
                     )}
                 </Card.Body>
