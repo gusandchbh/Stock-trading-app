@@ -1,9 +1,10 @@
 package com.bonqa.bonqa.service.impl;
 
-import com.bonqa.bonqa.model.Customer;
-import com.bonqa.bonqa.model.Role;
-import com.bonqa.bonqa.model.User;
+import ch.qos.logback.core.testUtil.RandomUtil;
+import com.bonqa.bonqa.model.*;
+import com.bonqa.bonqa.repository.AccountRepository;
 import com.bonqa.bonqa.repository.CustomerRepository;
+import com.bonqa.bonqa.repository.PortfolioRepository;
 import com.bonqa.bonqa.repository.UserRepository;
 import com.bonqa.bonqa.requests.LoginRequest;
 import com.bonqa.bonqa.requests.RegisterRequest;
@@ -17,6 +18,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -27,15 +31,21 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final CustomerRepository customerRepository;
+    private final PortfolioRepository portfolioRepository;
+    private final AccountRepository accountRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, TokenService tokenService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder,
-                           CustomerRepository customerRepository) {
+                           CustomerRepository customerRepository,
+                           PortfolioRepository portfolioRepository,
+                           AccountRepository accountRepository) {
         this.userRepository = userRepository;
         this.tokenService = tokenService;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.customerRepository = customerRepository;
+        this.portfolioRepository = portfolioRepository;
+        this.accountRepository = accountRepository;
     }
 
     public String loginUser(LoginRequest userLogin) throws AuthenticationException {
@@ -53,6 +63,17 @@ public class UserServiceImpl implements UserService {
         Customer customer = new Customer();
         customer.setUser(user);
         customerRepository.save(customer);
+        Portfolio portfolio = new Portfolio();
+        portfolio.setCustomer(customer);
+        portfolio.setStockList(new ArrayList<>());
+        portfolio.setTotalValue(BigDecimal.valueOf(0));
+        portfolioRepository.save(portfolio);
+        Account account = new Account();
+        account.setAccountNumber((long) RandomUtil.getPositiveInt());
+        account.setCustomer(customer);
+        account.setBalance(BigDecimal.valueOf(0));
+        account.setTransactionList(new ArrayList<>());
+        accountRepository.save(account);
         return user;
     }
 
