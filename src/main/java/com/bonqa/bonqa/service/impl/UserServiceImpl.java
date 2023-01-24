@@ -1,7 +1,9 @@
 package com.bonqa.bonqa.service.impl;
 
+import com.bonqa.bonqa.model.Customer;
 import com.bonqa.bonqa.model.Role;
 import com.bonqa.bonqa.model.User;
+import com.bonqa.bonqa.repository.CustomerRepository;
 import com.bonqa.bonqa.repository.UserRepository;
 import com.bonqa.bonqa.requests.LoginRequest;
 import com.bonqa.bonqa.requests.RegisterRequest;
@@ -24,13 +26,16 @@ public class UserServiceImpl implements UserService {
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, TokenService tokenService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, TokenService tokenService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder,
+                           CustomerRepository customerRepository) {
         this.userRepository = userRepository;
         this.tokenService = tokenService;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
+        this.customerRepository = customerRepository;
     }
 
     public String loginUser(LoginRequest userLogin) throws AuthenticationException {
@@ -45,6 +50,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(registerRequest.getEmail());
         user.setRole(Role.USER);
         userRepository.save(user);
+        Customer customer = new Customer();
+        customer.setUser(user);
+        customerRepository.save(customer);
         return user;
     }
 
