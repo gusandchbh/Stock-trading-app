@@ -25,7 +25,7 @@ export const Profile = () => {
                         <p>Error: {error.message}</p>
                     ) : (
                         <>
-                            <h3>Welcome {currentUser.sub}</h3>
+                            <h2>Welcome {currentUser}!</h2>
                         </>
                     )}
                 </Card.Body>
