@@ -15,4 +15,6 @@ public interface UserService {
     User getUserByUsername(String username);
     void deleteUserById(Long id);
     void deleteAllUsers();
+
+    User createUser(RegisterRequest registerRequest);
 }

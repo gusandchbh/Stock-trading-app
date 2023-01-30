@@ -1,14 +1,15 @@
 package com.bonqa.bonqa.service.impl;
 
-import ch.qos.logback.core.testUtil.RandomUtil;
 import com.bonqa.bonqa.model.*;
 import com.bonqa.bonqa.repository.AccountRepository;
-import com.bonqa.bonqa.repository.CustomerRepository;
 import com.bonqa.bonqa.repository.PortfolioRepository;
 import com.bonqa.bonqa.repository.UserRepository;
 import com.bonqa.bonqa.requests.LoginRequest;
 import com.bonqa.bonqa.requests.RegisterRequest;
 import com.bonqa.bonqa.requests.UpdateUserRequest;
+import com.bonqa.bonqa.service.AccountService;
+import com.bonqa.bonqa.service.CustomerService;
+import com.bonqa.bonqa.service.PortfolioService;
 import com.bonqa.bonqa.service.UserService;
 import com.bonqa.bonqa.utility.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -30,22 +28,27 @@ public class UserServiceImpl implements UserService {
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
-    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
+
+    private final PortfolioService portfolioService;
+
+    private final AccountService accountService;
     private final PortfolioRepository portfolioRepository;
-    private final AccountRepository accountRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, TokenService tokenService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder,
-                           CustomerRepository customerRepository,
-                           PortfolioRepository portfolioRepository,
-                           AccountRepository accountRepository) {
+                           CustomerService customerService,
+                           PortfolioService portfolioService,
+                           AccountService accountService,
+                           PortfolioRepository portfolioRepository) {
         this.userRepository = userRepository;
         this.tokenService = tokenService;
+        this.customerService = customerService;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
-        this.customerRepository = customerRepository;
+        this.accountService = accountService;
+        this.portfolioService = portfolioService;
         this.portfolioRepository = portfolioRepository;
-        this.accountRepository = accountRepository;
     }
 
     public String loginUser(LoginRequest userLogin) throws AuthenticationException {
@@ -54,29 +57,25 @@ public class UserServiceImpl implements UserService {
     }
 
     public User registerUser(RegisterRequest registerRequest) throws AuthenticationException {
+        User user = createUser(registerRequest);
+        Customer customer = customerService.createCustomer(user);
+        Portfolio portfolio = portfolioService.createPortfolio(customer);
+        Account account = accountService.createAccount(customer);
+        customer.setPortfolio(portfolio);
+        customer.setAccount(account);
+        customerService.saveCustomer(customer);
+        portfolioService.savePortfolio(portfolio);
+        accountService.saveAccount(account);
+        return user;
+    }
+
+    public User createUser(RegisterRequest registerRequest){
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setEmail(registerRequest.getEmail());
         user.setRole(Role.USER);
         userRepository.save(user);
-        Customer customer = new Customer();
-        customer.setUser(user);
-        Portfolio portfolio = new Portfolio();
-        portfolio.setCustomer(customer);
-        portfolio.setStocks(new ArrayList<>());
-        portfolio.setTrades(new ArrayList<>());
-        portfolio.setTotalValue(BigDecimal.valueOf(0));
-        Account account = new Account();
-        account.setAccountNumber((long) RandomUtil.getPositiveInt());
-        account.setCustomer(customer);
-        account.setBalance(BigDecimal.valueOf(0));
-        account.setTransactionList(new ArrayList<>());
-        customer.setAccount(account);
-        customer.setPortfolio(portfolio);
-        customerRepository.save(customer);
-        portfolioRepository.save(portfolio);
-        accountRepository.save(account);
         return user;
     }
 
