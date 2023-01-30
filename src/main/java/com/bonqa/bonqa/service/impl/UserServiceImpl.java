@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         User user = optionalUser.get();
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         return userRepository.save(user);
     }
 
