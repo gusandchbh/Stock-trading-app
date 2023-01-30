@@ -3,8 +3,7 @@ import { Card } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 
 export const Profile = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+
     const { currentUser } = useAuth();
     console.log(currentUser)
 
@@ -19,14 +18,7 @@ export const Profile = () => {
                 }}
             >
                 <Card.Body className="profile-card">
-                    {loading ? (
-                        <p>Loading...</p>
-                    ) : error ? (
-                        <p>Error: {error.message}</p>
-                    ) : (
-                        <>
-                            <h2>Welcome {currentUser}!</h2>
-                        </>
+                            <h1>Welcome {!currentUser ?  "no user" : currentUser}!</h1>
                     )}
                 </Card.Body>
             </Card>

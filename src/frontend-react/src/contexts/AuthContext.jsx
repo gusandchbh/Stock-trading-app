@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import API from "../api";
+import {API} from "../api";
 import parseJWT from "../utils/parseJWT";
 
 

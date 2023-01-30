@@ -9,6 +9,7 @@ import yahoofinance.YahooFinance;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -37,6 +38,11 @@ public class StockServiceImpl implements StockService {
             System.out.println("Lol");
         }
         return Collections.emptyMap();
+    }
+
+    @Override
+    public Iterable<Stock> getAllStocks() {
+        return stockRepository.findAll();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.bonqa.bonqa.controller;
 
+import com.bonqa.bonqa.model.Stock;
 import com.bonqa.bonqa.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,8 @@ public class StockController {
     }*/
 
     @GetMapping("/all")
-    String getAllStocks(){
-        return stockService.fetchStocksFromAPI().toString();
+    Iterable<Stock> getAllStocks(){
+        return stockService.getAllStocks();
     }
 
 

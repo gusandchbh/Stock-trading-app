@@ -62,17 +62,20 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         Customer customer = new Customer();
         customer.setUser(user);
-        customerRepository.save(customer);
         Portfolio portfolio = new Portfolio();
         portfolio.setCustomer(customer);
-        portfolio.setStockList(new ArrayList<>());
+        portfolio.setStocks(new ArrayList<>());
+        portfolio.setTrades(new ArrayList<>());
         portfolio.setTotalValue(BigDecimal.valueOf(0));
-        portfolioRepository.save(portfolio);
         Account account = new Account();
         account.setAccountNumber((long) RandomUtil.getPositiveInt());
         account.setCustomer(customer);
         account.setBalance(BigDecimal.valueOf(0));
         account.setTransactionList(new ArrayList<>());
+        customer.setAccount(account);
+        customer.setPortfolio(portfolio);
+        customerRepository.save(customer);
+        portfolioRepository.save(portfolio);
         accountRepository.save(account);
         return user;
     }

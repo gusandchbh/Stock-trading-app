@@ -16,7 +16,7 @@ public class StockUpdater {
         this.stockService = stockService;
     }
 
-    @Scheduled(cron = "0 0 22 * * ?")
+    @Scheduled(cron = "0 0 22 * * ?") // At 22:00:00pm every day
     public void updateStocks() {
         Map<String, yahoofinance.Stock> stocks = stockService.fetchStocksFromAPI();
        stockService.updateStocksInDatabase(stocks);
