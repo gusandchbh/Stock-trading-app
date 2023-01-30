@@ -19,10 +19,14 @@ public class Portfolio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private BigDecimal totalValue;
-    @OneToMany(mappedBy="name")
-    private List<Stock> stockList;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Stock> stocks;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Trade> trades;
 
     @OneToOne
-    @JoinColumn(name="customer_id", nullable=false)
+    @JoinColumn(name="customer_id")
     private Customer customer;
 }

@@ -35,6 +35,12 @@ export const Header = () => {
             </Link>)
         }
         {currentUser && (
+            <Link to="/stocks">
+                <h1 style={{ color: "#333" }}>Stocks</h1>
+            </Link>
+
+        )}
+        {currentUser && (
             <>
             <Link to="/profile">
                 <h1 style={{ color: "#333" }}>Profile</h1>
