@@ -3,10 +3,3 @@ Starta: mvn spring-boot:run
 
 logging.level.root = DEBUG
 
-Make stock service generic
-refactor away from specific implementation in stockservice
-
-create stock interface
-
-slå ihop customer och user till en klass
-
