@@ -1,9 +1,9 @@
 package com.bonqa.bonqa.controller;
 
-import com.bonqa.bonqa.model.Stock;
-import com.bonqa.bonqa.repository.StockRepository;
-import com.bonqa.bonqa.service.StockFetcherInterface;
-import com.bonqa.bonqa.utility.StockUpdater;
+import com.bonqa.bonqa.domain.model.Stock;
+import com.bonqa.bonqa.domain.repository.StockRepository;
+import com.bonqa.bonqa.domain.stock.fetcher.StockFetcherInterface;
+import com.bonqa.bonqa.domain.stock.updater.StockUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,12 +24,7 @@ public class StockController {
         this.stockRepository = stockRepository;
     }
 
-   /* @GetMapping(value = "/", params = "ticker")
-    String all(@RequestParam(value = "ticker") String ticker) {
-        return stockService.findStock(ticker);
-    }*/
-
-    @GetMapping("/all")
+    @GetMapping("/")
     Iterable<Stock> getAllStocks(){
         return stockRepository.findAll();
     }
