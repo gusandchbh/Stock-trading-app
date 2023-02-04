@@ -1,6 +1,4 @@
 package com.bonqa.bonqa.model;
-
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,9 +30,9 @@ public class Trade {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private TradeType tradeType;
+    private TransactionType transactionType;
 
     @ManyToOne
-//    @JoinColumn(name = "portfolio_id")
+    @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 }

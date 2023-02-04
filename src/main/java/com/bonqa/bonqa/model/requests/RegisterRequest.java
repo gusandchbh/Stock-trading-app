@@ -1,4 +1,4 @@
-package com.bonqa.bonqa.requests;
+package com.bonqa.bonqa.model.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
+public class RegisterRequest {
+    private String username;
+    private String password;
 
-    private String token;
+    private String email;
 }

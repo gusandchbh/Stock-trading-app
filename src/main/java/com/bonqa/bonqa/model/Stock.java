@@ -13,8 +13,6 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 public class Stock {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,10 +29,10 @@ public class Stock {
     @Column(name = "volume", nullable = false)
     private Long volume;
 
-    @Column(name = "open", nullable = false)
+    @Column(name = "open_price", nullable = false)
     private BigDecimal open;
 
-    @Column(name = "close", nullable = false)
+    @Column(name = "close_price", nullable = false)
     private BigDecimal close;
 
 }

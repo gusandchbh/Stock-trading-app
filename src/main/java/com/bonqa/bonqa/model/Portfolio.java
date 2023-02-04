@@ -20,13 +20,16 @@ public class Portfolio {
     private Long id;
     private BigDecimal totalValue;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Stock> stocks;
+    @Column(name = "balance", nullable = false)
+    private BigDecimal accountBalance = BigDecimal.valueOf(0);
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Trade> trades;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "portfolio")
+    private List<PortfolioStock> stocks;
+
+    @OneToMany(mappedBy="portfolio")
+    private List<Transaction> transactionList;
 
     @OneToOne
-    @JoinColumn(name="customer_id")
-    private Customer customer;
+    @JoinColumn(name="bank_user_id")
+    private User user;
 }

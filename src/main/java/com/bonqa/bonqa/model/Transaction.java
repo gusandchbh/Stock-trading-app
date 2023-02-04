@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.Cascade;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,7 +26,11 @@ public class Transaction {
     private LocalDate createDate;
 
     @ManyToOne
-    @JoinColumn(name="account_id", nullable=false)
-    private Account account;
+    @JoinColumn(name="portfolio_id", nullable=false)
+    private Portfolio portfolio;
+
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @JoinColumn(name = "trade_id", referencedColumnName = "id")
+    private Trade trade;
 
 }

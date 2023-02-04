@@ -3,6 +3,10 @@ Starta: mvn spring-boot:run
 
 logging.level.root = DEBUG
 
-1. Implementera Service överallt
-2. Fixa unit tests
-3. Integration tests via test-databas
+Make stock service generic
+refactor away from specific implementation in stockservice
+
+create stock interface
+
+slå ihop customer och user till en klass
+

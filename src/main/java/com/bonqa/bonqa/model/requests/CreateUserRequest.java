@@ -1,4 +1,4 @@
-package com.bonqa.bonqa.requests;
+package com.bonqa.bonqa.model.requests;
 
 import com.bonqa.bonqa.model.Role;
 

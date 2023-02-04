@@ -1,10 +1,8 @@
 package com.bonqa.bonqa.model;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 
 @Entity
@@ -23,9 +21,14 @@ public class PortfolioStock {
     private Portfolio portfolio;
 
     @OneToOne
-   // @JoinColumn(name = "stock_id")
+    @JoinColumn(name = "stock_id")
     private Stock stock;
 
-    private BigDecimal totalValue;
+    private BigDecimal value;
+
+
+    // Price
+
+    // Shares
 
 }
