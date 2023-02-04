@@ -3,7 +3,7 @@ package com.bonqa.bonqa.integration_tests;
 
 import com.bonqa.bonqa.model.Role;
 import com.bonqa.bonqa.requests.CreateUserRequest;
-import com.bonqa.bonqa.service.UserService;
+import com.bonqa.bonqa.domain.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

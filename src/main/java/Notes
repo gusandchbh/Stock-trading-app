@@ -3,6 +3,3 @@ Starta: mvn spring-boot:run
 
 logging.level.root = DEBUG
 
-1. Implementera Service överallt
-2. Fixa unit tests
-3. Integration tests via test-databas
