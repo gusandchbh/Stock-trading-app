@@ -6,6 +6,7 @@ import com.bonqa.bonqa.domain.model.data.request.RegisterRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdateUserRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
 import com.bonqa.bonqa.domain.user.UserService;
+import com.bonqa.bonqa.exception.InvalidCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,15 +29,18 @@ public class UserController {
     }
 
     @GetMapping("/")
-    Iterable<User> all() {
+    public Iterable<User> all() {
         return userRepository.findAll();
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest userLogin) throws AuthenticationException {
-        String token = userService.loginUser(userLogin);
-
-        return ResponseEntity.status(HttpStatus.OK).body(token);
+        try {
+            String token = userService.loginUser(userLogin);
+            return ResponseEntity.status(HttpStatus.OK).body(token);
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        }
     }
 
     @PostMapping("/register")
@@ -50,7 +54,6 @@ public class UserController {
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
         try {
             userRepository.deleteById(id);
-
             return new ResponseEntity<>("User deleted!", HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
