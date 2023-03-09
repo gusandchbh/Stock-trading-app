@@ -6,7 +6,6 @@ import com.bonqa.bonqa.domain.model.data.request.RegisterRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdateUserRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
 import com.bonqa.bonqa.domain.user.UserService;
-import com.bonqa.bonqa.exception.InvalidCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +45,6 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody RegisterRequest registerRequest) throws AuthenticationException {
         User user = userService.registerUser(registerRequest);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
@@ -62,15 +60,17 @@ public class UserController {
 
     @DeleteMapping("/delete/all")
     public ResponseEntity<String> deleteAll() {
-        userRepository.deleteAll();
-        return new ResponseEntity<>("All users deleted!", HttpStatus.OK);
+        try {
+            userRepository.deleteAll();
+            return new ResponseEntity<>("All users deleted!", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to delete all users", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-
     @PutMapping("/update/{id}")
     public ResponseEntity<Void> updateById(@RequestBody UpdateUserRequest updateUserRequest, @PathVariable Long id) {
         try {
             userService.updateUser(updateUserRequest, id);
-
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -86,5 +86,9 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+
+
+
 }
 
