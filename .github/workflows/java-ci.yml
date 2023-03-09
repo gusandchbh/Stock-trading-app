@@ -17,10 +17,5 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-      - name: CheckStyle linting
-        run: mvn checkstyle:checkstyle
-        continue-on-error: true
-      - name: Format code with google-java-format
-        run: mvn com.coveo:fmt-maven-plugin:format
       - name: Build with Maven
         run: mvn -B package --file pom.xml
