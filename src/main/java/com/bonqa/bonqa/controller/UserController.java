@@ -6,6 +6,7 @@ import com.bonqa.bonqa.domain.model.data.request.RegisterRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdateUserRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
 import com.bonqa.bonqa.domain.user.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody RegisterRequest registerRequest) throws AuthenticationException {
+    public ResponseEntity<User> registerUser(@Valid @RequestBody RegisterRequest registerRequest) throws AuthenticationException {
         User user = userService.registerUser(registerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }

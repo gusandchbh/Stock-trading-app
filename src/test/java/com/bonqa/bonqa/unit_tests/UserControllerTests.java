@@ -128,7 +128,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void testDeleteAll_Success() {
+    void testDeleteAll_Success() {
         doNothing().when(userRepository).deleteAll();
 
         ResponseEntity<String> response = userController.deleteAll();
