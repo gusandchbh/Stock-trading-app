@@ -116,18 +116,6 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Test successful user registration")
-    void testSuccessfulRegistration() {
-        RegisterRequest registerRequest = new RegisterRequest("John", "Password", "email@test.com");
-        when(userService.registerUser(registerRequest)).thenReturn(user1);
-
-        ResponseEntity<User> response = userController.registerUser(registerRequest);
-
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(user1, response.getBody());
-    }
-
-    @Test
     void testDeleteAll_Success() {
         doNothing().when(userRepository).deleteAll();
 

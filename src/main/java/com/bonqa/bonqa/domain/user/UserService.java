@@ -8,6 +8,7 @@ import com.bonqa.bonqa.domain.model.data.request.LoginRequest;
 import com.bonqa.bonqa.domain.model.data.request.RegisterRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdateUserRequest;
 import com.bonqa.bonqa.domain.security.TokenGenerator;
+import com.bonqa.bonqa.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,6 +51,14 @@ public class UserService {
     }
 
     public User registerUser(RegisterRequest registerRequest) throws AuthenticationException {
+        if (userRepository.existsByUsername(registerRequest.getUsername())) {
+            throw new BadRequestException("Username is already in use");
+        }
+
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
+            throw new BadRequestException("Email is already in use");
+        }
+
         User user = userFactory.createFromRegisterRequest(registerRequest);
         Portfolio portfolio = portfolioFactory.createPortfolio(user);
         portfolio.setUser(user);

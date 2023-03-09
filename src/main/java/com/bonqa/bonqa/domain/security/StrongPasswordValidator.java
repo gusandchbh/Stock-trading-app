@@ -1,20 +1,21 @@
 package com.bonqa.bonqa.domain.security;
 
+import com.bonqa.bonqa.exception.StrongPasswordException;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 import org.passay.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class StrongPasswordValidator implements ConstraintValidator<StrongPassword, String> {
-
     @Override
-    public boolean isValid(String password, ConstraintValidatorContext constraintValidatorContext) {
-
+    public boolean isValid(String password, ConstraintValidatorContext context) {
         PasswordValidator passwordValidator = new PasswordValidator(
                 Arrays.asList(
-                        new LengthRule(10, 128),
+                        new LengthRule(8, 22),
                         //At least one upper case letter
                         new CharacterRule(EnglishCharacterData.UpperCase, 1),
                         //At least one lower case letter
@@ -24,23 +25,24 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
                         //At least one special characters
                         new CharacterRule(EnglishCharacterData.Special, 1),
                         new WhitespaceRule()
-
                 )
         );
-        RuleResult result = passwordValidator.validate(new PasswordData(password));
 
-        if (result.isValid()) {
-            return true;
+        PasswordData passwordData = new PasswordData(password);
+        RuleResult result = passwordValidator.validate(passwordData);
+
+        if (!result.isValid()) {
+            String violationMessage = passwordValidator.getMessages(result).stream().findFirst().get();
+            context.buildConstraintViolationWithTemplate(violationMessage)
+                    .addConstraintViolation()
+                    .disableDefaultConstraintViolation();
+            return false;
         }
 
-        //Sending one message each time failed validation.
-        constraintValidatorContext.buildConstraintViolationWithTemplate(passwordValidator.getMessages(result).stream().findFirst().get())
-                .addConstraintViolation()
-                .disableDefaultConstraintViolation();
-
-        return false;
+        return true;
     }
-
 }
+
+
 
 

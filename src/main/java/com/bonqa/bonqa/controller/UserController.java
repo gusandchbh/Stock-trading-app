@@ -5,14 +5,25 @@ import com.bonqa.bonqa.domain.model.data.request.LoginRequest;
 import com.bonqa.bonqa.domain.model.data.request.RegisterRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdateUserRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
+import com.bonqa.bonqa.domain.security.StrongPassword;
+import com.bonqa.bonqa.domain.security.StrongPasswordValidator;
 import com.bonqa.bonqa.domain.user.UserService;
+import com.bonqa.bonqa.exception.BadRequestException;
+import com.bonqa.bonqa.exception.StrongPasswordException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -43,11 +54,24 @@ public class UserController {
         }
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@Valid @RequestBody RegisterRequest registerRequest) throws AuthenticationException {
-        User user = userService.registerUser(registerRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
+        List<String> messages = new ArrayList<>();
+        for (ObjectError error : ex.getBindingResult().getAllErrors()) {
+            messages.add(error.getDefaultMessage());
+        }
+        return ResponseEntity.badRequest().body(String.join(", ", messages));
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@Valid @RequestBody RegisterRequest registerRequest) throws AuthenticationException {
+            userService.registerUser(registerRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Registration was successful!");
+    }
+
+
+
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
