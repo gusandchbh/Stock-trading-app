@@ -1,12 +1,20 @@
 package com.bonqa.bonqa.domain.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @ToString
 @Entity
@@ -14,22 +22,22 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 public class Transaction {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(nullable = false)
-    private BigDecimal amount;
+  @Column(nullable = false)
+  private BigDecimal amount;
 
-    @Column(name ="create_date", nullable = false)
-    private LocalDate createDate;
+  @Column(name = "create_date", nullable = false)
+  private LocalDate createDate;
 
-    @ManyToOne
-    @JoinColumn(name="portfolio_id", nullable=false)
-    private Portfolio portfolio;
+  @ManyToOne
+  @JoinColumn(name = "portfolio_id", nullable = false)
+  private Portfolio portfolio;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @JoinColumn(name = "trade_id", referencedColumnName = "id")
-    private Trade trade;
+  @OneToOne(cascade = CascadeType.ALL, optional = true)
+  @JoinColumn(name = "trade_id", referencedColumnName = "id")
+  private Trade trade;
 
 }

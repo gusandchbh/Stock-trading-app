@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Card, Form, Button, Alert } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import React, {useState} from "react";
+import {Alert, Button, Card, Form} from "react-bootstrap";
+import {Link, useNavigate} from "react-router-dom";
+import {useAuth} from "../contexts/AuthContext";
 
 export default function Signup() {
     const [username, setUsername] = useState("");
@@ -9,7 +9,7 @@ export default function Signup() {
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const { signup } = useAuth();
+    const {signup} = useAuth();
 
     const navigate = useNavigate();
 
@@ -26,6 +26,7 @@ export default function Signup() {
         }
         setLoading(false);
     }
+
     return (
         <div
             style={{
