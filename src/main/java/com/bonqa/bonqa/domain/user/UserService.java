@@ -51,14 +51,12 @@ public class UserService {
     }
 
     public User registerUser(RegisterRequest registerRequest) throws AuthenticationException {
-        if (userRepository.existsByUsername(registerRequest.getUsername())) {
-            throw new BadRequestException("Username is already in use");
+        if (userRepository.existsByUsername(registerRequest.getUsername())){
+            throw new BadRequestException("Username already exists.");
         }
-
-        if (userRepository.existsByEmail(registerRequest.getEmail())) {
-            throw new BadRequestException("Email is already in use");
+        if (userRepository.existsByEmail(registerRequest.getEmail())){
+            throw new BadRequestException("Email already exists.");
         }
-
         User user = userFactory.createFromRegisterRequest(registerRequest);
         Portfolio portfolio = portfolioFactory.createPortfolio(user);
         portfolio.setUser(user);
