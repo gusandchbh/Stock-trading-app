@@ -8,7 +8,7 @@ const StockPage = () => {
         try {
             const response = await API.get("stocks/all");
             setResult(response.data)
-        } catch (e){
+        } catch (e) {
             console.log(e)
         }
     }
@@ -17,19 +17,19 @@ const StockPage = () => {
     }, [])
 
     return (
-        <div style={ { display: "flex"}}>
-        <div style={ { alignItems:"center"}}>
-            <h1> Welcome to Stock Tradify! </h1>
-        </div>
+        <div style={{display: "flex"}}>
+            <div style={{alignItems: "center"}}>
+                <h1> Welcome to Stock Tradify! </h1>
+            </div>
 
             <div>
-            {result.map((item,index) => {
-            return (
-                    <li style={ {flexDirection: "column"}} key={index}> {item.name} Price: {item.price}  USD </li>
-            )
-            })}
+                {result.map((item, index) => {
+                    return (
+                        <li style={{flexDirection: "column"}} key={index}> {item.name} Price: {item.price} USD </li>
+                    )
+                })}
             </div>
-</div>
+        </div>
     );
 };
 

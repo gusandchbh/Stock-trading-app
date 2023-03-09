@@ -5,13 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-
 @Getter
 @Setter
 public class UpdateUserRequest {
-    @Size(min = 5)
-    private String password;
-    private String email;
-    private String firstName;
-    private String lastName;
+  @Size(min = 5)
+  private String password;
+  private String email;
+  private String firstName;
+  private String lastName;
 }

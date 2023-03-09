@@ -13,26 +13,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = {"/stocks"})
 public class StockController {
 
-    private final StockFetcherInterface stockFetcher;
-    private final StockUpdater stockUpdater;
-    private final StockRepository stockRepository;
+  private final StockFetcherInterface stockFetcher;
+  private final StockUpdater stockUpdater;
+  private final StockRepository stockRepository;
 
-    @Autowired
-    public StockController(StockFetcherInterface stockFetcher, StockUpdater stockUpdater, StockRepository stockRepository) {
-        this.stockFetcher = stockFetcher;
-        this.stockUpdater = stockUpdater;
-        this.stockRepository = stockRepository;
-    }
+  @Autowired
+  public StockController(StockFetcherInterface stockFetcher, StockUpdater stockUpdater,
+                         StockRepository stockRepository) {
+    this.stockFetcher = stockFetcher;
+    this.stockUpdater = stockUpdater;
+    this.stockRepository = stockRepository;
+  }
 
-    @GetMapping("/")
-    Iterable<Stock> getAllStocks(){
-        return stockRepository.findAll();
-    }
+  @GetMapping("/")
+  Iterable<Stock> getAllStocks() {
+    return stockRepository.findAll();
+  }
 
-    @GetMapping("/update")
-    String updateStocks(){
-        stockUpdater.update();
+  @GetMapping("/update")
+  String updateStocks() {
+    stockUpdater.update();
 
-        return "Stocks updated";
-    }
+    return "Stocks updated";
+  }
 }

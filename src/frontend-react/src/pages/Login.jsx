@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { Card, Form, Button, Alert } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import React, {useState} from "react";
+import {Alert, Button, Card, Form} from "react-bootstrap";
+import {Link, useNavigate} from "react-router-dom";
+import {useAuth} from "../contexts/AuthContext";
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const { login } = useAuth();
+    const {login} = useAuth();
     const navigate = useNavigate();
 
     async function handleSubmit(e) {
@@ -25,6 +25,7 @@ const Login = () => {
         }
         setLoading(false);
     }
+
     return (
         <div
             style={{
@@ -82,7 +83,7 @@ const Login = () => {
             <div className="w-100 text-center mt-4">
                 Need an account? <Link to="/register">Sign Up</Link>
             </div>
-            <h1 style={{ color: "transparent" }}>Test</h1>
+            <h1 style={{color: "transparent"}}>Test</h1>
         </div>
     );
 };

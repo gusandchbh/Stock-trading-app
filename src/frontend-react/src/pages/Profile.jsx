@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Card } from "react-bootstrap";
-import { useAuth } from "../contexts/AuthContext";
+import React from "react";
+import {Card} from "react-bootstrap";
+import {useAuth} from "../contexts/AuthContext";
 
 export const Profile = () => {
 
-    const { currentUser } = useAuth();
+    const {currentUser} = useAuth();
     console.log(currentUser)
 
     return (
@@ -18,7 +18,7 @@ export const Profile = () => {
                 }}
             >
                 <Card.Body className="profile-card">
-                            <h1>Welcome {!currentUser ?  "no user" : currentUser}!</h1>
+                    <h1>Welcome {!currentUser ? "no user" : currentUser}!</h1>
                     )}
                 </Card.Body>
             </Card>
