@@ -5,13 +5,25 @@ import com.bonqa.bonqa.domain.model.data.request.LoginRequest;
 import com.bonqa.bonqa.domain.model.data.request.RegisterRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdateUserRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
+import com.bonqa.bonqa.domain.security.StrongPassword;
+import com.bonqa.bonqa.domain.security.StrongPasswordValidator;
 import com.bonqa.bonqa.domain.user.UserService;
+import com.bonqa.bonqa.exception.BadRequestException;
+import com.bonqa.bonqa.exception.StrongPasswordException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -28,29 +40,43 @@ public class UserController {
     }
 
     @GetMapping("/")
-    Iterable<User> all() {
+    public Iterable<User> all() {
         return userRepository.findAll();
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest userLogin) throws AuthenticationException {
-        String token = userService.loginUser(userLogin);
+        try {
+            String token = userService.loginUser(userLogin);
+            return ResponseEntity.status(HttpStatus.OK).body(token);
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        }
+    }
 
-        return ResponseEntity.status(HttpStatus.OK).body(token);
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
+        List<String> messages = new ArrayList<>();
+        for (ObjectError error : ex.getBindingResult().getAllErrors()) {
+            messages.add(error.getDefaultMessage());
+        }
+        return ResponseEntity.badRequest().body(String.join(", ", messages));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody RegisterRequest registerRequest) throws AuthenticationException {
-        User user = userService.registerUser(registerRequest);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    public ResponseEntity<String> registerUser(@Valid @RequestBody RegisterRequest registerRequest) throws AuthenticationException {
+        try {
+            userService.registerUser(registerRequest);
+        } catch (BadRequestException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+            return ResponseEntity.status(HttpStatus.CREATED).body("Registration was successful!");
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
         try {
             userRepository.deleteById(id);
-
             return new ResponseEntity<>("User deleted!", HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -59,15 +85,17 @@ public class UserController {
 
     @DeleteMapping("/delete/all")
     public ResponseEntity<String> deleteAll() {
-        userRepository.deleteAll();
-        return new ResponseEntity<>("All users deleted!", HttpStatus.OK);
+        try {
+            userRepository.deleteAll();
+            return new ResponseEntity<>("All users deleted!", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to delete all users", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-
     @PutMapping("/update/{id}")
     public ResponseEntity<Void> updateById(@RequestBody UpdateUserRequest updateUserRequest, @PathVariable Long id) {
         try {
             userService.updateUser(updateUserRequest, id);
-
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -83,5 +111,9 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+
+
+
 }
 
