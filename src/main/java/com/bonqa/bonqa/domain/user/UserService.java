@@ -7,6 +7,7 @@ import com.bonqa.bonqa.domain.model.data.request.LoginRequest;
 import com.bonqa.bonqa.domain.model.data.request.RegisterRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdateEmailRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdateNamesRequest;
+import com.bonqa.bonqa.domain.model.data.request.UpdatePasswordRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
 import com.bonqa.bonqa.domain.security.TokenGenerator;
 import com.bonqa.bonqa.exception.BadRequestException;
@@ -89,6 +90,18 @@ public class UserService {
       User user = userOptional.get();
       String newEmail = updateEmailRequest.getEmail();
       user.setEmail(newEmail);
+      userRepository.save(user);
+    } else {
+      throw new RuntimeException("User not found");
+    }
+  }
+
+  public void updatePassword(@Valid UpdatePasswordRequest updatePasswordRequest, Long id) {
+    Optional<User> userOptional = userRepository.findById(id);
+    if (userOptional.isPresent()) {
+      User user = userOptional.get();
+      String newEmail = updatePasswordRequest.getPassword();
+      user.setPassword(passwordEncoder.encode(newEmail));
       userRepository.save(user);
     } else {
       throw new RuntimeException("User not found");
