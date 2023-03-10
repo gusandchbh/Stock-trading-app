@@ -3,7 +3,9 @@ package com.bonqa.bonqa.controller;
 import com.bonqa.bonqa.domain.model.User;
 import com.bonqa.bonqa.domain.model.data.request.LoginRequest;
 import com.bonqa.bonqa.domain.model.data.request.RegisterRequest;
-import com.bonqa.bonqa.domain.model.data.request.UpdateUserRequest;
+import com.bonqa.bonqa.domain.model.data.request.UpdateEmailRequest;
+import com.bonqa.bonqa.domain.model.data.request.UpdateNamesRequest;
+import com.bonqa.bonqa.domain.model.data.request.UpdatePasswordRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
 import com.bonqa.bonqa.domain.user.UserService;
 import com.bonqa.bonqa.exception.BadRequestException;
@@ -96,16 +98,42 @@ public class UserController {
     }
   }
 
-  @PutMapping("/update/{id}")
-  public ResponseEntity<Void> updateById(@RequestBody UpdateUserRequest updateUserRequest,
-                                         @PathVariable Long id) {
+  @PutMapping("/update/names/{id}")
+  public ResponseEntity<String> updateNamesById(
+      @Valid @RequestBody UpdateNamesRequest updateNamesRequest,
+      @PathVariable Long id) {
     try {
-      userService.updateUser(updateUserRequest, id);
-      return ResponseEntity.ok().build();
+      userService.updateNames(updateNamesRequest, id);
+      return ResponseEntity.ok().body("Names have been successfully updated!");
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
   }
+
+  @PutMapping("/update/email/{id}")
+  public ResponseEntity<String> updateEmailById(
+      @Valid @RequestBody UpdateEmailRequest updateEmailRequest,
+      @PathVariable Long id) {
+    try {
+      userService.updateEmail(updateEmailRequest, id);
+      return ResponseEntity.ok().body("Email successfully updated!");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+  }
+
+  @PutMapping("/update/password/{id}")
+  public ResponseEntity<String> updatePasswordById(
+      @Valid @RequestBody UpdatePasswordRequest updatePasswordRequest,
+      @PathVariable Long id) {
+    try {
+      userService.updatePassword(updatePasswordRequest, id);
+      return ResponseEntity.ok().body("Password successfully updated!");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+  }
+
 
   @GetMapping("/{id}")
   public ResponseEntity<User> fetchById(@PathVariable Long id) {

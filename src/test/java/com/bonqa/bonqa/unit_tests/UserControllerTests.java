@@ -11,7 +11,6 @@ import static org.mockito.Mockito.when;
 import com.bonqa.bonqa.controller.UserController;
 import com.bonqa.bonqa.domain.model.User;
 import com.bonqa.bonqa.domain.model.data.request.LoginRequest;
-import com.bonqa.bonqa.domain.model.data.request.UpdateUserRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
 import com.bonqa.bonqa.domain.user.UserService;
 import com.bonqa.bonqa.exception.InvalidCredentialsException;
@@ -142,34 +141,6 @@ class UserControllerTest {
     verify(userRepository, times(1)).deleteAll();
   }
 
-  @Test
-  void testUpdateById_Success() {
-    UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-    Long id = 123L;
-
-    doNothing().when(userService).updateUser(updateUserRequest, id);
-
-    ResponseEntity<Void> response = userController.updateById(updateUserRequest, id);
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-
-    verify(userService, times(1)).updateUser(updateUserRequest, id);
-  }
-
-  @Test
-  void testUpdateById_Failure() {
-    UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-    Long id = 123L;
-
-    doThrow(new RuntimeException("Failed to update user")).when(userService)
-        .updateUser(updateUserRequest, id);
-
-    ResponseEntity<Void> response = userController.updateById(updateUserRequest, id);
-
-    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-
-    verify(userService, times(1)).updateUser(updateUserRequest, id);
-  }
 
   @Test
   void testFetchById_Success() {
