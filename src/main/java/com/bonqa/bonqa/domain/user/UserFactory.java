@@ -19,7 +19,7 @@ public class UserFactory {
     user.setUsername(request.getUsername());
     user.setPassword(passwordEncoder.encode(request.getPassword()));
     user.setEmail(request.getEmail());
-    user.setRole(Role.USER);
+    user.setRole(Role.ROLE_USER);
 
     return user;
   }
