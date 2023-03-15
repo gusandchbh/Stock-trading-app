@@ -6,7 +6,9 @@ import com.bonqa.bonqa.domain.model.data.request.UpdateNamesRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdatePasswordRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
 import com.bonqa.bonqa.domain.user.UserService;
+import com.bonqa.bonqa.dto.UserDTO;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,8 +35,8 @@ public class UserController {
   }
 
   @GetMapping("/")
-  public Iterable<User> all() {
-    return userRepository.findAll();
+  public List<UserDTO> all() {
+    return userService.getAllUsers();
   }
 
 

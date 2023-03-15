@@ -5,7 +5,10 @@ import com.bonqa.bonqa.domain.model.data.request.UpdateEmailRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdateNamesRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdatePasswordRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
+import com.bonqa.bonqa.dto.UserDTO;
 import jakarta.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +24,27 @@ public class UserService {
   public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
+  }
+
+  public List<UserDTO> getAllUsers() {
+    List<User> users = userRepository.findAll();
+    List<UserDTO> userDTOs = new ArrayList<>();
+
+    for (User user : users) {
+      UserDTO userDTO = new UserDTO();
+      userDTO.setId(user.getId());
+      userDTO.setEmail(user.getEmail());
+      userDTO.setUsername(user.getUsername());
+      userDTO.setFirstName(user.getFirstName());
+      userDTO.setLastName(user.getLastName());
+      userDTO.setPortfolio(user.getPortfolio());
+      userDTO.setCreatedTime(user.getCreatedTime());
+      userDTO.setRole(user.getRole());
+
+      userDTOs.add(userDTO);
+    }
+
+    return userDTOs;
   }
 
   public User updateNames(@Valid UpdateNamesRequest request, Long id) {

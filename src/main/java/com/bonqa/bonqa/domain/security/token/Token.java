@@ -36,6 +36,6 @@ public class Token {
   public boolean expired;
 
   @ManyToOne
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "bank_user_id")
   public User user;
 }
