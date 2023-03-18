@@ -4,7 +4,7 @@ import { Header } from "./Header";
 
 function Layout() {
   return (
-    <div>
+    <div style={{ backgroundColor: "#a9d1a9" }}>
       <Header />
       <Outlet />
     </div>
