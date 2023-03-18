@@ -1,15 +1,15 @@
 package com.bonqa.bonqa.domain.authentication;
 
+import com.bonqa.bonqa.domain.model.Token;
+import com.bonqa.bonqa.domain.model.TokenType;
 import com.bonqa.bonqa.domain.model.User;
 import com.bonqa.bonqa.domain.model.data.request.AuthenticationRequest;
 import com.bonqa.bonqa.domain.model.data.request.RegisterRequest;
-import com.bonqa.bonqa.domain.model.data.response.AuthenticationResponse;
+import com.bonqa.bonqa.domain.repository.TokenRepository;
 import com.bonqa.bonqa.domain.repository.UserRepository;
 import com.bonqa.bonqa.domain.security.JwtService;
-import com.bonqa.bonqa.domain.security.token.Token;
-import com.bonqa.bonqa.domain.security.token.TokenRepository;
-import com.bonqa.bonqa.domain.security.token.TokenType;
 import com.bonqa.bonqa.domain.user.UserFactory;
+import com.bonqa.bonqa.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,17 +25,23 @@ public class AuthenticationService {
 
   private final UserFactory userFactory;
 
-  public AuthenticationResponse register(RegisterRequest request) {
+  private final UserRepository userRepository;
+
+  public String register(RegisterRequest request) {
+    if (userRepository.existsByUsername(request.getUsername())) {
+      throw new BadRequestException("Username already exists.");
+    }
+    if (userRepository.existsByEmail(request.getEmail())) {
+      throw new BadRequestException("Email already exists.");
+    }
     User user = userFactory.createFromRegisterRequest(request);
     var savedUser = repository.save(user);
     var jwtToken = jwtService.generateToken(user);
     saveUserToken(savedUser, jwtToken);
-    return AuthenticationResponse.builder()
-        .token(jwtToken)
-        .build();
+    return jwtToken;
   }
 
-  public AuthenticationResponse authenticate(AuthenticationRequest request) {
+  public String authenticate(AuthenticationRequest request) {
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
             request.getUsername(),
@@ -47,9 +53,7 @@ public class AuthenticationService {
     var jwtToken = jwtService.generateToken(user);
     revokeAllUserTokens(user);
     saveUserToken(user, jwtToken);
-    return AuthenticationResponse.builder()
-        .token(jwtToken)
-        .build();
+    return jwtToken;
   }
 
   private void saveUserToken(User user, String jwtToken) {

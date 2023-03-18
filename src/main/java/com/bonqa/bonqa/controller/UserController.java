@@ -1,8 +1,6 @@
 package com.bonqa.bonqa.controller;
 
-import com.bonqa.bonqa.domain.model.User;
 import com.bonqa.bonqa.domain.model.data.request.UpdateEmailRequest;
-import com.bonqa.bonqa.domain.model.data.request.UpdateNamesRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdatePasswordRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
 import com.bonqa.bonqa.domain.user.UserService;
@@ -60,18 +58,6 @@ public class UserController {
     }
   }
 
-  @PutMapping("/update/names/{id}")
-  public ResponseEntity<String> updateNamesById(
-      @Valid @RequestBody UpdateNamesRequest updateNamesRequest,
-      @PathVariable Long id) {
-    try {
-      userService.updateNames(updateNamesRequest, id);
-      return ResponseEntity.ok().body("Names have been successfully updated!");
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-  }
-
   @PutMapping("/update/email/{id}")
   public ResponseEntity<String> updateEmailById(
       @Valid @RequestBody UpdateEmailRequest updateEmailRequest,
@@ -98,16 +84,15 @@ public class UserController {
 
 
   @GetMapping("/{id}")
-  public ResponseEntity<User> fetchById(@PathVariable Long id) {
+  public ResponseEntity<UserDTO> fetchById(@PathVariable Long id) {
     try {
-      Optional<User> user = userRepository.findById(id);
+      Optional<UserDTO> user = userService.getUser(id);
       return user.map(value -> ResponseEntity.ok().body(value))
           .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
   }
-
-
+  
 }
 

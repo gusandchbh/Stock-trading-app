@@ -1,5 +1,6 @@
-package com.bonqa.bonqa.domain.security.token;
+package com.bonqa.bonqa.domain.repository;
 
+import com.bonqa.bonqa.domain.model.Token;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

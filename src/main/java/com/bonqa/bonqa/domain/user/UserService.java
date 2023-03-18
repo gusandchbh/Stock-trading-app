@@ -2,7 +2,6 @@ package com.bonqa.bonqa.domain.user;
 
 import com.bonqa.bonqa.domain.model.User;
 import com.bonqa.bonqa.domain.model.data.request.UpdateEmailRequest;
-import com.bonqa.bonqa.domain.model.data.request.UpdateNamesRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdatePasswordRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
 import com.bonqa.bonqa.dto.UserDTO;
@@ -35,30 +34,12 @@ public class UserService {
       userDTO.setId(user.getId());
       userDTO.setEmail(user.getEmail());
       userDTO.setUsername(user.getUsername());
-      userDTO.setFirstName(user.getFirstName());
-      userDTO.setLastName(user.getLastName());
-      userDTO.setPortfolio(user.getPortfolio());
       userDTO.setCreatedTime(user.getCreatedTime());
       userDTO.setRole(user.getRole());
-
       userDTOs.add(userDTO);
     }
 
     return userDTOs;
-  }
-
-  public User updateNames(@Valid UpdateNamesRequest request, Long id) {
-    User updatedUser = userRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("User not found"));
-
-    if (request.getFirstName() != null) {
-      updatedUser.setFirstName(request.getFirstName());
-    }
-    if (request.getLastName() != null) {
-      updatedUser.setLastName(request.getLastName());
-    }
-
-    return userRepository.save(updatedUser);
   }
 
   public void updateEmail(@Valid UpdateEmailRequest updateEmailRequest, Long id) {
@@ -84,4 +65,19 @@ public class UserService {
       throw new RuntimeException("User not found");
     }
   }
+
+  public Optional<UserDTO> getUser(Long id) {
+    Optional<User> user = userRepository.findById(id);
+    if (user.isPresent()) {
+      UserDTO userDTO = new UserDTO();
+      userDTO.setId(user.get().getId());
+      userDTO.setUsername(user.get().getUsername());
+      userDTO.setEmail(user.get().getEmail());
+      userDTO.setCreatedTime(user.get().getCreatedTime());
+      userDTO.setRole(user.get().getRole());
+      return Optional.of(userDTO);
+    }
+    return Optional.empty();
+  }
+
 }

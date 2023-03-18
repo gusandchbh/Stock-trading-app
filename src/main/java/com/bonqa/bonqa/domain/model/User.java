@@ -1,6 +1,5 @@
 package com.bonqa.bonqa.domain.model;
 
-import com.bonqa.bonqa.domain.security.token.Token;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,13 +47,6 @@ public class User implements UserDetails {
 
   @Column(name = "password", nullable = false, length = 100)
   private String password;
-
-  @Column(name = "first_name")
-  private String firstName;
-
-  @Column(name = "last_name")
-  private String lastName;
-
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "portfolio_id")
   private Portfolio portfolio;

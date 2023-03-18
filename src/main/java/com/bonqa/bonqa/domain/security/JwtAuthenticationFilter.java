@@ -1,6 +1,6 @@
 package com.bonqa.bonqa.domain.security;
 
-import com.bonqa.bonqa.domain.security.token.TokenRepository;
+import com.bonqa.bonqa.domain.repository.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

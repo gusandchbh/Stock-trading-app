@@ -1,6 +1,5 @@
-package com.bonqa.bonqa.domain.security.token;
+package com.bonqa.bonqa.domain.model;
 
-import com.bonqa.bonqa.domain.model.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
