@@ -1,98 +1,58 @@
 package com.bonqa.bonqa.domain.user;
 
-import com.bonqa.bonqa.domain.model.Portfolio;
-import com.bonqa.bonqa.domain.model.Role;
 import com.bonqa.bonqa.domain.model.User;
-import com.bonqa.bonqa.domain.model.data.request.LoginRequest;
-import com.bonqa.bonqa.domain.model.data.request.RegisterRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdateEmailRequest;
-import com.bonqa.bonqa.domain.model.data.request.UpdateNamesRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdatePasswordRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
-import com.bonqa.bonqa.domain.security.TokenGenerator;
-import com.bonqa.bonqa.exception.BadRequestException;
+import com.bonqa.bonqa.dto.UserDTO;
+import com.bonqa.bonqa.exception.UserNotFoundException;
 import jakarta.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-  private final UserRepository userRepository;
-  private final TokenGenerator tokenGenerator;
-  private final AuthenticationManager authenticationManager;
   private final PasswordEncoder passwordEncoder;
-  private final Role.PortfolioFactory portfolioFactory;
-  private final UserFactory userFactory;
+  private final UserRepository userRepository;
 
   @Autowired
-  public UserService(
-      UserRepository userRepository,
-      TokenGenerator tokenGenerator,
-      AuthenticationManager authenticationManager,
-      PasswordEncoder passwordEncoder,
-      Role.PortfolioFactory portfolioFactory,
-      UserFactory userFactory
-  ) {
+  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
-    this.tokenGenerator = tokenGenerator;
-    this.authenticationManager = authenticationManager;
     this.passwordEncoder = passwordEncoder;
-    this.userFactory = userFactory;
-    this.portfolioFactory = portfolioFactory;
   }
 
-  public String loginUser(LoginRequest userLogin) throws AuthenticationException {
-    Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
+  public List<UserDTO> getAllUsers() {
+    List<User> users = userRepository.findAll();
+    List<UserDTO> userDTOs = new ArrayList<>();
 
-    return tokenGenerator.generateToken(authentication);
-  }
-
-  public User registerUser(RegisterRequest registerRequest) throws AuthenticationException {
-    if (userRepository.existsByUsername(registerRequest.getUsername())) {
-      throw new BadRequestException("Username already exists.");
-    }
-    if (userRepository.existsByEmail(registerRequest.getEmail())) {
-      throw new BadRequestException("Email already exists.");
-    }
-    User user = userFactory.createFromRegisterRequest(registerRequest);
-    Portfolio portfolio = portfolioFactory.createPortfolio(user);
-    portfolio.setUser(user);
-    userRepository.save(user);
-
-    return user;
-  }
-
-  public User updateNames(@Valid UpdateNamesRequest request, Long id) {
-    User updatedUser = userRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("User not found"));
-
-    if (request.getFirstName() != null) {
-      updatedUser.setFirstName(request.getFirstName());
-    }
-    if (request.getLastName() != null) {
-      updatedUser.setLastName(request.getLastName());
+    for (User user : users) {
+      UserDTO userDTO = new UserDTO();
+      userDTO.setId(user.getId());
+      userDTO.setEmail(user.getEmail());
+      userDTO.setUsername(user.getUsername());
+      userDTO.setCreatedTime(user.getCreatedTime());
+      userDTO.setRole(user.getRole());
+      userDTOs.add(userDTO);
     }
 
-    return userRepository.save(updatedUser);
+    return userDTOs;
   }
 
   public void updateEmail(@Valid UpdateEmailRequest updateEmailRequest, Long id) {
     Optional<User> userOptional = userRepository.findById(id);
     if (userOptional.isPresent()) {
       User user = userOptional.get();
+      user.preventUnauthorizedUpdate();
       String newEmail = updateEmailRequest.getEmail();
       user.setEmail(newEmail);
       userRepository.save(user);
     } else {
-      throw new RuntimeException("User not found");
+      throw new UserNotFoundException("User not found");
     }
   }
 
@@ -100,11 +60,27 @@ public class UserService {
     Optional<User> userOptional = userRepository.findById(id);
     if (userOptional.isPresent()) {
       User user = userOptional.get();
+      user.preventUnauthorizedUpdate();
       String newEmail = updatePasswordRequest.getPassword();
       user.setPassword(passwordEncoder.encode(newEmail));
       userRepository.save(user);
     } else {
-      throw new RuntimeException("User not found");
+      throw new UserNotFoundException("User not found");
     }
   }
+
+  public Optional<UserDTO> getUser(Long id) {
+    Optional<User> user = userRepository.findById(id);
+    if (user.isPresent()) {
+      UserDTO userDTO = new UserDTO();
+      userDTO.setId(user.get().getId());
+      userDTO.setUsername(user.get().getUsername());
+      userDTO.setEmail(user.get().getEmail());
+      userDTO.setCreatedTime(user.get().getCreatedTime());
+      userDTO.setRole(user.get().getRole());
+      return Optional.of(userDTO);
+    }
+    return Optional.empty();
+  }
+
 }

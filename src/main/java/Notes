@@ -1,5 +1,5 @@
 Döda port: npx kill-port 8080
 Starta: mvn spring-boot:run
-
+Ta bort lokala ändringar: git reset --hard
 logging.level.root = DEBUG
 
