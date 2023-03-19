@@ -7,7 +7,7 @@ import com.bonqa.bonqa.domain.model.data.request.AuthenticationRequest;
 import com.bonqa.bonqa.domain.model.data.request.RegisterRequest;
 import com.bonqa.bonqa.domain.repository.TokenRepository;
 import com.bonqa.bonqa.domain.repository.UserRepository;
-import com.bonqa.bonqa.domain.security.JwtService;
+import com.bonqa.bonqa.domain.security.token.JwtService;
 import com.bonqa.bonqa.domain.user.UserFactory;
 import com.bonqa.bonqa.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;

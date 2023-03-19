@@ -1,5 +1,6 @@
 package com.bonqa.bonqa.domain.security;
 
+import com.bonqa.bonqa.domain.security.token.JwtAuthenticationFilter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

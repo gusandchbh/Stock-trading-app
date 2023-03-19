@@ -1,5 +1,6 @@
 package com.bonqa.bonqa.domain.model;
 
+import com.bonqa.bonqa.exception.NotAuthorizedException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,6 +25,7 @@ import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @NoArgsConstructor
@@ -59,8 +61,7 @@ public class User implements UserDetails {
   @Column(name = "role", nullable = false)
   private Role role;
 
-  //, cascade = CascadeType.REMOVE
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   private List<Token> tokens;
 
   @Override
@@ -97,6 +98,24 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
+
+  private void preventUnAuthorizedRemove() {
+
+    String name = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    if (!name.equals(this.username)) {
+      throw new NotAuthorizedException("Users can only delete themselves.");
+    }
+
+  }
+
+  public void preventUnauthorizedUpdate() {
+    String name = SecurityContextHolder.getContext().getAuthentication().getName();
+    if (!name.equals(this.username)) {
+      throw new NotAuthorizedException("Users can only update their own information.");
+    }
+  }
+
 }
 
 

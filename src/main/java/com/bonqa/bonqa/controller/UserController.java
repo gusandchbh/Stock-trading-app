@@ -6,12 +6,17 @@ import com.bonqa.bonqa.domain.repository.UserRepository;
 import com.bonqa.bonqa.domain.user.UserService;
 import com.bonqa.bonqa.dto.UserDTO;
 import jakarta.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -48,6 +53,7 @@ public class UserController {
     }
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/delete/all")
   public ResponseEntity<String> deleteAll() {
     try {
@@ -62,24 +68,17 @@ public class UserController {
   public ResponseEntity<String> updateEmailById(
       @Valid @RequestBody UpdateEmailRequest updateEmailRequest,
       @PathVariable Long id) {
-    try {
-      userService.updateEmail(updateEmailRequest, id);
-      return ResponseEntity.ok().body("Email successfully updated!");
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
+    userService.updateEmail(updateEmailRequest, id);
+    return ResponseEntity.ok().body("Email successfully updated!");
+
   }
 
   @PutMapping("/update/password/{id}")
   public ResponseEntity<String> updatePasswordById(
       @Valid @RequestBody UpdatePasswordRequest updatePasswordRequest,
       @PathVariable Long id) {
-    try {
-      userService.updatePassword(updatePasswordRequest, id);
-      return ResponseEntity.ok().body("Password successfully updated!");
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
+    userService.updatePassword(updatePasswordRequest, id);
+    return ResponseEntity.ok().body("Password successfully updated!");
   }
 
 
@@ -93,6 +92,15 @@ public class UserController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
   }
-  
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
+    List<String> messages = new ArrayList<>();
+    for (ObjectError error : ex.getBindingResult().getAllErrors()) {
+      messages.add(error.getDefaultMessage());
+    }
+    return ResponseEntity.badRequest().body(String.join(", ", messages));
+  }
+
 }
 

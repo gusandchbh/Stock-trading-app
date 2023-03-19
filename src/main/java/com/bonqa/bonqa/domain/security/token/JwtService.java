@@ -1,4 +1,4 @@
-package com.bonqa.bonqa.domain.security;
+package com.bonqa.bonqa.domain.security.token;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

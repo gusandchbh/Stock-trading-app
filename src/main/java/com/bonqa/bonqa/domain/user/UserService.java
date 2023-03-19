@@ -5,6 +5,7 @@ import com.bonqa.bonqa.domain.model.data.request.UpdateEmailRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdatePasswordRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
 import com.bonqa.bonqa.dto.UserDTO;
+import com.bonqa.bonqa.exception.UserNotFoundException;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +47,12 @@ public class UserService {
     Optional<User> userOptional = userRepository.findById(id);
     if (userOptional.isPresent()) {
       User user = userOptional.get();
+      user.preventUnauthorizedUpdate();
       String newEmail = updateEmailRequest.getEmail();
       user.setEmail(newEmail);
       userRepository.save(user);
     } else {
-      throw new RuntimeException("User not found");
+      throw new UserNotFoundException("User not found");
     }
   }
 
@@ -58,11 +60,12 @@ public class UserService {
     Optional<User> userOptional = userRepository.findById(id);
     if (userOptional.isPresent()) {
       User user = userOptional.get();
+      user.preventUnauthorizedUpdate();
       String newEmail = updatePasswordRequest.getPassword();
       user.setPassword(passwordEncoder.encode(newEmail));
       userRepository.save(user);
     } else {
-      throw new RuntimeException("User not found");
+      throw new UserNotFoundException("User not found");
     }
   }
 

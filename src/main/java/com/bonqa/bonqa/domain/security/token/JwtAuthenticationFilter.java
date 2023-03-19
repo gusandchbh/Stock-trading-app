@@ -1,4 +1,4 @@
-package com.bonqa.bonqa.domain.security;
+package com.bonqa.bonqa.domain.security.token;
 
 import com.bonqa.bonqa.domain.repository.TokenRepository;
 import jakarta.servlet.FilterChain;
