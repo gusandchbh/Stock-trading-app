@@ -1,4 +1,4 @@
-package com.bonqa.bonqa.controller;
+package com.bonqa.bonqa.exception;
 
 import java.util.NoSuchElementException;
 import org.springframework.http.HttpStatus;

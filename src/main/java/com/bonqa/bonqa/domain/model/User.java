@@ -1,6 +1,5 @@
 package com.bonqa.bonqa.domain.model;
 
-import com.bonqa.bonqa.exception.NotAuthorizedException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -99,21 +98,12 @@ public class User implements UserDetails {
     return true;
   }
 
-  private void preventUnAuthorizedRemove() {
+  public boolean isCorrectUser() {
 
     String name = SecurityContextHolder.getContext().getAuthentication().getName();
 
-    if (!name.equals(this.username)) {
-      throw new NotAuthorizedException("Users can only delete themselves.");
-    }
+    return name.equals(this.username);
 
-  }
-
-  public void preventUnauthorizedUpdate() {
-    String name = SecurityContextHolder.getContext().getAuthentication().getName();
-    if (!name.equals(this.username)) {
-      throw new NotAuthorizedException("Users can only update their own information.");
-    }
   }
 
 }

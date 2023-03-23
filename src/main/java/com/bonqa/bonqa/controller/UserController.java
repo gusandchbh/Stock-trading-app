@@ -45,23 +45,15 @@ public class UserController {
 
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<String> deleteById(@PathVariable Long id) {
-    try {
-      userRepository.deleteById(id);
-      return new ResponseEntity<>("User deleted!", HttpStatus.OK);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
+    userService.deleteUserById(id);
+    return new ResponseEntity<>("User deleted!", HttpStatus.OK);
   }
 
   @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/delete/all")
   public ResponseEntity<String> deleteAll() {
-    try {
-      userRepository.deleteAll();
-      return new ResponseEntity<>("All users deleted!", HttpStatus.OK);
-    } catch (Exception e) {
-      return new ResponseEntity<>("Failed to delete all users", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    userRepository.deleteAll();
+    return new ResponseEntity<>("All users deleted!", HttpStatus.OK);
   }
 
   @PutMapping("/update/email/{id}")
@@ -84,13 +76,9 @@ public class UserController {
 
   @GetMapping("/{id}")
   public ResponseEntity<UserDTO> fetchById(@PathVariable Long id) {
-    try {
-      Optional<UserDTO> user = userService.getUser(id);
-      return user.map(value -> ResponseEntity.ok().body(value))
-          .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
+    Optional<UserDTO> user = userService.getUser(id);
+    return user.map(value -> ResponseEntity.ok().body(value))
+        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
