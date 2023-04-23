@@ -1,5 +1,6 @@
 package com.bonqa.bonqa.domain.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,11 +35,22 @@ public class PortfolioStock {
   @JoinColumn(name = "stock_id")
   private Stock stock;
 
-  private BigDecimal value;
+  @Column(name = "total_value")
+  private BigDecimal totalValue;
 
+  @Column(name = "stock_name")
+  private String stockName;
 
-  // Price
+  @Column(name = "purchase_price")
+  private BigDecimal purchasePrice;
 
-  // Shares
+  @Column(name = "purchase_date")
+  private LocalDateTime purchaseDate;
+
+  @Column(name = "quantity")
+  private Integer quantity;
+
+  @Column(name = "current_price")
+  private BigDecimal currentPrice;
 
 }
