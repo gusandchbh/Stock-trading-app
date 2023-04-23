@@ -19,13 +19,16 @@ export default function Signup() {
             setError("");
             setLoading(true);
             await signup(username, password, email);
-            navigate("/")
+            // Redirect to login page after successful registration
+            navigate("/login");
         } catch (error) {
             console.log(error);
             setError("Could not register.");
         }
         setLoading(false);
     }
+
+
 
     return (
         <div
