@@ -5,6 +5,7 @@ import com.bonqa.bonqa.domain.model.data.request.UpdateEmailRequest;
 import com.bonqa.bonqa.domain.model.data.request.UpdatePasswordRequest;
 import com.bonqa.bonqa.domain.repository.UserRepository;
 import com.bonqa.bonqa.dto.UserDTO;
+import com.bonqa.bonqa.exception.NotAuthorizedException;
 import com.bonqa.bonqa.exception.UserNotFoundException;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
@@ -47,7 +48,9 @@ public class UserService {
     Optional<User> userOptional = userRepository.findById(id);
     if (userOptional.isPresent()) {
       User user = userOptional.get();
-      user.preventUnauthorizedUpdate();
+      if (!user.isCorrectUser()) {
+        throw new NotAuthorizedException("Can not update another users email");
+      }
       String newEmail = updateEmailRequest.getEmail();
       user.setEmail(newEmail);
       userRepository.save(user);
@@ -56,11 +59,24 @@ public class UserService {
     }
   }
 
+  public void deleteUserById(Long id) {
+    Optional<User> user = userRepository.findById(id);
+    if (user.isEmpty()) {
+      throw new UserNotFoundException("No user found.");
+    }
+    if (!user.get().isCorrectUser()) {
+      throw new NotAuthorizedException("Can not delete another user.");
+    }
+    userRepository.deleteById(id);
+  }
+
   public void updatePassword(@Valid UpdatePasswordRequest updatePasswordRequest, Long id) {
     Optional<User> userOptional = userRepository.findById(id);
     if (userOptional.isPresent()) {
       User user = userOptional.get();
-      user.preventUnauthorizedUpdate();
+      if (!user.isCorrectUser()) {
+        throw new NotAuthorizedException("Can not update another users password");
+      }
       String newEmail = updatePasswordRequest.getPassword();
       user.setPassword(passwordEncoder.encode(newEmail));
       userRepository.save(user);

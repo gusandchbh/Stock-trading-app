@@ -13,7 +13,7 @@ export function AuthProvider({children}) {
     const [currentUser, setCurrentUser] = useState(parseJWT(localStorage.getItem('token')));
 
     const login = async (username, password) => {
-        const response = await API.post("users/login", {
+        const response = await API.post("api/v1/auth/authenticate", {
             username: username,
             password: password,
         });
@@ -25,14 +25,12 @@ export function AuthProvider({children}) {
     };
 
     const signup = async (username, password, email) => {
-        const response = await API.post("users/register", {
+        const response = await API.post("api/v1/auth/register", {
             username: username,
             password: password,
             email: email,
         });
-        if (response.status === 201) {
-            await login(username, password)
-        }
+
     };
 
     const logout = () => {
