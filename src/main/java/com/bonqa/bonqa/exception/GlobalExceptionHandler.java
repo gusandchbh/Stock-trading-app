@@ -1,5 +1,6 @@
 package com.bonqa.bonqa.exception;
 
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -11,6 +12,11 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(NotAuthorizedException.class)
   public ResponseEntity<String> handleNotAuthorizedException(NotAuthorizedException e) {
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+        .body(e.getMessage());
+  }
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException e) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND)
         .body(e.getMessage());
   }
 

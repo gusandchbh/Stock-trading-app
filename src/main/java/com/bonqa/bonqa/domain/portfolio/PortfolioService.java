@@ -5,6 +5,7 @@ import com.bonqa.bonqa.domain.model.PortfolioStock;
 import com.bonqa.bonqa.domain.model.Trade;
 import com.bonqa.bonqa.domain.model.TradeType;
 import com.bonqa.bonqa.domain.repository.PortfolioRepository;
+import com.bonqa.bonqa.domain.repository.PortfolioStockRepository;
 import com.bonqa.bonqa.domain.repository.TradeRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -20,28 +21,18 @@ public class PortfolioService {
   private final PortfolioRepository portfolioRepository;
   private final TradeRepository tradeRepository;
 
+  private final PortfolioStockRepository portfolioStockRepository;
+
   @Autowired
   public PortfolioService(PortfolioRepository portfolioRepository,
-                          TradeRepository tradeRepository) {
+                          TradeRepository tradeRepository, PortfolioStockRepository portfolioStockRepository) {
     this.portfolioRepository = portfolioRepository;
     this.tradeRepository = tradeRepository;
+    this.portfolioStockRepository = portfolioStockRepository;
   }
-
-  @Transactional
-  public void addPortfolioStock(Long portfolioId, PortfolioStock portfolioStock) {
-    Optional<Portfolio> optionalPortfolio = portfolioRepository.findById(portfolioId);
-    if (optionalPortfolio.isPresent()) {
-      Portfolio portfolio = optionalPortfolio.get();
-      portfolio.getStocks().add(portfolioStock);
-      portfolioStock.setPortfolio(portfolio);
-      updateTotalValue(portfolio);
-      portfolioRepository.save(portfolio);
-    }
-  }
-
   public void updateTotalValue(Portfolio portfolio) {
     BigDecimal newTotalValue = portfolio.getStocks().stream()
-        .map(portfolioStock -> portfolioStock.getCurrentPrice()
+        .map(portfolioStock -> portfolioStock.getStock().getPrice()
             .multiply(BigDecimal.valueOf(portfolioStock.getQuantity())))
         .reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -58,9 +49,11 @@ public class PortfolioService {
       if (portfolio.getStocks().remove(portfolioStock)) {
         updateTotalValue(portfolio);
         portfolioRepository.save(portfolio);
+        portfolioStockRepository.delete(portfolioStock);
       }
     }
   }
+
 
   @Transactional
   public void updatePortfolioStockValue(Long portfolioId, PortfolioStock portfolioStock) {

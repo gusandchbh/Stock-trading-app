@@ -30,17 +30,17 @@ public class PortfolioStockController {
   }
 
   @PostMapping("/stocks/{stockId}/purchase")
-  public ResponseEntity<Void> purchaseStock(@PathVariable Long userId, @PathVariable Long stockId,
+  public ResponseEntity<String> purchaseStock(@PathVariable Long userId, @PathVariable Long stockId,
                                             @RequestParam int quantity) {
-    portfolioStockService.purchaseStock(userId, stockId, quantity);
-    return ResponseEntity.ok().build();
+    var message = portfolioStockService.purchaseStock(userId, stockId, quantity);
+    return ResponseEntity.ok(message);
   }
 
   @PostMapping("/stocks/{stockId}/sell")
-  public ResponseEntity<Void> sellStock(@PathVariable Long userId, @PathVariable Long stockId,
-                                        @RequestParam int quantity) {
-    portfolioStockService.sellStock(userId, stockId, quantity);
-    return ResponseEntity.ok().build();
+  public ResponseEntity<String> sellStock(@PathVariable Long userId, @PathVariable Long stockId,
+                                          @RequestParam int quantity) {
+    var message = portfolioStockService.sellStock(userId, stockId, quantity);
+    return ResponseEntity.ok(message);
   }
 
   @GetMapping("/stocks")
@@ -48,9 +48,10 @@ public class PortfolioStockController {
     List<PortfolioStock> stocks = portfolioStockService.getAllUserStocks(userId);
     List<PortfolioStockDTO> stockDTOs = stocks.stream()
         .map(stock -> modelMapper.map(stock, PortfolioStockDTO.class))
-        .collect(Collectors.toList());
+        .toList();
 
     return ResponseEntity.ok(stockDTOs);
   }
+
 }
 

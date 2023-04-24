@@ -46,7 +46,4 @@ public class PortfolioStock {
   @Column(name = "quantity")
   private Integer quantity;
 
-  @Column(name = "current_price")
-  private BigDecimal currentPrice;
-
 }
