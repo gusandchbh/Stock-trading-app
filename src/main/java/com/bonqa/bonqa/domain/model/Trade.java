@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,7 +26,7 @@ public class Trade {
   private Long id;
 
   @Column(nullable = false)
-  private BigDecimal totalPrice;
+  private BigDecimal amount;
 
   @Column(nullable = false)
   private int shares;
@@ -33,14 +34,18 @@ public class Trade {
   @Column
   private BigDecimal pricePerShare;
 
-  @Column
-  private LocalDateTime tradeTime;
+  @Column(name = "create_date", nullable = false)
+  private LocalDateTime createDate;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private TransactionType transactionType;
+  private TradeType tradeType;
 
   @ManyToOne
-  @JoinColumn(name = "portfolio_id")
+  @JoinColumn(name = "portfolio_id", nullable = false)
   private Portfolio portfolio;
+
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "stock_id", nullable = false)
+  private Stock stock;
 }

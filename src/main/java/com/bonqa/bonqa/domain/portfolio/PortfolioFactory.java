@@ -12,7 +12,7 @@ public class PortfolioFactory {
     Portfolio portfolio = new Portfolio();
     portfolio.setUser(user);
     portfolio.setStocks(new ArrayList<>());
-    portfolio.setTransactionList(new ArrayList<>());
+    portfolio.setTradeList(new ArrayList<>());
     portfolio.setTotalValue(BigDecimal.valueOf(0));
 
     return portfolio;
