@@ -10,7 +10,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,11 +40,8 @@ public class PortfolioStock {
   @Column(name = "stock_name")
   private String stockName;
 
-  @Column(name = "purchase_price")
-  private BigDecimal purchasePrice;
-
-  @Column(name = "purchase_date")
-  private LocalDateTime purchaseDate;
+  @Column(name = "average_purchase_price")
+  private BigDecimal averagePurchasePrice;
 
   @Column(name = "quantity")
   private Integer quantity;

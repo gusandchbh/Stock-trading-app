@@ -1,7 +1,7 @@
 package com.bonqa.bonqa.domain.model;
 
-public enum TransactionType {
-  PURCHASE,
+public enum TradeType {
+  BUY,
   SELL,
   FUNDING
 }

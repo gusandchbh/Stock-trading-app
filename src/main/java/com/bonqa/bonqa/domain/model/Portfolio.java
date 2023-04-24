@@ -32,9 +32,8 @@ public class Portfolio {
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "portfolio")
   private List<PortfolioStock> stocks;
-
   @OneToMany(mappedBy = "portfolio")
-  private List<Transaction> transactionList;
+  private List<Trade> tradeList;
 
   @OneToOne
   @JoinColumn(name = "bank_user_id")
