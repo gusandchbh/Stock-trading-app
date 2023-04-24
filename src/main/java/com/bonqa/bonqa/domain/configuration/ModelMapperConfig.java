@@ -1,4 +1,4 @@
-package com.bonqa.bonqa;
+package com.bonqa.bonqa.domain.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

@@ -86,10 +86,9 @@ public class PortfolioStockService {
     }
   }
 
-
   private PortfolioStock updatePortfolioAndPurchaseTrade(Portfolio portfolio, Stock stock, int quantity,
-                                               BigDecimal purchasePricePerShare,
-                                               BigDecimal totalPrice) {
+                                                         BigDecimal purchasePricePerShare,
+                                                         BigDecimal totalPrice) {
     portfolio.setAccountBalance(portfolio.getAccountBalance().subtract(totalPrice));
 
     PortfolioStock portfolioStock = findOrCreatePortfolioStock(portfolio, stock);
@@ -101,7 +100,6 @@ public class PortfolioStockService {
     tradeRepository.save(trade);
 
     portfolioRepository.save(portfolio);
-    portfolioStockRepository.save(portfolioStock);
 
     portfolioService.updateTotalValue(portfolio);
     return portfolioStock;
@@ -245,6 +243,4 @@ public class PortfolioStockService {
     return String.format("You have %s %d shares of %s for %.2f USD", operation, quantity, stockName,
         totalValue.doubleValue());
   }
-
-
 }

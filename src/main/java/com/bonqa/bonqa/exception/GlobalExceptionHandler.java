@@ -14,6 +14,18 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
         .body(e.getMessage());
   }
+
+  @ExceptionHandler(InsufficientFundsException.class)
+  public ResponseEntity<String> handleInsufficientFundsException(InsufficientFundsException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body(e.getMessage());
+  }
+
+  @ExceptionHandler(InsufficientSharesException.class)
+  public ResponseEntity<String> handleInsufficientSharesException(InsufficientSharesException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body(e.getMessage());
+  }
   @ExceptionHandler(ResourceNotFoundException.class)
   public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException e) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND)

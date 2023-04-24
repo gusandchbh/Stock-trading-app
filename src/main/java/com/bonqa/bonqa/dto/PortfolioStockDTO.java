@@ -13,7 +13,6 @@ public class PortfolioStockDTO {
   private BigDecimal totalValue;
   private String stockName;
   private Integer quantity;
-  private BigDecimal currentPrice;
   private BigDecimal averagePurchasePrice;
 
 }
