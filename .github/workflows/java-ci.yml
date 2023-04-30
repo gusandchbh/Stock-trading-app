@@ -19,7 +19,8 @@ jobs:
           cache: maven
       - name: Run Checkstyle
         run: ./mvnw -B checkstyle:check --file pom.xml
-      - name: OWASP Dependency Check
+      - if: ${{ github.ref == 'refs/heads/main' }}
+        name: OWASP Dependency Check
         run: ./mvnw dependency-check:check
       - name: Build with Maven
         run: ./mvnw -B package --file pom.xml
