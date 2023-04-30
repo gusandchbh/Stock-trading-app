@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: Maven Build
 
 on:
   push:
@@ -19,5 +19,9 @@ jobs:
           cache: maven
       - name: Run Checkstyle
         run: mvn -B checkstyle:check --file pom.xml
+      - if: ${{ github.ref == 'refs/heads/main' }}
+        name: OWASP Dependency Check
+        run: ./mvnw dependency-check:check
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+
