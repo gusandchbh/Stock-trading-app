@@ -1,5 +1,8 @@
 name: Maven Build
 
+env:
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
 on:
   push:
     branches: [ "main" ]
@@ -22,5 +25,9 @@ jobs:
       - if: ${{ github.ref == 'refs/heads/main' }}
         name: OWASP Dependency Check
         run: ./mvnw dependency-check:check
+      - name: Compile with Maven
+        run: ./mvnw compile
+      - name: Sonar Scan
+        run: ./mvnw initialize sonar:sonar -X -Dsonar.login=${{ env.SONAR_TOKEN }}
       - name: Build with Maven
         run: ./mvnw -B package --file pom.xml
