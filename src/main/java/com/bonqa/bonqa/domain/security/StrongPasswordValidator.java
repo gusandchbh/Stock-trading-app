@@ -33,10 +33,12 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
     RuleResult result = passwordValidator.validate(passwordData);
 
     if (!result.isValid()) {
-      String violationMessage = passwordValidator.getMessages(result).stream().findFirst().get();
+      String violationMessage = passwordValidator.getMessages(result).stream()
+              .findFirst()
+              .orElse("Password does not meet the required complexity rules.");
       context.buildConstraintViolationWithTemplate(violationMessage)
-          .addConstraintViolation()
-          .disableDefaultConstraintViolation();
+              .addConstraintViolation()
+              .disableDefaultConstraintViolation();
       return false;
     }
 
