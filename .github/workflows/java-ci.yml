@@ -1,5 +1,8 @@
 name: Maven Build
 
+env:
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
 on:
   push:
     branches: [ "main" ]
