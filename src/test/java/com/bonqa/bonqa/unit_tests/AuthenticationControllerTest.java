@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-import com.bonqa.bonqa.controller.AuthenticationController;
-import com.bonqa.bonqa.domain.authentication.AuthenticationService;
-import com.bonqa.bonqa.domain.model.data.request.AuthenticationRequest;
-import com.bonqa.bonqa.domain.model.data.request.RegisterRequest;
-import com.bonqa.bonqa.exception.BadRequestException;
+import bonqa.controller.AuthenticationController;
+import bonqa.domain.authentication.AuthenticationService;
+import bonqa.domain.model.data.request.AuthenticationRequest;
+import bonqa.domain.model.data.request.RegisterRequest;
+import bonqa.exception.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -7,9 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.bonqa.bonqa.domain.authentication.AuthenticationService;
-import com.bonqa.bonqa.domain.model.data.request.AuthenticationRequest;
-import com.bonqa.bonqa.domain.model.data.request.RegisterRequest;
+import authentication.domain.bonqa.AuthenticationService;
+import request.data.model.domain.bonqa.AuthenticationRequest;
+import request.data.model.domain.bonqa.RegisterRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
