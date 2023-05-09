@@ -1,5 +1,9 @@
 package bonqa.exception;
 
+import bonqa.portfoliostock.PortfolioStock;
+import bonqa.portfoliostock.exception.InsufficientFundsException;
+import bonqa.user.exception.NotAuthorizedException;
+import bonqa.user.exception.UserNotFoundException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +25,13 @@ public class GlobalExceptionHandler {
         .body(e.getMessage());
   }
 
-  @ExceptionHandler(InsufficientSharesException.class)
-  public ResponseEntity<String> handleInsufficientSharesException(InsufficientSharesException e) {
+  @ExceptionHandler(PortfolioStock.InsufficientSharesException.class)
+  public ResponseEntity<String> handleInsufficientSharesException(
+      PortfolioStock.InsufficientSharesException e) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
         .body(e.getMessage());
   }
+
   @ExceptionHandler(ResourceNotFoundException.class)
   public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException e) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -43,7 +49,6 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
   }
 
-  // Add a generic exception handler for all other exceptions
   @ExceptionHandler(Exception.class)
   public ResponseEntity<String> handleException(Exception e) {
     System.err.println("Unhandled exception caught: " + e.getClass().getSimpleName());
