@@ -27,7 +27,8 @@ jobs:
         run: ./mvnw dependency-check:check
       - name: Compile with Maven
         run: ./mvnw compile
-      - name: Sonar Scan
+      - if: ${{ github.ref == 'refs/heads/main' }}
+        name: Sonar Scan
         run: ./mvnw initialize sonar:sonar -X -Dsonar.login=${{ env.SONAR_TOKEN }}
       - name: Build with Maven
         run: ./mvnw -B package --file pom.xml
