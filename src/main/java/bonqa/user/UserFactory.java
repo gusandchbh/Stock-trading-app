@@ -16,7 +16,7 @@ public class UserFactory {
 
   public User createFromRegisterRequest(RegisterRequest request) {
     User user = new User();
-    user.setUsername(request.getUsername());
+    user.setUsername(request.getUsername().toLowerCase());
     user.setPassword(passwordEncoder.encode(request.getPassword()));
     user.setEmail(request.getEmail());
     user.setRole(Role.USER);
