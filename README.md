@@ -1,15 +1,15 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gusandchbh_Stock-trading-app&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=gusandchbh_Stock-trading-app) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=gusandchbh_Stock-trading-app&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=gusandchbh_Stock-trading-app) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=gusandchbh_Stock-trading-app&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=gusandchbh_Stock-trading-app) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=gusandchbh_Stock-trading-app&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=gusandchbh_Stock-trading-app)
 
 # Stock Trading App
-This application is a personal side project, developed in my spare time, that aims to simulate a stock trading platform, allowing users to invest fictional money and explore many of the standard features found in real trading applications. While the project is still under development and not yet complete, the ultimate goal is to incorporate various technologies such as Java 17, Spring Boot, MariaDB, and third-party APIs like Yahoo Finance. The application will also include user authentication using JWT, password policy enforcement with Passay, and user-to-user communication.
+This application is a personal side project, developed in my spare time, that aims to simulate a Stock trading platform, allowing users to invest fictional money and explore many of the standard features found in real trading applications. While the project is still under development and not yet complete, the ultimate goal is to incorporate various technologies such as Java 17, Spring Boot, MariaDB, and third-party APIs like Yahoo Finance. The application will also include user authentication using JWT, password policy enforcement with Passay, and user-to-user communication.
 
-The primary objective of this project is to serve as a learning platform and an opportunity to experiment with a wide range of technologies in a hands-on manner, all while working towards creating a feature-rich stock trading simulation.
+The primary objective of this project is to serve as a learning platform and an opportunity to experiment with a wide range of technologies in a hands-on manner, all while working towards creating a feature-rich Stock trading simulation.
 
 ### Features
 - User registration and login with JWT authentication ✔
-- Real-time stock data fetched from Yahoo Finance API ✔
-- Invest and manage a virtual stock portfolio with fictional money
-- Search and view detailed stock information
+- Real-time Stock data fetched from Yahoo Finance API ✔
+- Invest and manage a virtual Stock portfolio with fictional money
+- Search and view detailed Stock information
 - Buy and sell stocks with a user-friendly interface
 - Communication between users for networking and sharing ideas
 - Password policy enforcement using Passay ✔
@@ -27,11 +27,11 @@ To run this application, you need the following software installed on your syste
 Clone the repository:
 
 ```
-git clone https://github.com/yourusername/stock-trading-app.git
+git clone https://github.com/yourusername/Stock-trading-app.git
 ```
 Navigate to the project directory:
 ```
-cd stock-trading-app
+cd Stock-trading-app
 ```
 Create a MariaDB database and update the application.properties file with your database credentials:
 ```
