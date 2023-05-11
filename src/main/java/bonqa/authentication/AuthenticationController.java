@@ -32,7 +32,8 @@ public class AuthenticationController {
   private final LogoutService logoutService;
 
   @Autowired
-  public AuthenticationController(AuthenticationService authenticationService, LogoutService logoutService) {
+  public AuthenticationController(AuthenticationService authenticationService,
+                                  LogoutService logoutService) {
     this.authenticationService = authenticationService;
     this.logoutService = logoutService;
   }
