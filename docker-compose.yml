@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/bonqa?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=bonqa_admin
+      - SPRING_DATASOURCE_PASSWORD=bonqa_admin
+    depends_on:
+      - db
+  db:
+    image: mariadb:latest
+    environment:
+      MYSQL_DATABASE: bonqa
+      MYSQL_USER: bonqa_admin
+      MYSQL_PASSWORD: bonqa_admin
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db_data:/var/lib/mysql
+volumes:
+  db_data:
