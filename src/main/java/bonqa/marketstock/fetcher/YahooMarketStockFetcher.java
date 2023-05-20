@@ -24,10 +24,11 @@ public class YahooMarketStockFetcher implements MarketStockFetcherInterface {
       String[] arr =
           {"AAPL", "MSFT", "GOOG", "AMZN", "NVDA", "XOM", "TSLA", "JPM", "WMT", "META", "BAC", "KO",
               "PFE", "MCD", "CSCO", "DIS", "NFLX", "T", "BA", "INTC", "AMD", "GE", "F"};
-
+      //https://github.com/sstrickx/yahoofinance-api/issues/206
+      System.setProperty("yahoofinance.baseurl.quotesquery1v7", "https://query1.finance.yahoo.com/v6/finance/quote");
       return this.stockGenericFactory.createFromYahooStocks(YahooFinance.get(arr));
     } catch (IOException e) {
-      System.out.println("Something went wrong!");
+      System.out.println(e.getMessage());
     }
 
     return new ArrayList<>();
