@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine as build
+FROM amazoncorretto:17-alpine-jdk as build
 
 WORKDIR /app
 
@@ -6,6 +6,8 @@ COPY .mvn .mvn
 COPY mvnw .
 
 COPY pom.xml .
+COPY /google_checks.xml . 
+COPY sonar-project.properties .
 
 RUN ./mvnw dependency:go-offline -B
 
@@ -13,7 +15,7 @@ COPY src ./src
 
 RUN ./mvnw package
 
-FROM eclipse-temurin:17-jdk-alpine
+FROM amazoncorretto:17-alpine-jdk
 
 VOLUME /tmp
 
