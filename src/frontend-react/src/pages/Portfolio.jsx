@@ -2,7 +2,7 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 
-export const Profile = () => {
+export const Portfolio = () => {
   const { userToken } = useAuth();
   console.log(userToken);
 
@@ -17,7 +17,7 @@ export const Profile = () => {
         }}
       >
         <Card.Body className="profile-card">
-          <h1>Welcome {!userToken ? "no user" : userToken}!</h1>
+          <h2>Portfolio </h2>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2"></div>
@@ -25,4 +25,4 @@ export const Profile = () => {
   );
 };
 
-export default Profile;
+export default Portfolio;
