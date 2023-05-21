@@ -7,7 +7,7 @@ export const Portfolio = () => {
   console.log(userToken);
 
   return (
-    <div>
+    <div style={{ height: "100vh" }}>
       <Card
         className="text-center"
         style={{

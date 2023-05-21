@@ -55,7 +55,7 @@ export const Header = () => {
             <a style={{ color: "#333" }}>Stocks</a>
           </Link>
           <Link to="/" style={{ textDecoration: "none" }}>
-            <a style={{ color: "#333" }}>Signin</a>
+            <a style={{ color: "#333" }}>Sign In</a>
           </Link>
         </>
       )}
