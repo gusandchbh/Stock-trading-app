@@ -38,10 +38,9 @@ const Login = () => {
         console.log(res);
         setShowSignup(false);
       }
-      //   navigate("/profile");
     } catch (error) {
-      setError(error.toString());
-      //   navigate("/login");
+      console.log(error.response.data);
+      setError(error.response.data);
     }
     setLoading(false);
   }

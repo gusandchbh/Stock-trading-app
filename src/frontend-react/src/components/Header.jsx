@@ -4,12 +4,12 @@ import { useAuth } from "../contexts/AuthContext";
 import { Button } from "react-bootstrap";
 
 export const Header = () => {
-  const { currentUser, logout } = useAuth();
+  const { userToken, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -27,7 +27,7 @@ export const Header = () => {
       <Link to="/" style={{ textDecoration: "none" }}>
         <a style={{ color: "#333" }}>Stock Tradify ™</a>
       </Link>
-      {currentUser ? (
+      {userToken ? (
         <>
           <Link to="/stocks" style={{ textDecoration: "none" }}>
             <a style={{ color: "#333" }}>Stocks</a>
@@ -38,14 +38,26 @@ export const Header = () => {
           <Link to="/portfolio" style={{ textDecoration: "none" }}>
             <a style={{ color: "#333" }}>Portfolio</a>
           </Link>
-          <Button style={{ color: "#333" }} onClick={handleLogout}>
+          <Button
+            style={{
+              color: "#333",
+              backgroundColor: "transparent",
+              border: "none",
+            }}
+            onClick={handleLogout}
+          >
             Sign out
           </Button>
         </>
       ) : (
-        <Link to="/login" style={{ textDecoration: "none" }}>
-          <a style={{ color: "#333" }}>Signin</a>
-        </Link>
+        <>
+          <Link to="/stocks" style={{ textDecoration: "none" }}>
+            <a style={{ color: "#333" }}>Stocks</a>
+          </Link>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <a style={{ color: "#333" }}>Sign In</a>
+          </Link>
+        </>
       )}
     </div>
   );

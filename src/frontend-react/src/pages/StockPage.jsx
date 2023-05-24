@@ -1,36 +1,18 @@
-import React, {useEffect, useState} from "react";
-import {API} from "../api";
+import React from "react";
+import StockCard from "../components/StockCard";
 
 const StockPage = () => {
-    const [result, setResult] = useState([]);
+  return (
+    <div style={{ height: "100vh" }}>
+      <div style={{ alignItems: "center" }}>
+        <h1> Stocks </h1>
+      </div>
 
-    const retrieveStocks = async () => {
-        try {
-            const response = await API.get("stocks/all");
-            setResult(response.data)
-        } catch (e) {
-            console.log(e)
-        }
-    }
-    useEffect(() => {
-        retrieveStocks()
-    }, [])
-
-    return (
-        <div style={{display: "flex"}}>
-            <div style={{alignItems: "center"}}>
-                <h1> Welcome to Stock Tradify! </h1>
-            </div>
-
-            <div>
-                {result.map((item, index) => {
-                    return (
-                        <li style={{flexDirection: "column"}} key={index}> {item.name} Price: {item.price} USD </li>
-                    )
-                })}
-            </div>
-        </div>
-    );
+      <div>
+        <StockCard />
+      </div>
+    </div>
+  );
 };
 
 export default StockPage;

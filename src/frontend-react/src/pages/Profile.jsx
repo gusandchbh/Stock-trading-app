@@ -7,7 +7,7 @@ export const Profile = () => {
   console.log(userToken);
 
   return (
-    <div>
+    <div style={{ height: "100vh" }}>
       <Card
         className="text-center"
         style={{
@@ -17,7 +17,7 @@ export const Profile = () => {
         }}
       >
         <Card.Body className="profile-card">
-          <h1>Welcome {!userToken ? "no user" : userToken}!</h1>
+          <h1>Welcome {userToken ? userToken : "no user"}!</h1>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2"></div>

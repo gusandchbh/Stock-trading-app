@@ -22,6 +22,8 @@ export function AuthProvider({ children }) {
       setUserToken(username);
       localStorage.token = response.data;
       API.defaults.headers.common["Authorization"] = `Bearer ${response.data}`;
+    } else {
+      console.log(response.data);
     }
   };
 

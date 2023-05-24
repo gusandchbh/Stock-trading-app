@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Login from "../pages/Login";
 import stockImage from "../assets/stocks.png";
+import { useAuth } from "../contexts/AuthContext";
 
-const StartPage = ({ isSignedIn }) => {
+const StartPage = () => {
   const [showSignup, setShowSignup] = useState(false);
+  const { userToken } = useAuth();
 
   return (
     <div
@@ -87,7 +89,7 @@ const StartPage = ({ isSignedIn }) => {
           any investment decisions.
         </p>
       </div>
-      {!isSignedIn ? (
+      {!userToken ? (
         <div style={{ padding: "4rem 4rem" }}>
           {!showSignup && <Login showSignup={showSignup} />}
         </div>
