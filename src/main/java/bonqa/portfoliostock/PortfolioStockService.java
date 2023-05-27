@@ -27,7 +27,6 @@ public class PortfolioStockService {
     private final MarketStockRepository marketStockRepository;
     private final PortfolioRepository portfolioRepository;
     private final PortfolioService portfolioService;
-    private final PortfolioStockRepository portfolioStockRepository;
 
     private final TradeRepository tradeRepository;
 
@@ -37,13 +36,11 @@ public class PortfolioStockService {
             PortfolioRepository portfolioRepository,
             UserRepository userRepository,
             PortfolioService portfolioService,
-            PortfolioStockRepository portfolioStockRepository,
             TradeRepository tradeRepository) {
         this.userRepository = userRepository;
         this.marketStockRepository = marketStockRepository;
         this.portfolioRepository = portfolioRepository;
         this.portfolioService = portfolioService;
-        this.portfolioStockRepository = portfolioStockRepository;
         this.tradeRepository = tradeRepository;
     }
 
