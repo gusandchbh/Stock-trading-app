@@ -8,14 +8,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PortfolioStockDTO {
-  private Long id;
-  private MarketStockDTO stock;
+    private Long id;
+    private MarketStockDTO stock;
 
-  private BigDecimal totalValue;
-  private String stockName;
-  private Integer quantity;
-  private BigDecimal averagePurchasePrice;
-
+    private BigDecimal totalValue;
+    private String stockName;
+    private Integer quantity;
+    private BigDecimal averagePurchasePrice;
 }
-
-

@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StockGeneric {
-  private String name;
-  private BigDecimal price;
-  private String ticker;
-  private Long volume;
-  private BigDecimal open;
-  private BigDecimal close;
+    private String name;
+    private BigDecimal price;
+    private String ticker;
+    private Long volume;
+    private BigDecimal open;
+    private BigDecimal close;
 }

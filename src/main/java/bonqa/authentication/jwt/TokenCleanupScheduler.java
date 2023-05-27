@@ -6,14 +6,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class TokenCleanupScheduler {
 
-  private final TokenRepository tokenRepository;
+    private final TokenRepository tokenRepository;
 
-  public TokenCleanupScheduler(TokenRepository tokenRepository) {
-    this.tokenRepository = tokenRepository;
-  }
+    public TokenCleanupScheduler(TokenRepository tokenRepository) {
+        this.tokenRepository = tokenRepository;
+    }
 
-  @Scheduled(cron = "0 0 0 * * ?") // Run at midnight every day
-  public void cleanupExpiredAndRevokedTokens() {
-    tokenRepository.deleteExpiredOrRevokedTokens();
-  }
+    @Scheduled(cron = "0 0 0 * * ?") // Run at midnight every day
+    public void cleanupExpiredAndRevokedTokens() {
+        tokenRepository.deleteExpiredOrRevokedTokens();
+    }
 }

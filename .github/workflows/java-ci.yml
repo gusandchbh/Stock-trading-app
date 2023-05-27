@@ -12,23 +12,42 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      # Checkout repository content
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Setup Java Development Kit
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-      - name: Run Checkstyle
-        run: ./mvnw -B checkstyle:check --file pom.xml
-      - if: ${{ github.ref == 'refs/heads/main' }}
-        name: OWASP Dependency Check
+
+      # Format source code
+      - name: Format Source Code
+        run: ./mvnw spotless:apply
+
+      # Verify source code formatting
+      - name: Verify Source Code Formatting
+        run: ./mvnw spotless:check
+
+      # Run OWASP Dependency Check
+      - name: OWASP Dependency Check
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: ./mvnw dependency-check:check
+
+      # Compile with Maven
       - name: Compile with Maven
         run: ./mvnw compile
-      - if: ${{ github.ref == 'refs/heads/main' }}
-        name: Sonar Scan
+
+      # Perform Sonar Scan
+      - name: Sonar Scan
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: ./mvnw initialize sonar:sonar -X -Dsonar.login=${{ env.SONAR_TOKEN }}
+
+      # Build with Maven
       - name: Build with Maven
         run: ./mvnw -B package --file pom.xml

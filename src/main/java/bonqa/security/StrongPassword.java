@@ -18,9 +18,9 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface StrongPassword {
 
-  String message() default "Password is not strong enough";
+    String message() default "Password is not strong enough";
 
-  Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-  Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 }
