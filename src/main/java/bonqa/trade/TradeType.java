@@ -1,7 +1,7 @@
 package bonqa.trade;
 
 public enum TradeType {
-  BUY,
-  SELL,
-  FUNDING
+    BUY,
+    SELL,
+    FUNDING
 }

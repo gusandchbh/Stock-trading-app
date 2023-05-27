@@ -24,33 +24,33 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PortfolioStock {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "portfolio_id")
-  private Portfolio portfolio;
+    @ManyToOne
+    @JoinColumn(name = "portfolio_id")
+    private Portfolio portfolio;
 
-  @OneToOne
-  @JoinColumn(name = "stock_id")
-  private MarketStock marketStock;
+    @OneToOne
+    @JoinColumn(name = "stock_id")
+    private MarketStock marketStock;
 
-  @Column(name = "total_value")
-  private BigDecimal totalValue;
+    @Column(name = "total_value")
+    private BigDecimal totalValue;
 
-  @Column(name = "stock_name")
-  private String stockName;
+    @Column(name = "stock_name")
+    private String stockName;
 
-  @Column(name = "average_purchase_price")
-  private BigDecimal averagePurchasePrice;
+    @Column(name = "average_purchase_price")
+    private BigDecimal averagePurchasePrice;
 
-  @Column(name = "quantity")
-  private Integer quantity;
+    @Column(name = "quantity")
+    private Integer quantity;
 
-  public static class InsufficientSharesException extends RuntimeException {
-    public InsufficientSharesException(String message) {
-      super(message);
+    public static class InsufficientSharesException extends RuntimeException {
+        public InsufficientSharesException(String message) {
+            super(message);
+        }
     }
-  }
 }

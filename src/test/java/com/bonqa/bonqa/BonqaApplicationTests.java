@@ -6,8 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = BonqaApplicationTests.class)
 class BonqaApplicationTests {
 
-  @Test
-  void contextLoads() {
-  }
-
+    @Test
+    void contextLoads() {}
 }

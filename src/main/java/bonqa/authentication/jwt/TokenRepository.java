@@ -10,19 +10,21 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TokenRepository extends JpaRepository<Token, Integer> {
 
-  @Query(value = """
+    @Query(
+            value =
+                    """
       select t from Token t inner join User u\s
       on t.user.id = u.id\s
       where u.id = :id and (t.expired = false or t.revoked = false)\s
       """)
-  List<Token> findAllValidTokenByUser(Integer id);
+    List<Token> findAllValidTokenByUser(Integer id);
 
-  @Modifying
-  @Query(value = """
-      delete from Token t 
+    @Modifying
+    @Query(value = """
+      delete from Token t
       where t.expired = true or t.revoked = true
       """)
-  void deleteExpiredOrRevokedTokens();
+    void deleteExpiredOrRevokedTokens();
 
-  Optional<Token> findByToken(String token);
+    Optional<Token> findByToken(String token);
 }

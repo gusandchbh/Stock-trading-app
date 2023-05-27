@@ -8,28 +8,27 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserFactory {
-  private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-  public UserFactory(PasswordEncoder passwordEncoder) {
-    this.passwordEncoder = passwordEncoder;
-  }
+    public UserFactory(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
-  public User createFromRegisterRequest(RegisterRequest request) {
-    User user = new User();
-    user.setUsername(request.getUsername().toLowerCase());
-    user.setPassword(passwordEncoder.encode(request.getPassword()));
-    user.setEmail(request.getEmail());
-    user.setRole(Role.USER);
+    public User createFromRegisterRequest(RegisterRequest request) {
+        User user = new User();
+        user.setUsername(request.getUsername().toLowerCase());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setEmail(request.getEmail());
+        user.setRole(Role.USER);
 
-    // Create a new portfolio for the user
-    Portfolio portfolio = new Portfolio();
-    portfolio.setAccountBalance(BigDecimal.valueOf(100000));
-    portfolio.setUser(user);
+        // Create a new portfolio for the user
+        Portfolio portfolio = new Portfolio();
+        portfolio.setAccountBalance(BigDecimal.valueOf(100000));
+        portfolio.setUser(user);
 
-    // Associate the portfolio with the user
-    user.setPortfolio(portfolio);
+        // Associate the portfolio with the user
+        user.setPortfolio(portfolio);
 
-    return user;
-  }
-
+        return user;
+    }
 }

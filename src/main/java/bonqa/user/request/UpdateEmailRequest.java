@@ -10,8 +10,8 @@ import lombok.Setter;
 @Setter
 public class UpdateEmailRequest {
 
-  @NotBlank(message = "Email can not be empty")
-  @Email(message = "Email needs to be valid")
-  @Size(min = 8, max = 40, message = "Email should be between 8 and 40 characters")
-  private String email;
+    @NotBlank(message = "Email can not be empty")
+    @Email(message = "Email needs to be valid")
+    @Size(min = 8, max = 40, message = "Email should be between 8 and 40 characters")
+    private String email;
 }

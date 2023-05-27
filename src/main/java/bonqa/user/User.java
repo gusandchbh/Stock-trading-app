@@ -38,76 +38,73 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Setter
 @ToString
 public class User implements UserDetails {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Column(name = "email", nullable = false, unique = true, length = 100)
-  private String email;
+    @Column(name = "email", nullable = false, unique = true, length = 100)
+    private String email;
 
-  @Column(name = "username", nullable = false, unique = true, length = 100)
-  private String username;
+    @Column(name = "username", nullable = false, unique = true, length = 100)
+    private String username;
 
-  @Column(name = "password", nullable = false, length = 100)
-  private String password;
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "portfolio_id")
-  private Portfolio portfolio;
+    @Column(name = "password", nullable = false, length = 100)
+    private String password;
 
-  @Column(name = "create_time", nullable = false)
-  @CreationTimestamp
-  private LocalDateTime createdTime;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "portfolio_id")
+    private Portfolio portfolio;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "role", nullable = false)
-  private Role role;
+    @Column(name = "create_time", nullable = false)
+    @CreationTimestamp
+    private LocalDateTime createdTime;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-  private List<Token> tokens;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(role.name()));
-  }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Token> tokens;
 
-  @Override
-  public String getPassword() {
-    return password;
-  }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
 
-  @Override
-  public String getUsername() {
-    return username;
-  }
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-  @Override
-  public boolean isAccountNonExpired() {
-    return true;
-  }
+    @Override
+    public String getUsername() {
+        return username;
+    }
 
-  @Override
-  public boolean isAccountNonLocked() {
-    return true;
-  }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return true;
-  }
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-  @Override
-  public boolean isEnabled() {
-    return true;
-  }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-  public boolean isCorrectUser() {
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
-    String name = SecurityContextHolder.getContext().getAuthentication().getName();
+    public boolean isCorrectUser() {
 
-    return name.equals(this.username);
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
 
-  }
-
+        return name.equals(this.username);
+    }
 }
-
-

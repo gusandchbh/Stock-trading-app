@@ -26,24 +26,23 @@ import lombok.Setter;
 @Entity
 public class Portfolio {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Column(name = "balance", nullable = false)
-  private BigDecimal accountBalance = BigDecimal.valueOf(0);
+    @Column(name = "balance", nullable = false)
+    private BigDecimal accountBalance = BigDecimal.valueOf(0);
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "portfolio")
-  private List<PortfolioStock> stocks;
-  @OneToMany(mappedBy = "portfolio")
-  private List<Trade> tradeList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "portfolio")
+    private List<PortfolioStock> stocks;
 
-  @OneToOne
-  @JoinColumn(name = "bank_user_id")
-  private User user;
+    @OneToMany(mappedBy = "portfolio")
+    private List<Trade> tradeList;
 
-  @Column(name = "total_value", nullable = false)
-  private BigDecimal totalValue = BigDecimal.valueOf(0);
+    @OneToOne
+    @JoinColumn(name = "bank_user_id")
+    private User user;
 
+    @Column(name = "total_value", nullable = false)
+    private BigDecimal totalValue = BigDecimal.valueOf(0);
 }
-

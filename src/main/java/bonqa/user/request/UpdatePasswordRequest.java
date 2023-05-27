@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 public class UpdatePasswordRequest {
 
-  @StrongPassword
-  @NotBlank(message = "Password is required")
-  private String password;
-
+    @StrongPassword
+    @NotBlank(message = "Password is required")
+    private String password;
 }

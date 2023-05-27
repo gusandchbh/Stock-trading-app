@@ -27,75 +27,68 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = {"/api/v1/users"})
 public class UserController {
 
-  private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-  private final UserRepository userRepository;
-  private final UserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final UserRepository userRepository;
+    private final UserService userService;
 
-  @Autowired
-  public UserController(UserRepository userRepository, UserService userService) {
-    this.userRepository = userRepository;
-    this.userService = userService;
-  }
-
-  @GetMapping("/")
-  public List<UserDTO> all() {
-    logger.info("Fetching all users");
-    return userService.getAllUsers();
-  }
-
-
-  @DeleteMapping("/delete/{id}")
-  public ResponseEntity<String> deleteById(@PathVariable Long id) {
-    logger.info("Deleting user with ID: {}", id);
-    userService.deleteUserById(id);
-    return new ResponseEntity<>("User deleted!", HttpStatus.OK);
-  }
-
-  @PreAuthorize("hasRole('ADMIN')")
-  @DeleteMapping("/delete/all")
-  public ResponseEntity<String> deleteAll() {
-    logger.info("Deleting all users");
-    userRepository.deleteAll();
-    return new ResponseEntity<>("All users deleted!", HttpStatus.OK);
-  }
-
-  @PutMapping("/update/email/{id}")
-  public ResponseEntity<String> updateEmailById(
-      @Valid @RequestBody UpdateEmailRequest updateEmailRequest,
-      @PathVariable Long id) {
-    logger.info("Updating email for user with ID: {}", id);
-    userService.updateEmail(updateEmailRequest, id);
-    return ResponseEntity.ok().body("Email successfully updated!");
-
-  }
-
-  @PutMapping("/update/password/{id}")
-  public ResponseEntity<String> updatePasswordById(
-      @Valid @RequestBody UpdatePasswordRequest updatePasswordRequest,
-      @PathVariable Long id) {
-    logger.info("Updating password for user with ID: {}", id);
-    userService.updatePassword(updatePasswordRequest, id);
-    return ResponseEntity.ok().body("Password successfully updated!");
-  }
-
-
-  @GetMapping("/{id}")
-  public ResponseEntity<UserDTO> fetchById(@PathVariable Long id) {
-    logger.info("Fetching user with ID: {}", id);
-    Optional<UserDTO> user = userService.getUser(id);
-    return user.map(value -> ResponseEntity.ok().body(value))
-        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-  }
-
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
-    List<String> messages = new ArrayList<>();
-    for (ObjectError error : ex.getBindingResult().getAllErrors()) {
-      messages.add(error.getDefaultMessage());
+    @Autowired
+    public UserController(UserRepository userRepository, UserService userService) {
+        this.userRepository = userRepository;
+        this.userService = userService;
     }
-    logger.error("Validation error: {}", messages.get(0));
-    return ResponseEntity.badRequest().body(String.join(", ", messages));
-  }
 
+    @GetMapping("/")
+    public List<UserDTO> all() {
+        logger.info("Fetching all users");
+        return userService.getAllUsers();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable Long id) {
+        logger.info("Deleting user with ID: {}", id);
+        userService.deleteUserById(id);
+        return new ResponseEntity<>("User deleted!", HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/delete/all")
+    public ResponseEntity<String> deleteAll() {
+        logger.info("Deleting all users");
+        userRepository.deleteAll();
+        return new ResponseEntity<>("All users deleted!", HttpStatus.OK);
+    }
+
+    @PutMapping("/update/email/{id}")
+    public ResponseEntity<String> updateEmailById(
+            @Valid @RequestBody UpdateEmailRequest updateEmailRequest, @PathVariable Long id) {
+        logger.info("Updating email for user with ID: {}", id);
+        userService.updateEmail(updateEmailRequest, id);
+        return ResponseEntity.ok().body("Email successfully updated!");
+    }
+
+    @PutMapping("/update/password/{id}")
+    public ResponseEntity<String> updatePasswordById(
+            @Valid @RequestBody UpdatePasswordRequest updatePasswordRequest, @PathVariable Long id) {
+        logger.info("Updating password for user with ID: {}", id);
+        userService.updatePassword(updatePasswordRequest, id);
+        return ResponseEntity.ok().body("Password successfully updated!");
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> fetchById(@PathVariable Long id) {
+        logger.info("Fetching user with ID: {}", id);
+        Optional<UserDTO> user = userService.getUser(id);
+        return user.map(value -> ResponseEntity.ok().body(value))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
+        List<String> messages = new ArrayList<>();
+        for (ObjectError error : ex.getBindingResult().getAllErrors()) {
+            messages.add(error.getDefaultMessage());
+        }
+        logger.error("Validation error: {}", messages.get(0));
+        return ResponseEntity.badRequest().body(String.join(", ", messages));
+    }
 }
-

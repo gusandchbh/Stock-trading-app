@@ -6,7 +6,6 @@ COPY .mvn .mvn
 COPY mvnw .
 
 COPY pom.xml .
-COPY /google_checks.xml . 
 COPY sonar-project.properties .
 
 RUN ./mvnw dependency:go-offline -B

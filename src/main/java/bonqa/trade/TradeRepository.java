@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TradeRepository extends JpaRepository<Trade, Long> {
 
-  @Query("SELECT t FROM Trade t WHERE t.portfolio.id = :portfolioId AND t.marketStock.id = :stockId")
-  List<Trade> findByPortfolioIdAndStockId(Long portfolioId, Long stockId);
-
+    @Query("SELECT t FROM Trade t WHERE t.portfolio.id = :portfolioId AND t.marketStock.id = :stockId")
+    List<Trade> findByPortfolioIdAndStockId(Long portfolioId, Long stockId);
 }
