@@ -8,6 +8,7 @@ import bonqa.portfolio.PortfolioService;
 import bonqa.portfoliostock.exception.InsufficientFundsException;
 import bonqa.portfoliostock.exception.ResourceNotFoundException;
 import bonqa.trade.Trade;
+import bonqa.trade.TradeFactory;
 import bonqa.trade.TradeRepository;
 import bonqa.trade.TradeType;
 import bonqa.user.User;
@@ -30,18 +31,21 @@ public class PortfolioStockService {
 
     private final TradeRepository tradeRepository;
 
-    @Autowired
+    private final TradeFactory tradeFactory;
+
     public PortfolioStockService(
-            MarketStockRepository marketStockRepository,
-            PortfolioRepository portfolioRepository,
-            UserRepository userRepository,
-            PortfolioService portfolioService,
-            TradeRepository tradeRepository) {
+        MarketStockRepository marketStockRepository,
+        PortfolioRepository portfolioRepository,
+        UserRepository userRepository,
+        PortfolioService portfolioService,
+        TradeRepository tradeRepository,
+        TradeFactory tradeFactory) {
         this.userRepository = userRepository;
         this.marketStockRepository = marketStockRepository;
         this.portfolioRepository = portfolioRepository;
         this.portfolioService = portfolioService;
         this.tradeRepository = tradeRepository;
+        this.tradeFactory = tradeFactory;
     }
 
     public MarketStock findStockById(Long stockId) throws ResourceNotFoundException {
@@ -82,18 +86,18 @@ public class PortfolioStockService {
     }
 
     private PortfolioStock updatePortfolioAndPurchaseTrade(
-            Portfolio portfolio,
-            MarketStock marketStock,
-            int quantity,
-            BigDecimal purchasePricePerShare,
-            BigDecimal totalPrice) {
+        Portfolio portfolio,
+        MarketStock marketStock,
+        int quantity,
+        BigDecimal purchasePricePerShare,
+        BigDecimal totalPrice) {
         portfolio.setAccountBalance(portfolio.getAccountBalance().subtract(totalPrice));
 
         PortfolioStock portfolioStock = findOrCreatePortfolioStock(portfolio, marketStock);
 
         updatePortfolioStockForPurchase(portfolioStock, quantity, purchasePricePerShare);
 
-        Trade trade = createTrade(portfolio, marketStock, quantity, purchasePricePerShare, totalPrice, TradeType.BUY);
+        Trade trade = tradeFactory.createTrade(totalPrice, quantity, purchasePricePerShare, TradeType.BUY, portfolio, marketStock);
         tradeRepository.save(trade);
 
         portfolioRepository.save(portfolio);
@@ -199,36 +203,18 @@ public class PortfolioStockService {
     }
 
     private void updatePortfolioAndTrade(
-            Portfolio portfolio,
-            MarketStock marketStock,
-            int quantity,
-            BigDecimal sellPricePerShare,
-            BigDecimal amount,
-            TradeType tradeType) {
+        Portfolio portfolio,
+        MarketStock marketStock,
+        int quantity,
+        BigDecimal sellPricePerShare,
+        BigDecimal amount,
+        TradeType tradeType) {
         portfolioService.updateAccountBalance(portfolio, amount);
 
-        Trade trade = createTrade(portfolio, marketStock, quantity, sellPricePerShare, amount, tradeType);
+        Trade trade = tradeFactory.createTrade(amount, quantity, sellPricePerShare, tradeType, portfolio, marketStock);
         tradeRepository.save(trade);
 
         updatePortfolioStock(portfolio, marketStock, quantity);
-    }
-
-    private Trade createTrade(
-            Portfolio portfolio,
-            MarketStock marketStock,
-            int quantity,
-            BigDecimal sellPricePerShare,
-            BigDecimal amount,
-            TradeType tradeType) {
-        Trade trade = new Trade();
-        trade.setPricePerShare(sellPricePerShare);
-        trade.setShares(quantity);
-        trade.setAmount(amount);
-        trade.setCreateDate(LocalDateTime.now());
-        trade.setTradeType(tradeType);
-        trade.setPortfolio(portfolio);
-        trade.setMarketStock(marketStock);
-        return trade;
     }
 
     private void updatePortfolioStock(Portfolio portfolio, MarketStock marketStock, int quantity) {

@@ -2,6 +2,9 @@ package bonqa.user;
 
 import bonqa.authentication.request.RegisterRequest;
 import bonqa.portfolio.Portfolio;
+import bonqa.trade.Trade;
+import bonqa.trade.TradeFactory;
+import bonqa.trade.TradeType;
 import java.math.BigDecimal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
