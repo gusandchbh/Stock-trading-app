@@ -32,11 +32,13 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserRepository userRepository;
     private final UserService userService;
+    private final AuthorizationService authorizationService;
 
     @Autowired
-    public UserController(UserRepository userRepository, UserService userService) {
+    public UserController(UserRepository userRepository, UserService userService, AuthorizationService authorizationService) {
         this.userRepository = userRepository;
         this.userService = userService;
+        this.authorizationService = authorizationService;
     }
 
     @GetMapping("/")
@@ -50,7 +52,7 @@ public class UserController {
             @Valid @RequestBody UpdateEmailRequest updateEmailRequest, @PathVariable Long id) {
         logger.info("Updating email for user with ID: {}", id);
 
-        if (isAuthenticatedUser(id)) {
+        if (authorizationService.isAuthenticatedUser(id)) {
             userService.updateEmail(updateEmailRequest, id);
             return ResponseEntity.ok().body("Email successfully updated!");
         }
@@ -62,7 +64,7 @@ public class UserController {
             @Valid @RequestBody UpdatePasswordRequest updatePasswordRequest, @PathVariable Long id) {
         logger.info("Updating password for user with ID: {}", id);
 
-        if (isAuthenticatedUser(id)) {
+        if (authorizationService.isAuthenticatedUser(id)) {
             userService.updatePassword(updatePasswordRequest, id);
             return ResponseEntity.ok().body("Password successfully updated!");
         }
@@ -73,7 +75,7 @@ public class UserController {
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
         logger.info("Deleting user with ID: {}", id);
 
-        if (isAuthenticatedUser(id)) {
+        if (authorizationService.isAuthenticatedUser(id)) {
             userService.deleteUserById(id);
             return new ResponseEntity<>("User deleted!", HttpStatus.OK);
         }
@@ -105,15 +107,6 @@ public class UserController {
         }
         logger.error("Validation error: {}", messages.get(0));
         return ResponseEntity.badRequest().body(String.join(", ", messages));
-    }
-
-    private boolean isAuthenticatedUser(Long id) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof User user) {
-            Long userId = user.getId();
-            return userId.equals(id);
-        }
-        return false;
     }
 
 }

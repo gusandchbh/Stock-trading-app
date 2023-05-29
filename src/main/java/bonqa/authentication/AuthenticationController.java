@@ -46,10 +46,10 @@ public class AuthenticationController {
         try {
             logger.info("Attempting to register user: {}", registerRequest.getUsername());
             String token = authenticationService.register(registerRequest);
-            logger.info("User registered successfully");
+            logger.info("User registered successfully: {}", registerRequest.getUsername());
             return ResponseEntity.status(HttpStatus.CREATED).body(token);
         } catch (BadRequestException e) {
-            logger.error("Failed to register user: {}", e.getMessage());
+            logger.error("Failed to register user: {}. {}", registerRequest.getUsername(), e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -60,10 +60,10 @@ public class AuthenticationController {
         try {
             logger.info("Attempting to authenticate user: {}", userLogin.getUsername());
             String token = authenticationService.authenticate(userLogin);
-            logger.info("User authenticated successfully");
+            logger.info("User {} authenticated successfully", userLogin.getUsername());
             return ResponseEntity.status(HttpStatus.OK).body(token);
         } catch (AuthenticationException e) {
-            logger.error("Failed to authenticate user: Invalid username or password");
+            logger.error("Failed to authenticate user {} : Invalid username or password", userLogin.getUsername());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
     }
