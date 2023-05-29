@@ -11,14 +11,12 @@ import com.crazzyghost.alphavantage.timeseries.response.TimeSeriesResponse;
 import jakarta.annotation.PostConstruct;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import javax.swing.text.html.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +63,6 @@ public class AlphaVantageMarketStockFetcher implements MarketStockFetcherInterfa
         var existingStock = optionalStock.get();
         ZoneOffset zoneOffset = ZoneId.systemDefault().getRules().getOffset(Instant.now());
         if (existingStock.getLastUpdated().toInstant(zoneOffset).isAfter(twentyFourHoursAgo)) {
-          logger.info("Stock {} has already been updated in the last 24 hours. Skipping...", ticker);
           continue;
         }
       }
@@ -78,14 +75,16 @@ public class AlphaVantageMarketStockFetcher implements MarketStockFetcherInterfa
           .outputSize(OutputSize.FULL)
           .fetchSync();
 
+      if (response.getErrorMessage() != null){
+        break;
+      }
+
       if (!response.getStockUnits().isEmpty()) {
         result.add(stockGenericFactory.createFromAlphaVantageStock(response.getStockUnits().get(0), name, ticker));
       } else {
-        logger.error(response.getErrorMessage());
         logger.error("No stock units returned for {}", ticker);
       }
     }
-    logger.info("Completed fetching stocks from API.");
     return result;
   }
 
