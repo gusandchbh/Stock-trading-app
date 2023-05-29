@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,11 +45,39 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @PutMapping("/update/email/{id}")
+    public ResponseEntity<?> updateEmailById(
+            @Valid @RequestBody UpdateEmailRequest updateEmailRequest, @PathVariable Long id) {
+        logger.info("Updating email for user with ID: {}", id);
+
+        if (isAuthenticatedUser(id)) {
+            userService.updateEmail(updateEmailRequest, id);
+            return ResponseEntity.ok().body("Email successfully updated!");
+        }
+        return new ResponseEntity<>("You are not authorized to update this user's email", HttpStatus.FORBIDDEN);
+    }
+
+    @PutMapping("/update/password/{id}")
+    public ResponseEntity<String> updatePasswordById(
+            @Valid @RequestBody UpdatePasswordRequest updatePasswordRequest, @PathVariable Long id) {
+        logger.info("Updating password for user with ID: {}", id);
+
+        if (isAuthenticatedUser(id)) {
+            userService.updatePassword(updatePasswordRequest, id);
+            return ResponseEntity.ok().body("Password successfully updated!");
+        }
+        return new ResponseEntity<>("You are not authorized to update this user's password", HttpStatus.FORBIDDEN);
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
         logger.info("Deleting user with ID: {}", id);
-        userService.deleteUserById(id);
-        return new ResponseEntity<>("User deleted!", HttpStatus.OK);
+
+        if (isAuthenticatedUser(id)) {
+            userService.deleteUserById(id);
+            return new ResponseEntity<>("User deleted!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("You are not authorized to delete this user", HttpStatus.FORBIDDEN);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -58,21 +88,6 @@ public class UserController {
         return new ResponseEntity<>("All users deleted!", HttpStatus.OK);
     }
 
-    @PutMapping("/update/email/{id}")
-    public ResponseEntity<String> updateEmailById(
-            @Valid @RequestBody UpdateEmailRequest updateEmailRequest, @PathVariable Long id) {
-        logger.info("Updating email for user with ID: {}", id);
-        userService.updateEmail(updateEmailRequest, id);
-        return ResponseEntity.ok().body("Email successfully updated!");
-    }
-
-    @PutMapping("/update/password/{id}")
-    public ResponseEntity<String> updatePasswordById(
-            @Valid @RequestBody UpdatePasswordRequest updatePasswordRequest, @PathVariable Long id) {
-        logger.info("Updating password for user with ID: {}", id);
-        userService.updatePassword(updatePasswordRequest, id);
-        return ResponseEntity.ok().body("Password successfully updated!");
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> fetchById(@PathVariable Long id) {
@@ -91,4 +106,14 @@ public class UserController {
         logger.error("Validation error: {}", messages.get(0));
         return ResponseEntity.badRequest().body(String.join(", ", messages));
     }
+
+    private boolean isAuthenticatedUser(Long id) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof User user) {
+            Long userId = user.getId();
+            return userId.equals(id);
+        }
+        return false;
+    }
+
 }
