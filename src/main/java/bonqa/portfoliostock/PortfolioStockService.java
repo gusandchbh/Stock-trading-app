@@ -6,6 +6,7 @@ import bonqa.portfolio.Portfolio;
 import bonqa.portfolio.PortfolioRepository;
 import bonqa.portfolio.PortfolioService;
 import bonqa.portfoliostock.exception.InsufficientFundsException;
+import bonqa.portfoliostock.exception.ResourceNotFoundException;
 import bonqa.trade.Trade;
 import bonqa.trade.TradeRepository;
 import bonqa.trade.TradeType;
@@ -17,7 +18,6 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -44,7 +44,7 @@ public class PortfolioStockService {
         this.tradeRepository = tradeRepository;
     }
 
-    public MarketStock findStockById(Long stockId) {
+    public MarketStock findStockById(Long stockId) throws ResourceNotFoundException {
         return marketStockRepository
                 .findById(stockId)
                 .orElseThrow(() -> new ResourceNotFoundException("Stock not found"));

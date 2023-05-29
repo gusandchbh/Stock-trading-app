@@ -2,11 +2,11 @@ package bonqa.exception;
 
 import bonqa.portfoliostock.PortfolioStock;
 import bonqa.portfoliostock.exception.InsufficientFundsException;
+import bonqa.portfoliostock.exception.ResourceNotFoundException;
 import bonqa.user.exception.NotAuthorizedException;
 import bonqa.user.exception.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -36,12 +36,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException e) {
-        LOGGER.error("ResourceNotFoundException occurred", e);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-    }
-
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException ex) {
         LOGGER.error("AccessDeniedException occurred", ex);
@@ -60,5 +54,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body("An internal server error occurred. Please try again later.");
     }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException e) {
+        LOGGER.error("ResourceNotFoundException occurred", e);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
 }
 
