@@ -1,6 +1,7 @@
 package bonqa.marketstock;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,4 +15,5 @@ public class MarketStockDTO {
     private Long volume;
     private BigDecimal open;
     private BigDecimal close;
+    private LocalDateTime lastUpdated;
 }

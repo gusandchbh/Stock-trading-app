@@ -17,4 +17,5 @@ public class StockGeneric {
     private Long volume;
     private BigDecimal open;
     private BigDecimal close;
+    private String date;
 }

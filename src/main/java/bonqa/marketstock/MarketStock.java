@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,4 +43,7 @@ public class MarketStock {
 
     @Column(name = "close_price", nullable = false)
     private BigDecimal close;
+
+    @Column(name = "last_updated", nullable = false)
+    private LocalDateTime lastUpdated;
 }

@@ -2,8 +2,10 @@ package bonqa.marketstock;
 
 import bonqa.marketstock.fetcher.MarketStockFetcherInterface;
 import bonqa.marketstock.generic.StockGeneric;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +16,7 @@ public class MarketStockUpdater {
     private final MarketStockRepository marketStockRepository;
 
     @Autowired
-    public MarketStockUpdater(MarketStockFetcherInterface stockFetcher, MarketStockRepository marketStockRepository) {
+    public MarketStockUpdater(@Qualifier("alphaVantageMarketStockFetcher")MarketStockFetcherInterface stockFetcher, MarketStockRepository marketStockRepository) {
         this.stockFetcher = stockFetcher;
         this.marketStockRepository = marketStockRepository;
     }
@@ -38,6 +40,7 @@ public class MarketStockUpdater {
             marketStockToSave.setVolume(stock.getVolume());
             marketStockToSave.setOpen(stock.getOpen());
             marketStockToSave.setClose(stock.getClose());
+            marketStockToSave.setLastUpdated(LocalDateTime.now());
             marketStockRepository.save(marketStockToSave);
         }
     }
