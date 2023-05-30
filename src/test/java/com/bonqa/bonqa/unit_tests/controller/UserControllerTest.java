@@ -1,4 +1,4 @@
-package com.bonqa.bonqa.unit_tests;
+package com.bonqa.bonqa.unit_tests.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
