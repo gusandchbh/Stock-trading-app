@@ -15,6 +15,8 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -23,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = BonqaApplication.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 class AuthenticationControllerIntegrationTest {
 
     @Autowired
@@ -76,7 +79,7 @@ class AuthenticationControllerIntegrationTest {
 
     @Test
     void testAuthenticateFailure() throws Exception {
-        AuthenticationRequest authenticationRequest = new AuthenticationRequest("test", "test");
+        AuthenticationRequest authenticationRequest = new AuthenticationRequest("test123", "test123");
         mockMvc.perform(post("/api/v1/auth/authenticate")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(authenticationRequest)))
