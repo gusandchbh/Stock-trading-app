@@ -2,9 +2,10 @@ package bonqa.user;
 
 import bonqa.authentication.request.RegisterRequest;
 import bonqa.portfolio.Portfolio;
-import java.math.BigDecimal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 public class UserFactory {

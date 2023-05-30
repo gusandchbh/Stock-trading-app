@@ -2,14 +2,9 @@ package bonqa.security;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.passay.*;
+
 import java.util.Arrays;
-import org.passay.CharacterRule;
-import org.passay.EnglishCharacterData;
-import org.passay.LengthRule;
-import org.passay.PasswordData;
-import org.passay.PasswordValidator;
-import org.passay.RuleResult;
-import org.passay.WhitespaceRule;
 
 public class StrongPasswordValidator implements ConstraintValidator<StrongPassword, String> {
     @Override

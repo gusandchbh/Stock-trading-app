@@ -5,13 +5,14 @@ import bonqa.portfoliostock.PortfolioStockRepository;
 import bonqa.trade.Trade;
 import bonqa.trade.TradeRepository;
 import bonqa.trade.TradeType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PortfolioService {
@@ -118,6 +119,12 @@ public class PortfolioService {
         portfolio.setAccountBalance(newBalance);
         portfolioRepository.save(portfolio);
     }
+
+    public Portfolio getPortfolioByUserId(Long userId) {
+        return portfolioRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User ID not found."));
+    }
+
 
     public record TradeSummary(BigDecimal totalValue, int totalShares) {
     }

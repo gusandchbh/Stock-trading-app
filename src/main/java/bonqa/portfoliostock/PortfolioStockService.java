@@ -3,122 +3,105 @@ package bonqa.portfoliostock;
 import bonqa.marketstock.MarketStock;
 import bonqa.marketstock.MarketStockRepository;
 import bonqa.portfolio.Portfolio;
-import bonqa.portfolio.PortfolioRepository;
 import bonqa.portfolio.PortfolioService;
-import bonqa.portfoliostock.exception.InsufficientFundsException;
-import bonqa.portfoliostock.exception.InsufficientSharesException;
 import bonqa.portfoliostock.exception.ResourceNotFoundException;
 import bonqa.trade.Trade;
-import bonqa.trade.TradeFactory;
 import bonqa.trade.TradeRepository;
 import bonqa.trade.TradeType;
-import bonqa.user.User;
-import bonqa.user.UserRepository;
-import jakarta.transaction.Transactional;
-import java.math.BigDecimal;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class PortfolioStockService {
 
-    private final UserRepository userRepository;
+    private final PortfolioStockRepository portfolioStockRepository;
     private final MarketStockRepository marketStockRepository;
-    private final PortfolioRepository portfolioRepository;
     private final PortfolioService portfolioService;
-
     private final TradeRepository tradeRepository;
 
-    private final TradeFactory tradeFactory;
-
-    public PortfolioStockService(
-        MarketStockRepository marketStockRepository,
-        PortfolioRepository portfolioRepository,
-        UserRepository userRepository,
-        PortfolioService portfolioService,
-        TradeRepository tradeRepository,
-        TradeFactory tradeFactory) {
-        this.userRepository = userRepository;
+    @Autowired
+    public PortfolioStockService(PortfolioStockRepository portfolioStockRepository,
+                                 MarketStockRepository marketStockRepository,
+                                 PortfolioService portfolioService,
+                                 TradeRepository tradeRepository) {
+        this.portfolioStockRepository = portfolioStockRepository;
         this.marketStockRepository = marketStockRepository;
-        this.portfolioRepository = portfolioRepository;
         this.portfolioService = portfolioService;
         this.tradeRepository = tradeRepository;
-        this.tradeFactory = tradeFactory;
     }
 
-    public MarketStock findStockById(Long stockId) throws ResourceNotFoundException {
-        return marketStockRepository
-                .findById(stockId)
-                .orElseThrow(() -> new ResourceNotFoundException("Stock not found"));
-    }
-
-    public List<PortfolioStock> getAllUserStocks(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        Portfolio portfolio = user.getPortfolio();
-        return portfolio.getStocks();
-    }
-
-    @Transactional
     public String purchaseStock(Long userId, Long stockId, int quantity) {
-        User user = findUserById(userId);
-        Portfolio portfolio = user.getPortfolio();
-        MarketStock marketStock = findStockById(stockId);
+        MarketStock marketStock = marketStockRepository.findById(stockId)
+                .orElseThrow(() -> new RuntimeException("Stock not found"));
+        Portfolio portfolio = portfolioService.getPortfolioByUserId(userId);
 
-        BigDecimal purchasePricePerShare = marketStock.getPrice();
-        BigDecimal totalPrice = calculateAmount(purchasePricePerShare, quantity);
-
-        checkSufficientFunds(portfolio, totalPrice);
-
-        PortfolioStock portfolioStock =
-                updatePortfolioAndPurchaseTrade(portfolio, marketStock, quantity, purchasePricePerShare, totalPrice);
-
-        var pricePerShare = portfolioStock.getMarketStock().getPrice();
-
-        return generateTransactionMessage(portfolioStock, quantity, pricePerShare, TradeType.BUY);
-    }
-
-    @Transactional
-    public String sellStock(Long userId, Long stockId, int quantity) {
-        User user = findUserById(userId);
-        Portfolio portfolio = user.getPortfolio();
-        MarketStock marketStock = findStockById(stockId);
-        PortfolioStock portfolioStock = findPortfolioStock(portfolio, stockId);
-
-        checkSufficientShares(quantity, portfolioStock);
-
-        BigDecimal sellPricePerShare = marketStock.getPrice();
-        BigDecimal amount = calculateAmount(sellPricePerShare, quantity);
-
-        updatePortfolioAndTrade(portfolio, marketStock, quantity, sellPricePerShare, amount, TradeType.SELL);
-
-        return generateTransactionMessage(portfolioStock, quantity, sellPricePerShare, TradeType.SELL);
-    }
-
-    private void checkSufficientFunds(Portfolio portfolio, BigDecimal totalPrice) {
-        if (portfolio.getAccountBalance().compareTo(totalPrice) < 0) {
-            throw new InsufficientFundsException("Insufficient funds to purchase the stock");
+        BigDecimal requiredAmount = marketStock.getPrice().multiply(BigDecimal.valueOf(quantity));
+        if (portfolio.getAccountBalance().compareTo(requiredAmount) < 0) {
+            return "Not enough balance to purchase stocks";
         }
-    }
 
-    private PortfolioStock updatePortfolioAndPurchaseTrade(
-        Portfolio portfolio,
-        MarketStock marketStock,
-        int quantity,
-        BigDecimal purchasePricePerShare,
-        BigDecimal totalPrice) {
-        portfolio.setAccountBalance(portfolio.getAccountBalance().subtract(totalPrice));
+        createTrade(portfolio, marketStock, quantity, TradeType.BUY);
 
         PortfolioStock portfolioStock = findOrCreatePortfolioStock(portfolio, marketStock);
 
-        updatePortfolioStockForPurchase(portfolioStock, quantity);
+        portfolioStock.setQuantity(portfolioStock.getQuantity() + quantity);
+        portfolioService.updatePortfolioStockValue(portfolio.getId(), portfolioStock);
 
-        Trade trade = tradeFactory.createTrade(totalPrice, quantity, purchasePricePerShare, TradeType.BUY, portfolio, marketStock);
+        portfolioService.updateAccountBalance(portfolio, requiredAmount.negate());
+
+        return "Stock purchase successful";
+    }
+
+
+    public String sellStock(Long userId, Long stockId, int quantity) {
+        MarketStock marketStock = marketStockRepository.findById(stockId)
+                .orElseThrow(() -> new RuntimeException("Stock not found"));
+        Portfolio portfolio = portfolioService.getPortfolioByUserId(userId);
+
+        PortfolioStock examplePortfolioStock = new PortfolioStock();
+        examplePortfolioStock.setPortfolio(portfolio);
+        examplePortfolioStock.setMarketStock(marketStock);
+        PortfolioStock portfolioStock = findPortfolioStock(portfolio, stockId);
+
+        if (portfolioStock.getQuantity() < quantity) {
+            return "Not enough stocks to sell";
+        }
+
+        Trade trade = createTrade(portfolio, marketStock, quantity, TradeType.SELL);
+
+        portfolioStock.setQuantity(portfolioStock.getQuantity() - quantity);
+
+        if(portfolioStock.getQuantity() == 0) {
+            portfolioService.removePortfolioStock(portfolio.getId(), portfolioStock);
+        } else {
+            portfolioService.updatePortfolioStockValue(portfolio.getId(), portfolioStock);
+        }
+
+        portfolioService.updateAccountBalance(portfolio, trade.getAmount());
+
+        return "Stock sale successful";
+    }
+
+    public List<PortfolioStock> getAllUserStocks(Long userId) {
+        Portfolio portfolio = portfolioService.getPortfolioByUserId(userId);
+        return portfolioStockRepository.findByPortfolio(portfolio);
+    }
+
+    private Trade createTrade(Portfolio portfolio, MarketStock marketStock, int quantity, TradeType tradeType) {
+        Trade trade = new Trade();
+        trade.setPortfolio(portfolio);
+        trade.setMarketStock(marketStock);
+        trade.setAmount(marketStock.getPrice().multiply(BigDecimal.valueOf(quantity)));
+        trade.setTradeType(tradeType);
+        trade.setShares(quantity);
+        trade.setCreateDate(LocalDateTime.now());
+        trade.setPricePerShare(marketStock.getPrice());
         tradeRepository.save(trade);
-
-        portfolioRepository.save(portfolio);
-
-        portfolioService.updateTotalValue(portfolio);
-        return portfolioStock;
+        return trade;
     }
 
     private PortfolioStock findOrCreatePortfolioStock(Portfolio portfolio, MarketStock marketStock) {
@@ -138,42 +121,6 @@ public class PortfolioStockService {
                 });
     }
 
-    private void updatePortfolioStockForPurchase(
-            PortfolioStock portfolioStock, int quantity) {
-        if (portfolioStock.getQuantity() == null) {
-            initializeNewPortfolioStock(portfolioStock, quantity);
-        } else {
-            updateExistingPortfolioStock(portfolioStock, quantity);
-        }
-    }
-
-    private void initializeNewPortfolioStock(
-            PortfolioStock portfolioStock, int quantity) {
-        portfolioStock.setQuantity(quantity);
-
-        BigDecimal bigDecimalQuantity = BigDecimal.valueOf(portfolioStock.getQuantity());
-        BigDecimal currentValue = new BigDecimal(0); // UPPDATERA
-        portfolioStock.setTotalValue(currentValue);
-    }
-
-    private void updateExistingPortfolioStock(
-            PortfolioStock portfolioStock, int quantity) {
-        int oldQuantity = portfolioStock.getQuantity();
-
-        int newQuantity = oldQuantity + quantity;
-
-        portfolioStock.setQuantity(newQuantity);
-
-        BigDecimal bigDecimalQuantity = BigDecimal.valueOf(portfolioStock.getQuantity());
-        BigDecimal currentValue =
-                bigDecimalQuantity.multiply(portfolioStock.getMarketStock().getPrice());
-        portfolioStock.setTotalValue(currentValue);
-    }
-
-    private User findUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-    }
-
     private PortfolioStock findPortfolioStock(Portfolio portfolio, Long stockId) {
         return portfolio.getStocks().stream()
                 .filter(ps -> ps.getMarketStock().getId().equals(stockId))
@@ -181,50 +128,4 @@ public class PortfolioStockService {
                 .orElseThrow(() -> new ResourceNotFoundException("Stock not found in the portfolio"));
     }
 
-    private void checkSufficientShares(int quantity, PortfolioStock portfolioStock) {
-        if (quantity > portfolioStock.getQuantity()) {
-            throw new InsufficientSharesException("Insufficient quantity to sell the stock");
-        }
-    }
-
-    private BigDecimal calculateAmount(BigDecimal sellPricePerShare, int quantity) {
-        return sellPricePerShare.multiply(BigDecimal.valueOf(quantity));
-    }
-
-    private void updatePortfolioAndTrade(
-        Portfolio portfolio,
-        MarketStock marketStock,
-        int quantity,
-        BigDecimal sellPricePerShare,
-        BigDecimal amount,
-        TradeType tradeType) {
-        portfolioService.updateAccountBalance(portfolio, amount);
-
-        Trade trade = tradeFactory.createTrade(amount, quantity, sellPricePerShare, tradeType, portfolio, marketStock);
-        tradeRepository.save(trade);
-
-        updatePortfolioStock(portfolio, marketStock, quantity);
-    }
-
-    private void updatePortfolioStock(Portfolio portfolio, MarketStock marketStock, int quantity) {
-        PortfolioStock portfolioStock = findPortfolioStock(portfolio, marketStock.getId());
-        int newQuantity = portfolioStock.getQuantity() - quantity;
-        if (newQuantity == 0) {
-            portfolioService.removePortfolioStock(portfolio.getId(), portfolioStock);
-        } else {
-            portfolioStock.setQuantity(newQuantity);
-            portfolioService.updatePortfolioStockValue(portfolio.getId(), portfolioStock);
-        }
-    }
-
-    private String generateTransactionMessage(
-            PortfolioStock portfolioStock, int quantity, BigDecimal pricePerShare, TradeType tradeType) {
-        String stockName = portfolioStock.getStockName();
-        BigDecimal bigDecimalQuantity = BigDecimal.valueOf(quantity);
-        BigDecimal totalValue = bigDecimalQuantity.multiply(pricePerShare);
-        String operation = tradeType == TradeType.BUY ? "bought" : "sold";
-
-        return String.format(
-                "You have %s %d shares of %s for %.2f USD", operation, quantity, stockName, totalValue.doubleValue());
-    }
 }

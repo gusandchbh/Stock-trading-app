@@ -1,9 +1,10 @@
 package bonqa.portfolio;
 
 import bonqa.user.User;
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import org.springframework.stereotype.Service;
 
 @Service
 public class PortfolioFactory {
