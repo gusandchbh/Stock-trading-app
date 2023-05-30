@@ -45,9 +45,6 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if (!user.isCorrectUser()) {
-                throw new NotAuthorizedException("Can not update another users email");
-            }
             String newEmail = updateEmailRequest.getEmail();
             user.setEmail(newEmail);
             userRepository.save(user);
@@ -61,9 +58,6 @@ public class UserService {
         if (user.isEmpty()) {
             throw new UserNotFoundException("No user found.");
         }
-        if (!user.get().isCorrectUser()) {
-            throw new NotAuthorizedException("Can not delete another user.");
-        }
         userRepository.deleteById(id);
     }
 
@@ -71,9 +65,6 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if (!user.isCorrectUser()) {
-                throw new NotAuthorizedException("Can not update another users password");
-            }
             String newEmail = updatePasswordRequest.getPassword();
             user.setPassword(passwordEncoder.encode(newEmail));
             userRepository.save(user);
