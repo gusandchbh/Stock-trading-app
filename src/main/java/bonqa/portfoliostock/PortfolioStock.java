@@ -42,15 +42,7 @@ public class PortfolioStock {
     @Column(name = "stock_name")
     private String stockName;
 
-    @Column(name = "average_purchase_price")
-    private BigDecimal averagePurchasePrice;
-
     @Column(name = "quantity")
     private Integer quantity;
 
-    public static class InsufficientSharesException extends RuntimeException {
-        public InsufficientSharesException(String message) {
-            super(message);
-        }
-    }
 }

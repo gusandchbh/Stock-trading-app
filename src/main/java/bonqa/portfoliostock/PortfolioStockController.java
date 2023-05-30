@@ -1,8 +1,7 @@
 package bonqa.portfoliostock;
 
-import java.util.List;
-
 import bonqa.user.AuthorizationService;
+import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

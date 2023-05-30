@@ -2,10 +2,9 @@ package bonqa.trade;
 
 import bonqa.marketstock.MarketStock;
 import bonqa.portfolio.Portfolio;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import org.springframework.stereotype.Service;
 
 @Service
 public class TradeFactory {

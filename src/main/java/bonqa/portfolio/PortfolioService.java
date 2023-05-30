@@ -69,29 +69,46 @@ public class PortfolioService {
             Portfolio portfolio = optionalPortfolio.get();
             if (portfolio.getStocks().contains(portfolioStock)) {
                 List<Trade> trades = tradeRepository.findByPortfolioIdAndStockId(
-                        portfolioId, portfolioStock.getMarketStock().getId());
-                BigDecimal totalPurchasePrice = BigDecimal.ZERO;
-                int totalShares = 0;
+                    portfolioId, portfolioStock.getMarketStock().getId());
 
-                for (Trade trade : trades) {
-                    if (trade.getTradeType() == TradeType.BUY) {
-                        totalPurchasePrice = totalPurchasePrice.add(
-                                trade.getPricePerShare().multiply(BigDecimal.valueOf(trade.getShares())));
-                        totalShares += trade.getShares();
-                    }
-                }
+                TradeSummary tradeSummary = calculateTradeSummary(trades);
 
-                BigDecimal averagePurchasePrice = totalShares == 0
-                        ? BigDecimal.ZERO
-                        : totalPurchasePrice.divide(BigDecimal.valueOf(totalShares), RoundingMode.HALF_UP);
+                BigDecimal averageValue = tradeSummary.totalShares() == 0
+                    ? BigDecimal.ZERO
+                    : tradeSummary.totalValue().divide(
+                    BigDecimal.valueOf(tradeSummary.totalShares()), RoundingMode.HALF_UP);
+
                 BigDecimal currentValue =
-                        averagePurchasePrice.multiply(BigDecimal.valueOf(portfolioStock.getQuantity()));
+                    averageValue.multiply(BigDecimal.valueOf(portfolioStock.getQuantity()));
+
                 portfolioStock.setTotalValue(currentValue);
+
                 updateTotalValue(portfolio);
                 portfolioRepository.save(portfolio);
             }
         }
     }
+
+    private TradeSummary calculateTradeSummary(List<Trade> trades) {
+        BigDecimal totalValue = BigDecimal.ZERO;
+        int totalShares = 0;
+
+        for (Trade trade : trades) {
+            if (trade.getTradeType() == TradeType.BUY) {
+                totalValue = totalValue.add(
+                    trade.getPricePerShare().multiply(BigDecimal.valueOf(trade.getShares())));
+                totalShares += trade.getShares();
+            } else if (trade.getTradeType() == TradeType.SELL) {
+                totalValue = totalValue.subtract(
+                    trade.getPricePerShare().multiply(BigDecimal.valueOf(trade.getShares())));
+                totalShares -= trade.getShares();
+            }
+        }
+
+        return new TradeSummary(totalValue, totalShares);
+    }
+
+
 
     public void updateAccountBalance(Portfolio portfolio, BigDecimal balanceChange) {
         BigDecimal newBalance = portfolio.getAccountBalance().add(balanceChange);
@@ -100,6 +117,9 @@ public class PortfolioService {
         }
         portfolio.setAccountBalance(newBalance);
         portfolioRepository.save(portfolio);
+    }
+
+    public record TradeSummary(BigDecimal totalValue, int totalShares) {
     }
 
 }

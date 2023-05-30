@@ -38,12 +38,6 @@ public class MarketStock {
     @Column(name = "volume", nullable = false)
     private Long volume;
 
-    @Column(name = "open_price", nullable = false)
-    private BigDecimal open;
-
-    @Column(name = "close_price", nullable = false)
-    private BigDecimal close;
-
     @Column(name = "last_updated", nullable = false)
     private LocalDateTime lastUpdated;
 }

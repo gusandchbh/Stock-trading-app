@@ -5,10 +5,8 @@ import bonqa.marketstock.MarketStockRepository;
 import bonqa.marketstock.fetcher.MarketStockFetcherInterface;
 import bonqa.marketstock.generic.StockGeneric;
 import jakarta.annotation.PostConstruct;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -65,8 +63,6 @@ public class MarketStockUpdater {
             marketStockToSave.setName(stock.getName());
             marketStockToSave.setPrice(stock.getPrice());
             marketStockToSave.setVolume(stock.getVolume());
-            marketStockToSave.setOpen(stock.getOpen());
-            marketStockToSave.setClose(stock.getClose());
             marketStockToSave.setLastUpdated(LocalDateTime.now());
 
             marketStockRepository.save(marketStockToSave);

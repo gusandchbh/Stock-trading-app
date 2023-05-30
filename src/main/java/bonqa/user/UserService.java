@@ -1,6 +1,5 @@
 package bonqa.user;
 
-import bonqa.user.exception.NotAuthorizedException;
 import bonqa.user.exception.UserNotFoundException;
 import bonqa.user.request.UpdateEmailRequest;
 import bonqa.user.request.UpdatePasswordRequest;
