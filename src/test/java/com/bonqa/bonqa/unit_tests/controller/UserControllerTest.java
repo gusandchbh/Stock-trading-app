@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import bonqa.user.AuthorizationService;
 import bonqa.user.UserController;
 import bonqa.user.UserDTO;
+import bonqa.user.UserRepository;
 import bonqa.user.UserService;
 import bonqa.user.request.UpdateEmailRequest;
 import bonqa.user.request.UpdatePasswordRequest;
@@ -31,6 +32,9 @@ class UserControllerTest {
 
   @Mock
   private AuthorizationService authorizationService;
+
+  @Mock
+  private UserRepository userRepository;
 
   @Test
   void testAll() {

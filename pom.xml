@@ -19,6 +19,15 @@
     <dependency-check-maven.version>8.2.1</dependency-check-maven.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
     <properties-maven-plugin.version>1.1.0</properties-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
+    <jacoco.minimum.coverage>0%</jacoco.minimum.coverage>
+    <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
+    <jacoco.utReportFolder>${project.build.directory}/jacoco/test</jacoco.utReportFolder>
+    <jacoco.utReportFile>${jacoco.utReportFolder}/test.exec</jacoco.utReportFile>
+    <jacoco.itReportFolder>${project.build.directory}/jacoco/integrationTest</jacoco.itReportFolder>
+    <jacoco.itReportFile>${jacoco.itReportFolder}/integrationTest.exec</jacoco.itReportFile>
+    <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
+    <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
   </properties>
   <repositories>
     <repository>
@@ -157,6 +166,87 @@
             <goals>
               <goal>check</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco-maven-plugin.version}</version>
+
+        <executions>
+          <execution>
+            <id>pre-unit-tests</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <!-- Sets the path to the file which contains the execution data. -->
+              <destFile>${jacoco.utReportFile}</destFile>
+            </configuration>
+          </execution>
+          <!-- Ensures that the code coverage report for unit tests is created after unit tests have been run -->
+          <execution>
+            <id>post-unit-test</id>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <phase>test</phase>
+            <configuration>
+              <dataFile>${jacoco.utReportFile}</dataFile>
+              <outputDirectory>${jacoco.utReportFolder}</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <dataFile>${jacoco.utReportFile}</dataFile>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>${jacoco.minimum.coverage}</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+              <excludes>
+                <exclude>**/*Application.*</exclude>
+                <exclude>**/config/**</exclude>
+                <exclude>**/models/*</exclude>
+                <exclude>**/dtos/*</exclude>
+                <exclude>**/exceptions/*</exclude>
+                <exclude>**/*Constants*</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+          <execution>
+            <id>pre-integration-tests</id>
+            <goals>
+              <goal>prepare-agent-integration</goal>
+            </goals>
+            <configuration>
+              <!-- Sets the path to the file which contains the execution data. -->
+              <destFile>${jacoco.itReportFile}</destFile>
+            </configuration>
+          </execution>
+          <!-- Ensures that the code coverage report for integration tests is created after integration tests have been run -->
+          <execution>
+            <id>post-integration-tests</id>
+            <goals>
+              <goal>report-integration</goal>
+            </goals>
+            <phase>post-integration-test</phase>
+            <configuration>
+              <dataFile>${jacoco.itReportFile}</dataFile>
+              <outputDirectory>${jacoco.itReportFolder}</outputDirectory>
+            </configuration>
           </execution>
         </executions>
       </plugin>
