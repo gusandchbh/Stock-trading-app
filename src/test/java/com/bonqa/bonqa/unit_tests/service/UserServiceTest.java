@@ -45,9 +45,7 @@ class UserServiceTest {
     user.setUsername("testUser");
     when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
 
-    assertDoesNotThrow(() -> {
-      userService.updateEmail(new UpdateEmailRequest(), 1L);
-    });
+    assertDoesNotThrow(() -> userService.updateEmail(new UpdateEmailRequest(), 1L));
   }
 
   @Test

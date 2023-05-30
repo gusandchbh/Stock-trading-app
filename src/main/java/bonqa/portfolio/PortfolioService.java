@@ -45,6 +45,9 @@ public class PortfolioService {
 
     @Transactional
     public void removePortfolioStock(Long portfolioId, PortfolioStock portfolioStock) {
+        if (portfolioStock == null || portfolioId == null) {
+            throw new IllegalArgumentException("Invalid arguments.");
+        }
         Optional<Portfolio> optionalPortfolio = portfolioRepository.findById(portfolioId);
         if (optionalPortfolio.isPresent()) {
             Portfolio portfolio = optionalPortfolio.get();
@@ -58,6 +61,9 @@ public class PortfolioService {
 
     @Transactional
     public void updatePortfolioStockValue(Long portfolioId, PortfolioStock portfolioStock) {
+        if (portfolioStock == null || portfolioId == null) {
+            throw new IllegalArgumentException("Invalid arguments.");
+        }
         Optional<Portfolio> optionalPortfolio = portfolioRepository.findById(portfolioId);
         if (optionalPortfolio.isPresent()) {
             Portfolio portfolio = optionalPortfolio.get();
@@ -89,7 +95,11 @@ public class PortfolioService {
 
     public void updateAccountBalance(Portfolio portfolio, BigDecimal balanceChange) {
         BigDecimal newBalance = portfolio.getAccountBalance().add(balanceChange);
+        if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Balance cannot be negative.");
+        }
         portfolio.setAccountBalance(newBalance);
         portfolioRepository.save(portfolio);
     }
+
 }
