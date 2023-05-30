@@ -1,11 +1,8 @@
 package bonqa.authentication;
 
 import bonqa.authentication.exception.BadRequestException;
-import bonqa.authentication.exception.NotLoggedInException;
 import bonqa.authentication.request.AuthenticationRequest;
 import bonqa.authentication.request.RegisterRequest;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -29,12 +25,9 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    private final LogoutService logoutService;
-
     @Autowired
-    public AuthenticationController(AuthenticationService authenticationService, LogoutService logoutService) {
+    public AuthenticationController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
-        this.logoutService = logoutService;
     }
 
     @PostMapping("/register")
@@ -75,17 +68,4 @@ public class AuthenticationController {
         return ResponseEntity.badRequest().body(String.join(", ", messages));
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            logger.info("Attempting to logout user");
-            logoutService.logout(
-                    request, response, SecurityContextHolder.getContext().getAuthentication());
-            logger.info("User logged out successfully");
-            return ResponseEntity.ok().body("Logged out successfully!");
-        } catch (NotLoggedInException e) {
-            logger.error("Failed to logout user: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
 }
