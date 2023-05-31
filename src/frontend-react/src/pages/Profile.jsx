@@ -4,7 +4,6 @@ import { useAuth } from "../contexts/AuthContext";
 
 export const Profile = () => {
   const { userToken } = useAuth();
-  console.log(userToken);
 
   return (
     <div style={{ height: "100vh" }}>
@@ -17,7 +16,7 @@ export const Profile = () => {
         }}
       >
         <Card.Body className="profile-card">
-          <h1>Welcome {userToken ? userToken : "no user"}!</h1>
+          <h1>Welcome {userToken ? userToken.sub : "no user"}!</h1>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2"></div>

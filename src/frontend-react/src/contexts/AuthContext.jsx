@@ -9,9 +9,7 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-  const [userToken, setUserToken] = useState(
-    parseJWT(localStorage.getItem("token"))
-  );
+  const [userToken, setUserToken] = useState("")
 
   const login = async (username, password) => {
     const response = await API.post("api/v1/auth/authenticate", {
@@ -19,8 +17,9 @@ export function AuthProvider({ children }) {
       password: password,
     });
     if (response.status === 200) {
-      setUserToken(username);
-      localStorage.token = response.data;
+      const token = response.data
+      localStorage.setItem("token", token);
+      setUserToken(parseJWT(token));
       API.defaults.headers.common["Authorization"] = `Bearer ${response.data}`;
     } else {
       console.log(response.data);
@@ -41,9 +40,9 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ userToken, login, signup, logout }}>
-      {children}
-    </AuthContext.Provider>
+      <AuthContext.Provider value={{ userToken, login, signup, logout }}>
+        {children}
+      </AuthContext.Provider>
   );
 }
 
