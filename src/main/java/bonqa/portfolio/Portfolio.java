@@ -3,6 +3,8 @@ package bonqa.portfolio;
 import bonqa.portfoliostock.PortfolioStock;
 import bonqa.trade.Trade;
 import bonqa.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +27,11 @@ public class Portfolio {
     @Column(name = "balance", nullable = false)
     private BigDecimal accountBalance = BigDecimal.valueOf(0);
 
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "portfolio")
     private List<PortfolioStock> stocks;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "portfolio")
     private List<Trade> tradeList;
 
