@@ -1,6 +1,7 @@
 package bonqa.exception;
 
 import jakarta.validation.ValidationException;
+
 import java.util.List;
 
 public class StrongPasswordException extends ValidationException {

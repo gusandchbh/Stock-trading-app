@@ -1,11 +1,12 @@
 package bonqa.marketstock.generic;
 
 import com.crazzyghost.alphavantage.timeseries.response.StockUnit;
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.springframework.stereotype.Component;
 
 @Component
 public class StockGenericFactory {

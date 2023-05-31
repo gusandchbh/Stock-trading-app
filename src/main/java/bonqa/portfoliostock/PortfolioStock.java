@@ -2,19 +2,12 @@ package bonqa.portfoliostock;
 
 import bonqa.marketstock.MarketStock;
 import bonqa.portfolio.Portfolio;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import java.math.BigDecimal;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.math.BigDecimal;
 
 @SuppressWarnings("checkstyle:MissingJavadocType")
 @Entity
@@ -32,7 +25,7 @@ public class PortfolioStock {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "stock_id")
     private MarketStock marketStock;
 
@@ -42,15 +35,7 @@ public class PortfolioStock {
     @Column(name = "stock_name")
     private String stockName;
 
-    @Column(name = "average_purchase_price")
-    private BigDecimal averagePurchasePrice;
-
     @Column(name = "quantity")
     private Integer quantity;
 
-    public static class InsufficientSharesException extends RuntimeException {
-        public InsufficientSharesException(String message) {
-            super(message);
-        }
-    }
 }

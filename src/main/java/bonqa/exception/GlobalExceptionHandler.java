@@ -1,7 +1,7 @@
 package bonqa.exception;
 
-import bonqa.portfoliostock.PortfolioStock;
 import bonqa.portfoliostock.exception.InsufficientFundsException;
+import bonqa.portfoliostock.exception.InsufficientSharesException;
 import bonqa.portfoliostock.exception.ResourceNotFoundException;
 import bonqa.user.exception.NotAuthorizedException;
 import bonqa.user.exception.UserNotFoundException;
@@ -31,8 +31,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(PortfolioStock.InsufficientSharesException.class)
-    public ResponseEntity<String> handleInsufficientSharesException(PortfolioStock.InsufficientSharesException e) {
+    @ExceptionHandler(InsufficientSharesException.class)
+    public ResponseEntity<String> handleInsufficientSharesException(InsufficientSharesException e) {
         LOGGER.error("InsufficientSharesException occurred", e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }

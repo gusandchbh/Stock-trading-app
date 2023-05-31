@@ -1,16 +1,16 @@
 package bonqa.user;
 
-import bonqa.user.exception.NotAuthorizedException;
 import bonqa.user.exception.UserNotFoundException;
 import bonqa.user.request.UpdateEmailRequest;
 import bonqa.user.request.UpdatePasswordRequest;
 import jakarta.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -45,9 +45,6 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if (!user.isCorrectUser()) {
-                throw new NotAuthorizedException("Can not update another users email");
-            }
             String newEmail = updateEmailRequest.getEmail();
             user.setEmail(newEmail);
             userRepository.save(user);
@@ -61,9 +58,6 @@ public class UserService {
         if (user.isEmpty()) {
             throw new UserNotFoundException("No user found.");
         }
-        if (!user.get().isCorrectUser()) {
-            throw new NotAuthorizedException("Can not delete another user.");
-        }
         userRepository.deleteById(id);
     }
 
@@ -71,9 +65,6 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if (!user.isCorrectUser()) {
-                throw new NotAuthorizedException("Can not update another users password");
-            }
             String newEmail = updatePasswordRequest.getPassword();
             user.setPassword(passwordEncoder.encode(newEmail));
             userRepository.save(user);

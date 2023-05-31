@@ -2,12 +2,13 @@ package bonqa.marketstock.fetcher;
 
 import bonqa.marketstock.generic.StockGeneric;
 import bonqa.marketstock.generic.StockGenericFactory;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import yahoofinance.YahooFinance;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class YahooMarketStockFetcher implements MarketStockFetcherInterface {

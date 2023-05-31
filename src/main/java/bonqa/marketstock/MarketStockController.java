@@ -1,6 +1,5 @@
 package bonqa.marketstock;
 
-import bonqa.marketstock.updater.MarketStockUpdater;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,11 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class MarketStockController {
 
     private final MarketStockRepository marketStockRepository;
-    private final MarketStockUpdater marketStockUpdater;
 
-    public MarketStockController(MarketStockRepository marketStockRepository, MarketStockUpdater marketStockUpdater) {
+    public MarketStockController(MarketStockRepository marketStockRepository) {
         this.marketStockRepository = marketStockRepository;
-        this.marketStockUpdater = marketStockUpdater;
     }
 
     @GetMapping("/")
@@ -22,10 +19,4 @@ public class MarketStockController {
         return marketStockRepository.findAll();
     }
 
-    @GetMapping("/update")
-    String updateStocks() {
-        marketStockUpdater.update();
-
-        return "Stocks updated";
-    }
 }
