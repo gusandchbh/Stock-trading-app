@@ -17,6 +17,7 @@ const parseJWT = token => {
             })
             .join('')
     )
+    console.log(jsonPayload)
 
     return JSON.parse(jsonPayload)
 }

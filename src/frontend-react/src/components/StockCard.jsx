@@ -39,7 +39,6 @@ const StockCard = () => {
               style={{
                 width: "16rem",
                 height: "auto",
-                backgroundColor: "white",
                 borderRadius: "14px",
                 backgroundColor: "rgb(238, 238, 238)",
               }}
@@ -55,9 +54,6 @@ const StockCard = () => {
                   <br />
                   Volume: {stock.volume}
                   <br />
-                  Open: ${stock.open.toFixed(2)}
-                  <br />
-                  Close: ${stock.close.toFixed(2)}
                 </Card.Text>
                 {userToken && (
                   <button

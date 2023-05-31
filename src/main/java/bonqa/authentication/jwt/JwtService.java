@@ -1,5 +1,6 @@
 package bonqa.authentication.jwt;
 
+import bonqa.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -32,8 +33,14 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>(extraClaims);
+        Long userId = ((User) userDetails).getId();
+        claims.put("userId", userId.toString());
+        String email = ((User) userDetails).getEmail();
+        claims.put("email", email);
+
         return Jwts.builder()
-                .setClaims(extraClaims)
+                .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
@@ -61,4 +68,10 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
     }
+    public Long extractUserId(String token) {
+        String userId = extractClaim(token, claims -> claims.get("userId", String.class));
+        return Long.parseLong(userId);
+    }
+
+
 }

@@ -2,6 +2,7 @@ package bonqa.trade;
 
 import bonqa.marketstock.MarketStock;
 import bonqa.portfolio.Portfolio;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,7 @@ public class Trade {
     @Enumerated(EnumType.STRING)
     private TradeType tradeType;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "portfolio_id", nullable = false)
     private Portfolio portfolio;

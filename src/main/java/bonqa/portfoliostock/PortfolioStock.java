@@ -2,6 +2,7 @@ package bonqa.portfoliostock;
 
 import bonqa.marketstock.MarketStock;
 import bonqa.portfolio.Portfolio;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ public class PortfolioStock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
