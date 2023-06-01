@@ -3,12 +3,12 @@ package bonqa.portfolio;
 import bonqa.portfoliostock.PortfolioStock;
 import bonqa.trade.Trade;
 import bonqa.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "portfolio")
 @Entity
+@ToString
 public class Portfolio {
 
     @Id

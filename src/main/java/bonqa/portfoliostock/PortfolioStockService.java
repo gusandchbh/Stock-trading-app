@@ -3,20 +3,27 @@ package bonqa.portfoliostock;
 import bonqa.marketstock.MarketStock;
 import bonqa.marketstock.MarketStockRepository;
 import bonqa.portfolio.Portfolio;
+import bonqa.portfolio.PortfolioRepository;
 import bonqa.portfolio.PortfolioService;
 import bonqa.portfoliostock.exception.ResourceNotFoundException;
 import bonqa.trade.Trade;
 import bonqa.trade.TradeRepository;
 import bonqa.trade.TradeType;
+import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PortfolioStockService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PortfolioStockController.class);
 
     private final PortfolioStockRepository portfolioStockRepository;
     private final MarketStockRepository marketStockRepository;
@@ -127,5 +134,15 @@ public class PortfolioStockService {
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Stock not found in the portfolio"));
     }
+
+    public Optional<PortfolioStock> getPortfolioStock(Long userId, Long stockId) {
+        Portfolio portfolio = portfolioService.getPortfolioByUserId(userId);
+
+
+        return portfolio.getStocks().stream()
+                .filter(ps -> ps.getMarketStock().getId().equals(stockId))
+                .findFirst();
+    }
+
 
 }

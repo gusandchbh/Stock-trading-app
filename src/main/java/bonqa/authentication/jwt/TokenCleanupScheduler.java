@@ -12,7 +12,7 @@ public class TokenCleanupScheduler {
         this.tokenRepository = tokenRepository;
     }
 
-    @Scheduled(cron = "0 0 0 * * ?") // Run at midnight every day
+    @Scheduled(cron = "0 0 0 * * ?")
     public void cleanupExpiredAndRevokedTokens() {
         tokenRepository.deleteExpiredOrRevokedTokens();
     }

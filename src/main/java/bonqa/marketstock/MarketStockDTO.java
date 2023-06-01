@@ -14,7 +14,5 @@ public class MarketStockDTO {
     private BigDecimal price;
     private String ticker;
     private Long volume;
-    private BigDecimal open;
-    private BigDecimal close;
     private LocalDateTime lastUpdated;
 }
