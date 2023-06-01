@@ -64,7 +64,7 @@ export const Profile = () => {
                                             onChange={e => setEmail(e.target.value)}
                                         />
                                     </Form.Group>
-                                    <Button variant="primary" type="submit">
+                                    <Button style={{marginTop: "1rem"}} variant="primary" type="submit">
                                         Update Email
                                     </Button>
                                 </Form>
@@ -87,7 +87,7 @@ export const Profile = () => {
                                             onChange={e => setNewPassword(e.target.value)}
                                         />
                                     </Form.Group>
-                                    <Button variant="primary" type="submit">
+                                    <Button style={{marginTop: "1rem"}} variant="primary" type="submit">
                                         Change Password
                                     </Button>
                                 </Form>

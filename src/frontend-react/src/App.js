@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import AuthProvider from "./contexts/AuthContext";
 import StockPage from "./pages/StockPage";
 import Portfolio from "./pages/Portfolio";
+import PurchasePage from "./pages/PurchasePage";
 
 function App() {
   return (
@@ -19,9 +20,8 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/stocks" element={<StockPage />} />
             <Route path="/portfolio" element={<Portfolio />} />
-            {/* about page */}
-            {/* news page */}
             <Route path="*" element={<h1>404 Not Found</h1>} />
+            <Route path="/purchase/:stockId" element={<PurchasePage />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/portfolio")
-@CrossOrigin(origins = "http://localhost:3000")
 public class PortfolioController {
 
     private final PortfolioService portfolioService;
