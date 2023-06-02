@@ -8,6 +8,7 @@ import AuthProvider from "./contexts/AuthContext";
 import StockPage from "./pages/StockPage";
 import Portfolio from "./pages/Portfolio";
 import PurchasePage from "./pages/PurchasePage";
+import SalePage from "./pages/SalePage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="*" element={<h1>404 Not Found</h1>} />
             <Route path="/purchase/:stockId" element={<PurchasePage />} />
+            <Route path="/sell/:stockId" element={<SalePage /> } />
           </Route>
         </Routes>
       </BrowserRouter>
