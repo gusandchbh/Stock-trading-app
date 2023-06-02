@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Login from "../pages/Login";
 import stockImage from "../assets/stocks.png";
 import { useAuth } from "../contexts/AuthContext";
 
 const StartPage = () => {
   const [showSignup, setShowSignup] = useState(false);
+
   const { userToken } = useAuth();
+
+  useEffect(() => {
+    if (userToken)
+
+    console.log(userToken, "from stockcard")
+
+  }, [userToken])
 
   return (
     <div
