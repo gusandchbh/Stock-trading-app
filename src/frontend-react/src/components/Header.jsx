@@ -7,11 +7,6 @@ export const Header = () => {
   const { userToken, logout } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-      if (userToken) {
-          console.log(userToken, "usert")
-      }
-  }, [userToken])
   const handleLogout = () => {
     logout();
     navigate("/");
