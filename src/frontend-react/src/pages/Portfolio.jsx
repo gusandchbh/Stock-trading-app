@@ -10,14 +10,17 @@ export const Portfolio = () => {
     const [portfolio, setPortfolio] = useState(null);
 
     useEffect(() => {
-        API.get(`/api/v1/portfolio/${userToken.userId}`)
-            .then((res) => {
-                setPortfolio(res.data);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
+        if (userToken) {
+            API.get(`/api/v1/portfolio/${userToken.userId}`)
+                .then((res) => {
+                    setPortfolio(res.data);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        }
     }, [userToken]);
+
 
     return (
         <div style={{ height: "100vh" }}>

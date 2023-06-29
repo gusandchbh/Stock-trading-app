@@ -9,6 +9,8 @@ const StockCard = () => {
     const [result, setResult] = useState([]);
     const navigate = useNavigate();
 
+
+
     const retrieveStocks = async () => {
         try {
             const response = await API.get("/api/v1/stocks/");

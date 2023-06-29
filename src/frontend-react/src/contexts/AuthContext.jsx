@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { API } from "../api";
 import parseJWT from "../utils/parseJWT";
 
@@ -9,7 +9,17 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-  const [userToken, setUserToken] = useState("")
+  const [userToken, setUserToken] = useState();
+  const [loading, setLoading] = useState(true);  // New loading state
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setUserToken(parseJWT(token));
+      API.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+    setLoading(false);  // We're done loading once we've checked the token
+  }, []);
 
   const login = async (username, password) => {
     const response = await API.post("api/v1/auth/authenticate", {
@@ -17,7 +27,7 @@ export function AuthProvider({ children }) {
       password: password,
     });
     if (response.status === 200) {
-      const token = response.data
+      const token = response.data;
       localStorage.setItem("token", token);
       setUserToken(parseJWT(token));
       API.defaults.headers.common["Authorization"] = `Bearer ${response.data}`;
@@ -37,10 +47,11 @@ export function AuthProvider({ children }) {
   const logout = () => {
     setUserToken(undefined);
     localStorage.clear();
+    delete API.defaults.headers.common["Authorization"];
   };
 
   return (
-      <AuthContext.Provider value={{ userToken, login, signup, logout }}>
+      <AuthContext.Provider value={{ loading, userToken, login, signup, logout }}>
         {children}
       </AuthContext.Provider>
   );
