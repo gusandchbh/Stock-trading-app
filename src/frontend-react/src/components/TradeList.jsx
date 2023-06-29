@@ -24,8 +24,8 @@ const PortfolioTradeList = ({ trades }) => {
               <td>{trade.tradeType}</td>
               <td>{trade.shares}</td>
               <td>${trade.pricePerShare.toFixed(2)}</td>
-              <td>{new Date(trade.createDate).toLocaleString()}</td>
-              <td>{trade.marketStock.name} ({trade.marketStock.ticker})</td>
+              <td>{new Date(trade.createDate).toLocaleString().substring(0, 10)}</td>
+              <td>{trade.marketStock.name} </td>
               <td>${trade.marketStock.price.toFixed(2)}</td>
             </tr>
         ))}
