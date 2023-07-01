@@ -3,10 +3,15 @@ package bonqa.security;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.passay.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
 public class StrongPasswordValidator implements ConstraintValidator<StrongPassword, String> {
+
+    private final Logger logger = LoggerFactory.getLogger(StrongPasswordValidator.class);
+
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
         PasswordValidator passwordValidator = new PasswordValidator(Arrays.asList(
@@ -31,9 +36,11 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
             context.buildConstraintViolationWithTemplate(violationMessage)
                     .addConstraintViolation()
                     .disableDefaultConstraintViolation();
+            logger.error("Password validation failed: {} for password: {}", violationMessage, password);
             return false;
         }
 
+        logger.info("Password validation succeeded");
         return true;
     }
 }
