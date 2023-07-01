@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Card, Form, Button, Alert, useAuth } from "react-bootstrap";
+import { Card, Form, Button, Alert} from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { API } from "../api";
-import { useHistory } from "react-router-dom";
 import 'simplebar-react/dist/simplebar.min.css';
 
 export const Profile = () => {
@@ -12,7 +11,6 @@ export const Profile = () => {
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
 
-    const history = useHistory();
 
     const updateEmail = async (e) => {
         e.preventDefault();
@@ -45,7 +43,6 @@ export const Profile = () => {
                 const response = await API.delete(`/api/v1/users/delete/${userToken.userId}`);
                 setMessage(response.data);
                 logout();
-                history.push('/login');
             } catch (error) {
                 setError(error.response.data);
             }
