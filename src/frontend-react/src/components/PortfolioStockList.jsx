@@ -24,7 +24,7 @@ const PortfolioStockList = ({ stocks }) => {
                     key={index}
                     className="bg-dark text-light"
                     style={{cursor: "pointer"}}
-                    onClick={() => navigate(`/sell/${stock.id}`)}
+                    onClick={() => navigate(`/sell/${stock.marketStock.id}`)}
                 >
                     <strong>{stock.stockName}</strong>
                     <br />

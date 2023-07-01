@@ -55,6 +55,11 @@ public class UserController {
     public ResponseEntity<String> updatePasswordById(
             @Valid @RequestBody UpdatePasswordRequest updatePasswordRequest, @PathVariable Long id) {
         logger.info("Updating password for user with ID: {}", id);
+        logger.error("Password: {} ", updatePasswordRequest.getPassword());
+
+        if (updatePasswordRequest.getPassword() == null) {
+            return new ResponseEntity<>("Password cannot be null", HttpStatus.BAD_REQUEST);
+        }
 
         if (authorizationService.isAuthenticatedUser(id)) {
             userService.updatePassword(updatePasswordRequest, id);

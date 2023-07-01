@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -38,6 +42,7 @@ public class UserService {
             userDTOs.add(userDTO);
         }
 
+        logger.info("Retrieved all users");
         return userDTOs;
     }
 
@@ -48,7 +53,9 @@ public class UserService {
             String newEmail = updateEmailRequest.getEmail();
             user.setEmail(newEmail);
             userRepository.save(user);
+            logger.info("Updated email for user with id: {}", id);
         } else {
+            logger.error("Error updating email for user with id: {}", id);
             throw new UserNotFoundException("User not found");
         }
     }
@@ -56,19 +63,23 @@ public class UserService {
     public void deleteUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
+            logger.error("Error deleting user with id: {}", id);
             throw new UserNotFoundException("No user found.");
         }
         userRepository.deleteById(id);
+        logger.info("Deleted user with id: {}", id);
     }
 
     public void updatePassword(@Valid UpdatePasswordRequest updatePasswordRequest, Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            String newEmail = updatePasswordRequest.getPassword();
-            user.setPassword(passwordEncoder.encode(newEmail));
+            String newPassword = updatePasswordRequest.getPassword();
+            user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);
+            logger.info("Updated password for user with id: {}", id);
         } else {
+            logger.error("Error updating password for user with id: {}", id);
             throw new UserNotFoundException("User not found");
         }
     }
@@ -82,8 +93,10 @@ public class UserService {
             userDTO.setEmail(user.get().getEmail());
             userDTO.setCreatedTime(user.get().getCreatedTime());
             userDTO.setRole(user.get().getRole());
+            logger.info("Retrieved user with id: {}", id);
             return Optional.of(userDTO);
         }
+        logger.error("Error retrieving user with id: {}", id);
         return Optional.empty();
     }
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import { API } from "../api";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -9,13 +9,10 @@ const StockCard = () => {
     const [result, setResult] = useState([]);
     const navigate = useNavigate();
 
-
-
     const retrieveStocks = async () => {
         try {
             const response = await API.get("/api/v1/stocks/");
             setResult(response.data);
-            console.log(result);
         } catch (e) {
             console.log(e);
         }
@@ -26,56 +23,25 @@ const StockCard = () => {
     }, []);
 
     return (
-        <div
-            style={{
-                maxHeight: "100vh",
-                height: "100vh",
-                display: "flex",
-                flexWrap: "wrap",
-                padding: "2rem",
-            }}
-        >
+        <div className="d-flex flex-wrap justify-content-around p-3">
             {result.map((stock, index) => {
                 return (
-                    <div style={{ padding: "1rem" }} key={index}>
-                        <Card
-                            className="text-center"
-                            style={{
-                                width: "16rem",
-                                height: "auto",
-                                borderRadius: "14px",
-                                backgroundColor: "rgb(238, 238, 238)",
-                            }}
-                        >
-                            <Card.Body>
-                                <Card.Title>{stock.name}</Card.Title>
-                                <Card.Subtitle className="mb-2 text-muted">
-                                    {stock.ticker}
-                                </Card.Subtitle>
-                                <Card.Text>
-                                    Price: ${stock.price.toFixed(2)}
-                                    <br />
-                                    Volume: {stock.volume}
-                                    <br />
-                                </Card.Text>
-                                {userToken && (
-                                    <button
-                                        style={{
-                                            border: "none",
-                                            backgroundColor: "#50C878",
-                                            width: "4rem",
-                                            height: "auto",
-                                            borderRadius: "6px",
-                                            color: "#eee",
-                                        }}
-                                        onClick={() => navigate(`/purchase/${stock.id}`)}
-                                    >
-                                        Buy
-                                    </button>
-                                )}
-                            </Card.Body>
-                        </Card>
-                    </div>
+                    <Card key={index} style={{ width: '18rem' }} className="mb-4 shadow">
+                        <Card.Body className="d-flex flex-column">
+                            <Card.Title>{stock.name}</Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">
+                                {stock.ticker}
+                            </Card.Subtitle>
+                            <Card.Text>
+                                Price: ${stock.price.toFixed(2)}
+                            </Card.Text>
+                            {userToken && (
+                                <Button variant="dark" className="mt-auto" style={{borderRadius: "6px"}} onClick={() => navigate(`/purchase/${stock.id}`)}>
+                                    Buy
+                                </Button>
+                            )}
+                        </Card.Body>
+                    </Card>
                 );
             })}
         </div>
