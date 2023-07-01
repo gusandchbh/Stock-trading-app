@@ -86,10 +86,4 @@ public class User implements UserDetails {
         return true;
     }
 
-    public boolean isCorrectUser() {
-
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        return name.equals(this.username);
-    }
 }

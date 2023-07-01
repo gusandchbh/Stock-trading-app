@@ -43,11 +43,11 @@ const SalePage = () => {
         }
 
         try {
-            const response = await API.post(`/api/v1/users/${userToken.userId}/stocks/${stock.id}/sell?quantity=${quantity}`);
-
+            const marketStockId = userStock.marketStock.id;
+            const response = await API.post(`/api/v1/users/${userToken.userId}/stocks/${marketStockId}/sell?quantity=${quantity}`);
             if (response.status === 200) {
                 alert(response.data);
-                navigate("/"); // Redirect to home or any other page
+                navigate("/portfolio");
             } else {
                 alert(response.data.message);
             }
@@ -57,37 +57,30 @@ const SalePage = () => {
     };
 
     if (!stock || !userStock) return <p>Loading...</p>;
-
-    // Check if user has enough stocks to sell
     const enoughStock = userStock.quantity >= quantity;
 
     return (
-        <Container>
-            <Row className="justify-content-md-center">
-                <Col md="6">
-                    <Card>
-                        <Card.Body>
-                            <Card.Title>{stock.name}</Card.Title>
-                            <Card.Subtitle className="mb-2 text-muted">{stock.ticker}</Card.Subtitle>
-                            <Card.Text>Price: ${stock.price.toFixed(2)}</Card.Text>
-                            <Card.Text>Volume: {stock.volume}</Card.Text>
-                            <Card.Text>Current Holdings: {userStock.quantity}</Card.Text>
-                            <Form.Group>
-                                <Form.Label id="inputGroup-sizing-default">Quantity</Form.Label>
-                                <FormControl
-                                    aria-label="Default"
-                                    aria-describedby="inputGroup-sizing-default"
-                                    type="number"
-                                    value={quantity}
-                                    onChange={(e) => setQuantity(Number(e.target.value))}
-                                    min="1"
-                                />
-                            </Form.Group>
-                            <Button variant="primary" onClick={handleSale} disabled={!enoughStock}>Sell</Button>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
+        <Container fluid className="vh-100 d-flex justify-content-center align-items-start bg-dark pt-5">
+            <Card className="text-center bg-dark border-0 shadow" style={{ maxWidth: "500px", color: "#fff", backgroundColor: "#333" }}>
+                <Card.Body>
+                    <Card.Title>{stock.name}</Card.Title>
+                    <Card.Subtitle className="mb-3 text-light">{stock.ticker}</Card.Subtitle>
+                    <Card.Text>Price: ${stock.price.toFixed(2)}</Card.Text>
+                    <Card.Text>Current Holdings: {userStock.quantity}</Card.Text>
+                    <Form.Group>
+                        <Form.Label id="inputGroup-sizing-default">Quantity</Form.Label>
+                        <FormControl
+                            aria-label="Default"
+                            aria-describedby="inputGroup-sizing-default"
+                            type="number"
+                            value={quantity}
+                            onChange={(e) => setQuantity(Number(e.target.value))}
+                            min="1"
+                        />
+                    </Form.Group>
+                    <Button variant="dark" onClick={handleSale} disabled={!enoughStock} className="mt-auto" style={{ backgroundColor: "#555" }}>Sell</Button>
+                </Card.Body>
+            </Card>
         </Container>
     );
 };

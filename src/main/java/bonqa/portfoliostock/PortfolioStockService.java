@@ -69,10 +69,10 @@ public class PortfolioStockService {
                 .orElseThrow(() -> new RuntimeException("Stock not found"));
         Portfolio portfolio = portfolioService.getPortfolioByUserId(userId);
 
-        PortfolioStock examplePortfolioStock = new PortfolioStock();
-        examplePortfolioStock.setPortfolio(portfolio);
-        examplePortfolioStock.setMarketStock(marketStock);
         PortfolioStock portfolioStock = findPortfolioStock(portfolio, stockId);
+
+        // Force the initialization of the proxy
+        portfolioStock.getPortfolio().getStocks().size();
 
         if (portfolioStock.getQuantity() < quantity) {
             return "Not enough stocks to sell";
@@ -92,6 +92,7 @@ public class PortfolioStockService {
 
         return "Stock sale successful";
     }
+
 
     public List<PortfolioStock> getAllUserStocks(Long userId) {
         Portfolio portfolio = portfolioService.getPortfolioByUserId(userId);
@@ -137,8 +138,6 @@ public class PortfolioStockService {
 
     public Optional<PortfolioStock> getPortfolioStock(Long userId, Long stockId) {
         Portfolio portfolio = portfolioService.getPortfolioByUserId(userId);
-
-
         return portfolio.getStocks().stream()
                 .filter(ps -> ps.getMarketStock().getId().equals(stockId))
                 .findFirst();

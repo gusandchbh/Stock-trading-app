@@ -63,15 +63,12 @@ public class PortfolioStockController {
     public ResponseEntity<PortfolioStockDTO> getStockByName(@PathVariable Long userId, @PathVariable Long stockId) {
         if (authorizationService.isAuthenticatedUser(userId)) {
             Optional<PortfolioStock> stock = portfolioStockService.getPortfolioStock(userId, stockId);
-            if (stock.isPresent()) {
-                PortfolioStockDTO stockDTO = modelMapper.map(stock.get(), PortfolioStockDTO.class);
-                return ResponseEntity.ok(stockDTO);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            }
+            PortfolioStockDTO stockDTO = modelMapper.map(stock.orElse(new PortfolioStock()), PortfolioStockDTO.class);
+            return ResponseEntity.ok(stockDTO);
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
     }
+
 
 
 }
