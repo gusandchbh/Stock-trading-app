@@ -1,5 +1,5 @@
 import React, { useState} from "react";
-import Login from "../pages/Login";
+import Login from "../components/Login";
 import stockImage from "../assets/stocks.png";
 import { useAuth } from "../contexts/AuthContext";
 
