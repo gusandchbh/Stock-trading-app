@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Spinner, Form } from "react-bootstrap";
+import { Table, Spinner, Form, Pagination } from "react-bootstrap";
 import moment from "moment";
 
 const TradeRow = ({ trade }) => (
@@ -15,6 +15,8 @@ const TradeRow = ({ trade }) => (
 const PortfolioTradeList = ({ trades, loading, error }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredTrades, setFilteredTrades] = useState(trades);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [tradesPerPage] = useState(10);
 
     useEffect(() => {
         const lowercasedSearchTerm = searchTerm.toLowerCase();
@@ -27,7 +29,21 @@ const PortfolioTradeList = ({ trades, loading, error }) => {
         );
 
         setFilteredTrades(newFilteredTrades);
+        setCurrentPage(1);
     }, [searchTerm, trades]);
+
+    const indexOfLastTrade = currentPage * tradesPerPage;
+    const indexOfFirstTrade = indexOfLastTrade - tradesPerPage;
+    const currentTrades = filteredTrades.slice(indexOfFirstTrade, indexOfLastTrade);
+
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(filteredTrades.length / tradesPerPage); i++) {
+        pageNumbers.push(i);
+    }
+
+    const handleClick = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     if (loading) {
         return (
@@ -82,11 +98,18 @@ const PortfolioTradeList = ({ trades, loading, error }) => {
                 </tr>
                 </thead>
                 <tbody>
-                {filteredTrades.map((trade) => (
+                {currentTrades.map((trade) => (
                     <TradeRow key={trade.id} trade={trade} />
                 ))}
                 </tbody>
             </Table>
+            <Pagination className="justify-content-center">
+                {pageNumbers.map(num => (
+                    <Pagination.Item key={num} active={num === currentPage} onClick={() => handleClick(num)}>
+                        {num}
+                    </Pagination.Item>
+                ))}
+            </Pagination>
         </div>
     );
 };
