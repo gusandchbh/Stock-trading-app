@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleException(Exception e) {
         LOGGER.error("Unhandled exception caught: " + e.getClass().getSimpleName(), e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body("An internal server error occurred. Please try again later.");
+                .body("An internal server error occurred. Please try again later.");
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -65,8 +65,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         LOGGER.error("DataIntegrityViolationException occurred", e);
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("The operation could not be completed due to a data integrity violation.");
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body("The operation could not be completed due to a data integrity violation.");
     }
-
 }
-

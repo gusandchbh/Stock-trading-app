@@ -1,6 +1,8 @@
 package bonqa.portfoliostock;
 
 import bonqa.user.AuthorizationService;
+import java.util.List;
+import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users/{userId}")
@@ -23,12 +22,14 @@ public class PortfolioStockController {
     private final AuthorizationService authorizationService;
 
     @Autowired
-    public PortfolioStockController(PortfolioStockService portfolioStockService, ModelMapper modelMapper, AuthorizationService authorizationService) {
+    public PortfolioStockController(
+            PortfolioStockService portfolioStockService,
+            ModelMapper modelMapper,
+            AuthorizationService authorizationService) {
         this.portfolioStockService = portfolioStockService;
         this.modelMapper = modelMapper;
         this.authorizationService = authorizationService;
     }
-
 
     @PostMapping("/stocks/{stockId}/purchase")
     public ResponseEntity<String> purchaseStock(
@@ -68,7 +69,4 @@ public class PortfolioStockController {
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
     }
-
-
-
 }

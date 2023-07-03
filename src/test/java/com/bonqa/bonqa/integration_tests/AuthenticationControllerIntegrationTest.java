@@ -1,10 +1,13 @@
 package com.bonqa.bonqa.integration_tests;
 
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import bonqa.BonqaApplication;
 import bonqa.authentication.request.AuthenticationRequest;
 import bonqa.authentication.request.RegisterRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +15,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 
 @SpringBootTest(classes = BonqaApplication.class)
 @AutoConfigureMockMvc
@@ -37,8 +34,8 @@ class AuthenticationControllerIntegrationTest {
     ObjectMapper objectMapper;
 
     @BeforeEach
-    void setup(){
-         objectMapper = springMvcJacksonConverter.getObjectMapper();
+    void setup() {
+        objectMapper = springMvcJacksonConverter.getObjectMapper();
     }
 
     @Test
@@ -75,7 +72,6 @@ class AuthenticationControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(not(emptyString())));
     }
-
 
     @Test
     void testAuthenticateFailure() throws Exception {

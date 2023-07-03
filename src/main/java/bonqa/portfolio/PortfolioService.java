@@ -5,14 +5,13 @@ import bonqa.portfoliostock.PortfolioStockRepository;
 import bonqa.trade.Trade;
 import bonqa.trade.TradeRepository;
 import bonqa.trade.TradeType;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PortfolioService {
@@ -70,17 +69,17 @@ public class PortfolioService {
             Portfolio portfolio = optionalPortfolio.get();
             if (portfolio.getStocks().contains(portfolioStock)) {
                 List<Trade> trades = tradeRepository.findByPortfolioIdAndStockId(
-                    portfolioId, portfolioStock.getMarketStock().getId());
+                        portfolioId, portfolioStock.getMarketStock().getId());
 
                 TradeSummary tradeSummary = calculateTradeSummary(trades);
 
                 BigDecimal averageValue = tradeSummary.totalShares() == 0
-                    ? BigDecimal.ZERO
-                    : tradeSummary.totalValue().divide(
-                    BigDecimal.valueOf(tradeSummary.totalShares()), RoundingMode.HALF_UP);
+                        ? BigDecimal.ZERO
+                        : tradeSummary
+                                .totalValue()
+                                .divide(BigDecimal.valueOf(tradeSummary.totalShares()), RoundingMode.HALF_UP);
 
-                BigDecimal currentValue =
-                    averageValue.multiply(BigDecimal.valueOf(portfolioStock.getQuantity()));
+                BigDecimal currentValue = averageValue.multiply(BigDecimal.valueOf(portfolioStock.getQuantity()));
 
                 portfolioStock.setTotalValue(currentValue);
 
@@ -96,20 +95,17 @@ public class PortfolioService {
 
         for (Trade trade : trades) {
             if (trade.getTradeType() == TradeType.BUY) {
-                totalValue = totalValue.add(
-                    trade.getPricePerShare().multiply(BigDecimal.valueOf(trade.getShares())));
+                totalValue = totalValue.add(trade.getPricePerShare().multiply(BigDecimal.valueOf(trade.getShares())));
                 totalShares += trade.getShares();
             } else if (trade.getTradeType() == TradeType.SELL) {
-                totalValue = totalValue.subtract(
-                    trade.getPricePerShare().multiply(BigDecimal.valueOf(trade.getShares())));
+                totalValue =
+                        totalValue.subtract(trade.getPricePerShare().multiply(BigDecimal.valueOf(trade.getShares())));
                 totalShares -= trade.getShares();
             }
         }
 
         return new TradeSummary(totalValue, totalShares);
     }
-
-
 
     public void updateAccountBalance(Portfolio portfolio, BigDecimal balanceChange) {
         BigDecimal newBalance = portfolio.getAccountBalance().add(balanceChange);
@@ -121,12 +117,10 @@ public class PortfolioService {
     }
 
     public Portfolio getPortfolioByUserId(Long userId) {
-        return portfolioRepository.findByUserId(userId)
+        return portfolioRepository
+                .findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User ID not found."));
     }
 
-
-    public record TradeSummary(BigDecimal totalValue, int totalShares) {
-    }
-
+    public record TradeSummary(BigDecimal totalValue, int totalShares) {}
 }

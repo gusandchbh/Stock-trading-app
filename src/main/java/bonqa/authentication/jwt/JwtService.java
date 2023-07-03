@@ -5,14 +5,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
-
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
@@ -68,10 +67,9 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
     public Long extractUserId(String token) {
         String userId = extractClaim(token, claims -> claims.get("userId", String.class));
         return Long.parseLong(userId);
     }
-
-
 }

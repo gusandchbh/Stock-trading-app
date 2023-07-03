@@ -2,11 +2,10 @@ package bonqa.security;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import java.util.Arrays;
 import org.passay.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
 
 public class StrongPasswordValidator implements ConstraintValidator<StrongPassword, String> {
 

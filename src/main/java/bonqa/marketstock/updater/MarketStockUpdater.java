@@ -5,15 +5,14 @@ import bonqa.marketstock.MarketStockRepository;
 import bonqa.marketstock.fetcher.MarketStockFetcherInterface;
 import bonqa.marketstock.generic.StockGeneric;
 import jakarta.annotation.PostConstruct;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
-
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Component
 public class MarketStockUpdater {
@@ -28,7 +27,10 @@ public class MarketStockUpdater {
     private static final int NUMBER_OF_REQUESTS_NEEDED = 5;
 
     @Autowired
-    public MarketStockUpdater(@Qualifier("alphaVantageMarketStockFetcher")MarketStockFetcherInterface stockFetcher, MarketStockRepository marketStockRepository, ThreadPoolTaskScheduler threadPoolTaskScheduler) {
+    public MarketStockUpdater(
+            @Qualifier("alphaVantageMarketStockFetcher") MarketStockFetcherInterface stockFetcher,
+            MarketStockRepository marketStockRepository,
+            ThreadPoolTaskScheduler threadPoolTaskScheduler) {
         this.stockFetcher = stockFetcher;
         this.marketStockRepository = marketStockRepository;
         this.taskScheduler = threadPoolTaskScheduler;
@@ -43,8 +45,6 @@ public class MarketStockUpdater {
         }
     }
 
-
-
     @Scheduled(cron = "0 0 22 * * ?") // At 22:00:00pm every day
     private void automaticStockUpdate() {
         this.scheduleFetchTasks();
@@ -57,8 +57,8 @@ public class MarketStockUpdater {
 
     private void updateStocksInDatabase(List<StockGeneric> stocks) {
         for (var stock : stocks) {
-            MarketStock marketStockToSave = marketStockRepository.findByTicker(stock.getTicker())
-                .orElse(new MarketStock());
+            MarketStock marketStockToSave =
+                    marketStockRepository.findByTicker(stock.getTicker()).orElse(new MarketStock());
 
             marketStockToSave.setTicker(stock.getTicker());
             marketStockToSave.setName(stock.getName());

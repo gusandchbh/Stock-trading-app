@@ -5,13 +5,12 @@ import bonqa.trade.Trade;
 import bonqa.user.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 @Getter
 @Setter

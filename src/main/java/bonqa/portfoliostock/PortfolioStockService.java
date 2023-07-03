@@ -3,22 +3,19 @@ package bonqa.portfoliostock;
 import bonqa.marketstock.MarketStock;
 import bonqa.marketstock.MarketStockRepository;
 import bonqa.portfolio.Portfolio;
-import bonqa.portfolio.PortfolioRepository;
 import bonqa.portfolio.PortfolioService;
 import bonqa.portfoliostock.exception.ResourceNotFoundException;
 import bonqa.trade.Trade;
 import bonqa.trade.TradeRepository;
 import bonqa.trade.TradeType;
-import jakarta.persistence.EntityNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PortfolioStockService {
@@ -31,10 +28,11 @@ public class PortfolioStockService {
     private final TradeRepository tradeRepository;
 
     @Autowired
-    public PortfolioStockService(PortfolioStockRepository portfolioStockRepository,
-                                 MarketStockRepository marketStockRepository,
-                                 PortfolioService portfolioService,
-                                 TradeRepository tradeRepository) {
+    public PortfolioStockService(
+            PortfolioStockRepository portfolioStockRepository,
+            MarketStockRepository marketStockRepository,
+            PortfolioService portfolioService,
+            TradeRepository tradeRepository) {
         this.portfolioStockRepository = portfolioStockRepository;
         this.marketStockRepository = marketStockRepository;
         this.portfolioService = portfolioService;
@@ -42,8 +40,8 @@ public class PortfolioStockService {
     }
 
     public String purchaseStock(Long userId, Long stockId, int quantity) {
-        MarketStock marketStock = marketStockRepository.findById(stockId)
-                .orElseThrow(() -> new RuntimeException("Stock not found"));
+        MarketStock marketStock =
+                marketStockRepository.findById(stockId).orElseThrow(() -> new RuntimeException("Stock not found"));
         Portfolio portfolio = portfolioService.getPortfolioByUserId(userId);
 
         BigDecimal requiredAmount = marketStock.getPrice().multiply(BigDecimal.valueOf(quantity));
@@ -63,10 +61,9 @@ public class PortfolioStockService {
         return "Stock purchase successful";
     }
 
-
     public String sellStock(Long userId, Long stockId, int quantity) {
-        MarketStock marketStock = marketStockRepository.findById(stockId)
-                .orElseThrow(() -> new RuntimeException("Stock not found"));
+        MarketStock marketStock =
+                marketStockRepository.findById(stockId).orElseThrow(() -> new RuntimeException("Stock not found"));
         Portfolio portfolio = portfolioService.getPortfolioByUserId(userId);
 
         PortfolioStock portfolioStock = findPortfolioStock(portfolio, stockId);
@@ -82,7 +79,7 @@ public class PortfolioStockService {
 
         portfolioStock.setQuantity(portfolioStock.getQuantity() - quantity);
 
-        if(portfolioStock.getQuantity() == 0) {
+        if (portfolioStock.getQuantity() == 0) {
             portfolioService.removePortfolioStock(portfolio.getId(), portfolioStock);
         } else {
             portfolioService.updatePortfolioStockValue(portfolio.getId(), portfolioStock);
@@ -92,7 +89,6 @@ public class PortfolioStockService {
 
         return "Stock sale successful";
     }
-
 
     public List<PortfolioStock> getAllUserStocks(Long userId) {
         Portfolio portfolio = portfolioService.getPortfolioByUserId(userId);
@@ -122,9 +118,7 @@ public class PortfolioStockService {
                     newPortfolioStock.setMarketStock(marketStock);
                     newPortfolioStock.setStockName(marketStock.getName());
                     newPortfolioStock.setQuantity(0);
-                    portfolio
-                            .getStocks()
-                            .add(newPortfolioStock);
+                    portfolio.getStocks().add(newPortfolioStock);
                     return newPortfolioStock;
                 });
     }
@@ -142,6 +136,4 @@ public class PortfolioStockService {
                 .filter(ps -> ps.getMarketStock().getId().equals(stockId))
                 .findFirst();
     }
-
-
 }
