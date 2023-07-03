@@ -2,10 +2,9 @@ package bonqa.authentication.jwt;
 
 import bonqa.user.User;
 import jakarta.persistence.*;
+import java.util.Objects;
 import lombok.*;
 import org.hibernate.Hibernate;
-
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -41,7 +40,6 @@ public class Token {
         Token otherToken = (Token) o;
         return getId() != null && Objects.equals(getId(), otherToken.getId());
     }
-
 
     @Override
     public int hashCode() {

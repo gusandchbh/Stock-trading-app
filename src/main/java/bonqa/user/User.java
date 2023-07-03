@@ -3,16 +3,14 @@ package bonqa.user;
 import bonqa.authentication.jwt.Token;
 import bonqa.portfolio.Portfolio;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 
 @NoArgsConstructor
 @Entity
@@ -85,5 +83,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

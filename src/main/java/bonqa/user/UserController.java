@@ -3,6 +3,9 @@ package bonqa.user;
 import bonqa.user.request.UpdateEmailRequest;
 import bonqa.user.request.UpdatePasswordRequest;
 import jakarta.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = {"/api/v1/users"})
@@ -27,7 +26,8 @@ public class UserController {
     private final AuthorizationService authorizationService;
 
     @Autowired
-    public UserController(UserRepository userRepository, UserService userService, AuthorizationService authorizationService) {
+    public UserController(
+            UserRepository userRepository, UserService userService, AuthorizationService authorizationService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.authorizationService = authorizationService;
@@ -87,7 +87,6 @@ public class UserController {
         return new ResponseEntity<>("All users deleted!", HttpStatus.OK);
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> fetchById(@PathVariable Long id) {
         logger.info("Fetching user with ID: {}", id);
@@ -105,5 +104,4 @@ public class UserController {
         logger.error("Validation error: {}", messages.get(0));
         return ResponseEntity.badRequest().body(String.join(", ", messages));
     }
-
 }

@@ -4,13 +4,11 @@ import bonqa.marketstock.MarketStock;
 import bonqa.portfolio.Portfolio;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
-@SuppressWarnings("checkstyle:MissingJavadocType")
 @Entity
 @Table(name = "portfolio_stock")
 @Getter
@@ -39,5 +37,4 @@ public class PortfolioStock {
 
     @Column(name = "quantity")
     private Integer quantity;
-
 }
