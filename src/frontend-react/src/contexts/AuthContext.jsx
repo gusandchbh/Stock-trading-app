@@ -10,7 +10,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [userToken, setUserToken] = useState();
-  const [loading, setLoading] = useState(true);  // New loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -18,7 +18,7 @@ export function AuthProvider({ children }) {
       setUserToken(parseJWT(token));
       API.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
-    setLoading(false);  // We're done loading once we've checked the token
+    setLoading(false);
   }, []);
 
   const login = async (username, password) => {
@@ -37,7 +37,7 @@ export function AuthProvider({ children }) {
   };
 
   const signup = async (username, password, email) => {
-    const response = await API.post("api/v1/auth/register", {
+    await API.post("api/v1/auth/register", {
       username: username,
       password: password,
       email: email,
@@ -51,9 +51,9 @@ export function AuthProvider({ children }) {
   };
 
   return (
-      <AuthContext.Provider value={{ loading, userToken, login, signup, logout }}>
-        {children}
-      </AuthContext.Provider>
+    <AuthContext.Provider value={{ loading, userToken, login, signup, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 
