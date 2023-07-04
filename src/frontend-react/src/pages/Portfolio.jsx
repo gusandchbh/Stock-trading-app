@@ -34,19 +34,19 @@ export const Portfolio = () => {
                             <div className="d-flex mt-4" style={{width: '100%'}}>
                                 <div style={{width: '253.98px', maxHeight: '349.49px'}}>
                                     <h3 className="mb-3 text-light">Stocks</h3>
-                                    <SimpleBar style={{maxHeight: '300px'}}>
+                                    <SimpleBar style={{maxHeight: '500px'}}>
                                         <PortfolioStockList stocks={portfolio.stocks}/>
                                     </SimpleBar>
                                 </div>
                                 <div style={{width:'507.96px', maxHeight: '349.49px'}}>
                                     <h3 className="mb-3 text-light">Trades</h3>
-                                    <SimpleBar style={{maxHeight: '300px'}}>
+
                                         <PortfolioTradeList
                                             portfolioId={portfolio.id}
                                             currentPage={currentPage}
                                             setCurrentPage={setCurrentPage}
                                         />
-                                    </SimpleBar>
+
                                 </div>
                             </div>
                         </div>
